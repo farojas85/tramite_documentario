@@ -37875,7 +37875,7 @@ var staticRenderFns = [
                 _vm._v(" "),
                 _c("li", { staticClass: "nav-item has-treeview" }, [
                   _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                    _c("i", { staticClass: "nav-icon fas fa-tachometer-alt" }),
+                    _c("i", { staticClass: "nav-icon fas fa-users-cog" }),
                     _vm._v(" "),
                     _c("p", [
                       _vm._v("\n                Sistema\n                "),
@@ -37933,7 +37933,7 @@ var staticRenderFns = [
                 _vm._v(" "),
                 _c("li", { staticClass: "nav-item has-treeview" }, [
                   _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                    _c("i", { staticClass: "nav-icon fas fa-tachometer-alt" }),
+                    _c("i", { staticClass: "nav-icon fas fa-cogs" }),
                     _vm._v(" "),
                     _c("p", [
                       _vm._v("\n            Configuraciones\n            "),
