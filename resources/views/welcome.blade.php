@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                   <img src="img/logo.png" width="80" > Pachitea
                 </div>
 
                 <div class="links">

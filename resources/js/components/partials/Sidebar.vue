@@ -19,7 +19,9 @@
             <a href="#" class="d-block">Fredy Rojas</a>
         </div>
         <div class="info">
-            <a href="#" class="d-block">Cerrar Sesión</a>
+            <a href="#" class="d-block text-right">
+                <i class="fas fa-power-off fa-lg text-danger"></i>
+            </a>
         </div>
         </div>
 
@@ -45,19 +47,25 @@
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
                     <a href="./index.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
+                        <i class="fas fa-user-tie nav-icon"></i>
                         <p>Personal</p>
                     </a>
                     </li>
                     <li class="nav-item">
                     <a href="./index2.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
+                        <i class="fas fa-user-tag nav-icon"></i>
                         <p>Roles</p>
                     </a>
                     </li>
                     <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="fas fa-user nav-icon"></i>
+                        <p>Usuarios</p>
+                    </a>
+                    </li>
+                    <li class="nav-item">
                     <a href="./index3.html" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
+                        <i class="fas fa-user-lock nav-icon"></i>
                         <p>Permisos</p>
                     </a>
                     </li>
@@ -74,7 +82,7 @@
             <ul class="nav nav-treeview">
                 <li class="nav-item">
                 <a href="./index.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-building nav-icon"></i>
                     <p>Institucional</p>
                 </a>
                 </li>
@@ -105,7 +113,7 @@
             <ul class="nav nav-treeview">
                 <li class="nav-item">
                 <a href="pages/layout/top-nav.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-users nav-icon"></i>
                     <p>Solicitantes</p>
                 </a>
                 </li>
