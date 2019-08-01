@@ -30,12 +30,12 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
-            <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link active">
-                <i class="nav-icon fas fa-th"></i>
-                <p>Inicio</p>
-            </a>
-            </li>
+            <router-link to="/home" tag="li" class="nav-item">
+                <a class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>Inicio</p>
+                </a>
+            </router-link>
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-users-cog"></i>
@@ -45,30 +45,24 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                    <a href="./index.html" class="nav-link">
-                        <i class="fas fa-user-tie nav-icon"></i>
-                        <p>Personal</p>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="./index2.html" class="nav-link">
-                        <i class="fas fa-user-tag nav-icon"></i>
-                        <p>Roles</p>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="" class="nav-link">
-                        <i class="fas fa-user nav-icon"></i>
-                        <p>Usuarios</p>
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a href="./index3.html" class="nav-link">
-                        <i class="fas fa-user-lock nav-icon"></i>
-                        <p>Permisos</p>
-                    </a>
-                    </li>
+                    <router-link to="/role" tag="li" class="nav-item">
+                        <a class="nav-link">
+                            <i class="fas fa-user-tag nav-icon"></i>
+                            <p>Roles</p>
+                        </a>
+                    </router-link>
+                    <router-link to="/permiso" tag="li" class="nav-item">
+                        <a class="nav-link">
+                            <i class="fas fa-user-lock nav-icon"></i>
+                            <p>Permisos</p>
+                        </a>
+                    </router-link>
+                    <router-link to="/personal" tag="li" class="nav-item">
+                        <a class="nav-link" > 
+                            <i class="fas fa-user-tie nav-icon"></i>
+                            <p>Personal</p>
+                        </a>
+                    </router-link>
                 </ul>
             </li>
             <li class="nav-item has-treeview">

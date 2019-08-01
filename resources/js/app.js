@@ -11,9 +11,17 @@ Vue.use(VueAxios);
 //IMportando VISTAS VUE
 import App from './components/App';
 import Home from './views/Home';
+import Role from './views/sistema/Role';
+import Personal from './views/sistema/Personal';
+import Permiso from './views/sistema/Permiso';
+
 //RUTAS
 let routes = [
-    { path:'/', name:'home', component: Home}
+    { path:'/', name:'home', component: Home},
+    { path: '/home',name: 'home',component: Home},
+    { path: '/role', name: 'role',component: Role},
+    { path: '/personal',name: 'personal', component: Personal},
+    { path: '/permiso',name: 'permiso',component: Permiso}
 ];
 
 const router = new VueRouter({
