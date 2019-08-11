@@ -2034,20 +2034,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {},
   data: function data() {
     return {
       editmode: false,
       users: {},
-      user: {}
+      form: new Form({
+        id: '',
+        name: '',
+        email: '',
+        password: '',
+        tipo: ''
+      })
     };
   },
   methods: {
@@ -71986,53 +71985,6 @@ var render = function() {
                           _vm._v(_vm._s(_vm.errors.first("password")))
                         ])
                       : _vm._e()
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.user.password_repeat,
-                          expression: "user.password_repeat"
-                        },
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: "required",
-                          expression: "'required'"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      class: {
-                        "is-invalid": _vm.errors.has("password_repeat")
-                      },
-                      attrs: {
-                        type: "password",
-                        name: "password_repeat",
-                        placeholder: "Contraseña"
-                      },
-                      domProps: { value: _vm.user.password_repeat },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.user,
-                            "password_repeat",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.has("password_repeat")
-                      ? _c("span", { staticClass: "text-danger" }, [
-                          _vm._v(_vm._s(_vm.errors.first("password_repeat")))
-                        ])
-                      : _vm._e()
                   ])
                 ]
               ),
@@ -87257,17 +87209,17 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); //IMPORT 
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 window.swal = sweetalert2__WEBPACK_IMPORTED_MODULE_6___default.a;
-window.Form = vform__WEBPACK_IMPORTED_MODULE_7___default.a; //REQUIRE 
-
-__webpack_require__(/*! ./filtros */ "./resources/js/filtros.js");
-
-__webpack_require__(/*! ./componentes */ "./resources/js/componentes.js"); //USOS
-
+window.form = vform__WEBPACK_IMPORTED_MODULE_7___default.a; //USOS
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
 Vue.use(vue_axios__WEBPACK_IMPORTED_MODULE_1___default.a, axios__WEBPACK_IMPORTED_MODULE_2___default.a);
 Vue.use(vee_validate__WEBPACK_IMPORTED_MODULE_4__["default"]);
-vee_validate__WEBPACK_IMPORTED_MODULE_4__["Validator"].localize("es", vee_validate_dist_locale_es__WEBPACK_IMPORTED_MODULE_5___default.a);
+vee_validate__WEBPACK_IMPORTED_MODULE_4__["Validator"].localize("es", vee_validate_dist_locale_es__WEBPACK_IMPORTED_MODULE_5___default.a); //REQUIRE 
+
+__webpack_require__(/*! ./filtros */ "./resources/js/filtros.js");
+
+__webpack_require__(/*! ./componentes */ "./resources/js/componentes.js");
+
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history',
   routes: _routes__WEBPACK_IMPORTED_MODULE_3__["default"]

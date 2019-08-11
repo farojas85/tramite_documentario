@@ -126,13 +126,6 @@
                                     class="form-control" :class="{ 'is-invalid': errors.has('password') }">
                                 <span class="text-danger" v-if="errors.has('password')">{{ errors.first('password') }}</span>
                             </div>
-                            <div class="form-group">
-                                <input type="password" name="password_repeat" v-model="user.password_repeat"
-                                    placeholder="Contraseña"
-                                    v-validate="'required'"
-                                    class="form-control" :class="{ 'is-invalid': errors.has('password_repeat') }">
-                                <span class="text-danger" v-if="errors.has('password_repeat')">{{ errors.first('password_repeat') }}</span>
-                            </div>
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">
@@ -160,7 +153,13 @@
             return {
                 editmode: false,
                 users:{},
-                user:{}
+                form: new Form({
+                    id:'',
+                    name:'',
+                    email:'',
+                    password:'',
+                    tipo:''
+                })
             }
         },
         methods: {

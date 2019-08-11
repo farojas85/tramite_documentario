@@ -13,16 +13,17 @@ import Form  from 'vform'
 
 window.Vue = require('vue')
 window.swal = swal
-window.Form  = Form
-//REQUIRE 
-require('./filtros')
-require('./componentes')
+window.form  = Form
 
 //USOS
 Vue.use(VueRouter);
 Vue.use(VueAxios,Axios);
 Vue.use(VeeValidate);
 Validator.localize("es",es)
+
+//REQUIRE 
+require('./filtros')
+require('./componentes')
 
 const router = new VueRouter({
     mode: 'history',
