@@ -166,7 +166,6 @@ return [
          * Package Service Providers...
          */
         Laraveles\Spanish\SpanishServiceProvider::class,
-        Caffeinated\Shinobi\ShinobiServiceProvider::class,
         /*
          * Application Service Providers...
          */
