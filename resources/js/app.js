@@ -4,14 +4,24 @@ require('./bootstrap')
 import VueRouter from 'vue-router'
 import VueAxios from 'vue-axios'
 import Axios from 'axios'
+
 import routes from './routes'
 import VeeValidate, { Validator } from 'vee-validate'
 import es from 'vee-validate/dist/locale/es'
+import swal from 'sweetalert2';
+import Form  from 'vform'
+
 window.Vue = require('vue')
+window.swal = swal
+window.Form  = Form
+//REQUIRE 
+require('./filtros')
+require('./componentes')
 
 //USOS
 Vue.use(VueRouter);
 Vue.use(VueAxios,Axios);
+Vue.use(VeeValidate);
 Validator.localize("es",es)
 
 const router = new VueRouter({
@@ -19,8 +29,7 @@ const router = new VueRouter({
     routes,    
 })
 
-//FILTROS
-require('./filtros')
+
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default)
 

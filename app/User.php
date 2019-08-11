@@ -22,4 +22,3 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 }
-https://es.search.yahoo.com/yhs/search?hspart=ddc&hsimp=yhs-linuxmint&type=__alt__ddc_linuxmint_com&p=namecheap

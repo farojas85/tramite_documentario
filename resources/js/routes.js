@@ -1,5 +1,4 @@
 //IMportando VISTAS VUE
-import App from './components/App'
 import Home from './views/Home'
 import Users from './views/sistema/Users'
 import Role from './views/sistema/Role'
