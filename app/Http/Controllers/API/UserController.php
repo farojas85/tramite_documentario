@@ -78,4 +78,10 @@ class UserController extends Controller
     {
         //
     }
+
+    public function search($busqueda){
+        //video 16
+       // return $cadena;
+        return User::with('roles')->where('name','LIKE'.$cadena)->latest()->paginate(5);
+    }
 }

@@ -32,6 +32,7 @@
         "vee-validate": "^2.2.14",
         "vform": "^1.0.1",
         "vue-axios": "^2.1.4",
+        "vue-progressbar": "^0.7.5",
         "vue-router": "^3.1.2"
     }
 }

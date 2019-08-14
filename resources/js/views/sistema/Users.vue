@@ -9,7 +9,7 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="/home"><a href="#">Trámites</a></li>
+                        <li class="breadcrumb-item"><a href="/">Trámites</a></li>
                         <li class="breadcrumb-item active">Sistema</li>
                         <li class="breadcrumb-item active">Usuarios</li>
                     </ol>
@@ -35,10 +35,10 @@
                                 <div class="col-md-6 text-right">
                                     <div class="input-group">
                                         <input type="text" name="table-search" id="table-search"
-                                            class="form-control"
+                                            class="form-control" v-model="buscar" @change="busqueda"
                                             placeholder="Buscar...">
-                                        <div class="input-group-append col-md-4">
-                                            <button type="button" class="btn btn-default">
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-info">
                                                 <i class="fas fa-search"></i>
                                             </button>
                                         </div>
@@ -48,7 +48,7 @@
                             <div class="row mt-2">
                                 <div class="col-md-12">
                                     <div class="table-responsive">
-                                        <table class="table table-sm table-striped">
+                                        <table class="table table-sm table-striped table-bordered table-hover">
                                             <thead class="bg-dark">
                                                 <tr>
                                                     <th>Id</th>
@@ -60,13 +60,13 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr v-for="us in users" :key="us.id">
+                                                <tr v-for="us in users.data" :key="us.id">
                                                     <td>{{ us.id }} </td>
                                                     <td>{{ us.name | capitalText}}</td>
                                                     <td>{{ us.email }}</td>
                                                     <td v-for="r in us.roles" :key="r.id">
-                                                        <span v-if="r.slug == 'admin'" class="badge badge-success">{{ r.nombre }}</span>
-                                                        <span v-if="r.slug == 'user'" class="badge badge-primary">{{ r.nombre }}</span>
+                                                        <span v-if="r.slug == 'admin'" class="badge badge-success">{{ r.nombre | capitalText }}</span>
+                                                        <span v-if="r.slug == 'user'" class="badge badge-primary">{{ r.nombre | capitalText }}</span>
                                                     </td>
                                                     <td>{{ us.created_at | miFecha }}</td>
                                                     <td>
@@ -94,13 +94,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer">
+                            <pagination :data="users" @pagination-change-page="getResults"></pagination>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <div class="modal fade" id="modal-create">
-            <div class="modal-dialog ">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" v-show="!editmode" id="modal-create-title">Nuevo Usuario</h4>
@@ -165,6 +168,7 @@
         created() {
             this.listarRoles()
             this.listarUsers()
+            this.getResults()
         },
         data() {
             return {
@@ -179,7 +183,8 @@
                     foto:'',
                     remember:false
                 }),
-                roles:{}
+                roles:{},
+                buscar:''
             }
         },
         methods: {
@@ -198,7 +203,14 @@
                     })
             },
             listarUsers() {
-                axios.get('api/user').then(({ data }) => (this.users =data.data))
+                axios.get('api/user').then(({ data }) => (this.users =data))
+            },
+            getResults(page=1) {
+                // Using vue-resource as an example
+                axios.get('/api/user?page=' + page)
+                    .then(response => {
+                        this.users = response.data
+                    });
             },
             nuevoUsuario() {
                 this.form.reset
@@ -207,9 +219,22 @@
                 $('#modal-create').modal('show')
             },
             createUser() {
+                this.$Progress.start()
                 this.form.post('api/user')
                 swal.fire('Usuario','Nuevo Usuario Registrado Satifactoriamente')
-                //$('#modal-create').modal('hide')
+                $('#modal-create').modal('hide')
+                this.listarUsers()
+                this.getResults()
+                this.$Progress.finish()
+                
+            },
+            busqueda() {
+                this.buscar = (this.buscar === '' || this.buscar === null) ? 11 : this.buscar
+                axios.get('api/rolesearch/'+this.buscar)
+                    .then(response => {
+                        console.log(response)
+                        this.users = response
+                    })
             }
         }
     }

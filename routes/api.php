@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::apiResources(['role' => 'API\RoleController']);
 Route::apiResources(['user' => 'API\UserController']);
 Route::get('rolelist','API\RoleController@lista')->name('role.list');
+Route::get('rolesearch/{busqueda}','API\UserController@search')->name('role.search');
