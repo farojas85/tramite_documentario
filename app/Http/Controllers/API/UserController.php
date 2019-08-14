@@ -4,9 +4,8 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Role;
 
-class RoleController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -61,10 +60,5 @@ class RoleController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function lista()
-    {
-        return Role::select('id','nombre','slug','descripcion')->get();
     }
 }

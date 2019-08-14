@@ -28,7 +28,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <button type="button" class="btn btn-primary btn-rounded" @click="nuevoUsuario">
+                                    <button type="button" class="btn btn-primary" @click="nuevoUsuario">
                                         <i class="fas fa-plus"></i> Agregar Usuario
                                     </button>
                                 </div>
@@ -103,28 +103,40 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                     <form @submit.prevent="validatesubmit()" id="form-user" >
+                     <form @submit.prevent="createUser" id="form-user" >
                         <div class="modal-body" id="modal-create-body">
+                            <input type="hidden" name="id" v-model="form.id" id="id">
                             <div class="form-group">
-                                <input type="text" name="name" v-model="user.name"
-                                    placeholder="Nombre de Usuario"
+                                <input type="text" name="name" v-model="form.name" id="name"
+                                    placeholder="Nombre de Usuario" title="Nombre de Usuario"
                                     v-validate="'required'"
-                                    class="form-control" :class="{ 'is-invalid': errors.has('name') }">
-                                <span class="text-danger" v-if="errors.has('name')">{{ errors.first('name') }}</span>
+                                    class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
+                                <has-error :form="form" field="name"></has-error>
                             </div>
                             <div class="form-group">
-                                <input type="email" name="email" v-model="user.email"
-                                    placeholder="Correo Electrónico"
-                                    v-validate="'required'"
-                                    class="form-control" :class="{ 'is-invalid': errors.has('email') }">
-                                <span class="text-danger" v-if="errors.has('email')">{{ errors.first('email') }}</span>
+                                <select name="role_id" id="role_id" class="form-control"
+                                    v-model="form.role_id" v-validate="'required'" title="Seleccione Rol"
+                                    :class="{ 'is-invalid': form.errors.has('role_id') }">
+                                    <option value="">-Seleccione Rol-</option>
+                                    <option v-for="rol in roles" :key="rol.id" :value="rol.id">
+                                        {{rol.nombre}}
+                                    </option>
+                                </select>
+                                <has-error :form="form" field="role_id"></has-error>
                             </div>
                             <div class="form-group">
-                                <input type="password" name="password" v-model="user.password"
-                                    placeholder="Contraseña"
+                                <input type="email" name="email" v-model="form.email"
+                                    placeholder="Correo Electrónico" title="Correo Electrónico"
                                     v-validate="'required'"
-                                    class="form-control" :class="{ 'is-invalid': errors.has('password') }">
-                                <span class="text-danger" v-if="errors.has('password')">{{ errors.first('password') }}</span>
+                                    class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                                <has-error :form="form" field="email"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="password" v-model="form.password"
+                                    placeholder="Contraseña" title="Contraseña"
+                                    v-validate="'required'"
+                                    class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
+                                <has-error :form="form" field="password"></has-error>
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">
@@ -145,21 +157,25 @@
 </template>
 
 <script>
+    import axios from 'axios'
+    
     export default {
         created() {
-
+            this.listarRoles()
         },
         data() {
             return {
                 editmode: false,
                 users:{},
-                form: new Form({
+                form: new form({
                     id:'',
                     name:'',
                     email:'',
                     password:'',
-                    tipo:''
-                })
+                    role_id:'',
+                    remember:false
+                }),
+                roles:{}
             }
         },
         methods: {
@@ -171,12 +187,21 @@
                     }
                 });
             },
-            nuevoUsuario(){
-                this.user=""
+            listarRoles() {
+                axios.get('api/rolelist')
+                    .then(response => {
+                        this.roles = response.data
+                    })
+            },
+            nuevoUsuario() {
+                this.form.reset
                 this.editmode = false
                 $('#form-user').trigger('reset');
                 $('#modal-create').modal('show')
             },
+            createUser() {
+                this.form.post('api/user')
+            }
         }
     }
 </script>
