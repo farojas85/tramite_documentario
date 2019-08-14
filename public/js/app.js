@@ -2048,10 +2048,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     this.listarRoles();
+    this.listarUsers();
   },
   data: function data() {
     return {
@@ -2063,6 +2066,7 @@ __webpack_require__.r(__webpack_exports__);
         email: '',
         password: '',
         role_id: '',
+        foto: '',
         remember: false
       }),
       roles: {}
@@ -2082,6 +2086,14 @@ __webpack_require__.r(__webpack_exports__);
         _this.roles = response.data;
       });
     },
+    listarUsers: function listarUsers() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/user').then(function (_ref) {
+        var data = _ref.data;
+        return _this2.users = data.data;
+      });
+    },
     nuevoUsuario: function nuevoUsuario() {
       this.form.reset;
       this.editmode = false;
@@ -2090,6 +2102,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     createUser: function createUser() {
       this.form.post('api/user');
+      swal.fire('Usuario', 'Nuevo Usuario Registrado Satifactoriamente'); //$('#modal-create').modal('hide')
     }
   }
 });
@@ -71843,7 +71856,72 @@ var render = function() {
                 _vm._m(2)
               ]),
               _vm._v(" "),
-              _vm._m(3)
+              _c("div", { staticClass: "row mt-2" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c("div", { staticClass: "table-responsive" }, [
+                    _c(
+                      "table",
+                      { staticClass: "table table-sm table-striped" },
+                      [
+                        _vm._m(3),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.users, function(us) {
+                            return _c(
+                              "tr",
+                              { key: us.id },
+                              [
+                                _c("td", [_vm._v(_vm._s(us.id) + " ")]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(_vm._s(_vm._f("capitalText")(us.name)))
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(us.email))]),
+                                _vm._v(" "),
+                                _vm._l(us.roles, function(r) {
+                                  return _c("td", { key: r.id }, [
+                                    r.slug == "admin"
+                                      ? _c(
+                                          "span",
+                                          {
+                                            staticClass: "badge badge-success"
+                                          },
+                                          [_vm._v(_vm._s(r.nombre))]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    r.slug == "user"
+                                      ? _c(
+                                          "span",
+                                          {
+                                            staticClass: "badge badge-primary"
+                                          },
+                                          [_vm._v(_vm._s(r.nombre))]
+                                        )
+                                      : _vm._e()
+                                  ])
+                                }),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(_vm._f("miFecha")(us.created_at))
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _vm._m(4, true)
+                              ],
+                              2
+                            )
+                          }),
+                          0
+                        )
+                      ]
+                    )
+                  ])
+                ])
+              ])
             ])
           ])
         ])
@@ -71871,7 +71949,7 @@ var render = function() {
               [_vm._v("Nuevo Usuario")]
             ),
             _vm._v(" "),
-            _vm._m(4)
+            _vm._m(5)
           ]),
           _vm._v(" "),
           _c(
@@ -71925,12 +72003,6 @@ var render = function() {
                             rawName: "v-model",
                             value: _vm.form.name,
                             expression: "form.name"
-                          },
-                          {
-                            name: "validate",
-                            rawName: "v-validate",
-                            value: "required",
-                            expression: "'required'"
                           }
                         ],
                         staticClass: "form-control",
@@ -71973,12 +72045,6 @@ var render = function() {
                               rawName: "v-model",
                               value: _vm.form.role_id,
                               expression: "form.role_id"
-                            },
-                            {
-                              name: "validate",
-                              rawName: "v-validate",
-                              value: "required",
-                              expression: "'required'"
                             }
                           ],
                           staticClass: "form-control",
@@ -72050,12 +72116,6 @@ var render = function() {
                             rawName: "v-model",
                             value: _vm.form.email,
                             expression: "form.email"
-                          },
-                          {
-                            name: "validate",
-                            rawName: "v-validate",
-                            value: "required",
-                            expression: "'required'"
                           }
                         ],
                         staticClass: "form-control",
@@ -72095,12 +72155,6 @@ var render = function() {
                             rawName: "v-model",
                             value: _vm.form.password,
                             expression: "form.password"
-                          },
-                          {
-                            name: "validate",
-                            rawName: "v-validate",
-                            value: "required",
-                            expression: "'required'"
                           }
                         ],
                         staticClass: "form-control",
@@ -72133,7 +72187,7 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(5)
+              _vm._m(6)
             ]
           )
         ])
@@ -72210,78 +72264,62 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row mt-2" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "table-responsive" }, [
-          _c("table", { staticClass: "table table-sm table-striped" }, [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [_vm._v("Id")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Usuario")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Correo Electrónico")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Creado En..")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Tipo")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Acciones")])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tbody", [
-              _c("tr", [
-                _c("td", [_vm._v("123")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("fredyrb")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("farojas851@gmail.com")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("11-07-2019")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("span", { staticClass: "badge badge-success" }, [
-                    _vm._v("Aprobado")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-circle btn-warning",
-                      attrs: { type: "button", title: "Editar Usuario" }
-                    },
-                    [_c("i", { staticClass: "fas fa-edit" })]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-circle btn-primary",
-                      attrs: {
-                        type: "button",
-                        title: "Cambiar Contraseña Usuario"
-                      }
-                    },
-                    [_c("i", { staticClass: "fas fa-key" })]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-danger btn-circle",
-                      attrs: { type: "button", title: "Eliminar Usuario" }
-                    },
-                    [_c("i", { staticClass: "fas fa-trash" })]
-                  )
-                ])
-              ])
-            ])
-          ])
-        ])
+    return _c("thead", { staticClass: "bg-dark" }, [
+      _c("tr", [
+        _c("th", [_vm._v("Id")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Usuario")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Correo Electrónico")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Tipo")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Fecha Creada")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Acciones")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-success btn-circle",
+          attrs: { type: "button", title: "Mostrar Usuario" }
+        },
+        [_c("i", { staticClass: "fas fa-eye" })]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-warning btn-circle",
+          attrs: { type: "button", title: "Editar Usuario" }
+        },
+        [_c("i", { staticClass: "fas fa-edit" })]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-info btn-circle",
+          attrs: { type: "button", title: "Cambiar Contraseña" }
+        },
+        [_c("i", { staticClass: "fas fa-key" })]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger btn-circle",
+          attrs: { type: "button", title: "Eliminar Usuario" }
+        },
+        [_c("i", { staticClass: "fas fa-trash" })]
+      )
     ])
   },
   function() {
@@ -72318,10 +72356,14 @@ var staticRenderFns = [
         ]
       ),
       _vm._v(" "),
-      _c("button", { staticClass: "btn btn-success" }, [
-        _c("i", { staticClass: "fas fa-save" }),
-        _vm._v(" Guardar\n                        ")
-      ])
+      _c(
+        "button",
+        { staticClass: "btn btn-success", attrs: { type: "submit" } },
+        [
+          _c("i", { staticClass: "fas fa-save" }),
+          _vm._v(" Guardar\n                        ")
+        ]
+      )
     ])
   }
 ]

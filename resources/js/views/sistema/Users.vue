@@ -49,38 +49,43 @@
                                 <div class="col-md-12">
                                     <div class="table-responsive">
                                         <table class="table table-sm table-striped">
-                                            <thead>
+                                            <thead class="bg-dark">
                                                 <tr>
                                                     <th>Id</th>
                                                     <th>Usuario</th>
                                                     <th>Correo Electrónico</th>
-                                                    <th>Creado En..</th>
                                                     <th>Tipo</th>
+                                                    <th>Fecha Creada</th>                                                    
                                                     <th>Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>123</td>
-                                                    <td>fredyrb</td>
-                                                    <td>farojas851@gmail.com</td>
-                                                    <td>11-07-2019</td>
-                                                    <td>
-                                                        <span class="badge badge-success">Aprobado</span>
+                                                <tr v-for="us in users" :key="us.id">
+                                                    <td>{{ us.id }} </td>
+                                                    <td>{{ us.name | capitalText}}</td>
+                                                    <td>{{ us.email }}</td>
+                                                    <td v-for="r in us.roles" :key="r.id">
+                                                        <span v-if="r.slug == 'admin'" class="badge badge-success">{{ r.nombre }}</span>
+                                                        <span v-if="r.slug == 'user'" class="badge badge-primary">{{ r.nombre }}</span>
                                                     </td>
+                                                    <td>{{ us.created_at | miFecha }}</td>
                                                     <td>
-                                                        <button type="button" class="btn btn-circle btn-warning"
+                                                        <button type="button" class="btn btn-success btn-circle"
+                                                            title="Mostrar Usuario">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-warning btn-circle"
                                                             title="Editar Usuario">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
-                                                        <button type="button" class="btn btn-circle btn-primary"
-                                                            title="Cambiar Contraseña Usuario">
+                                                        <button type="button" class="btn btn-info btn-circle"
+                                                            title="Cambiar Contraseña">
                                                             <i class="fas fa-key"></i>
-                                                        </button>      
+                                                        </button>
                                                         <button type="button" class="btn btn-danger btn-circle"
                                                             title="Eliminar Usuario">
                                                             <i class="fas fa-trash"></i>
-                                                        </button>                            
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -109,13 +114,12 @@
                             <div class="form-group">
                                 <input type="text" name="name" v-model="form.name" id="name"
                                     placeholder="Nombre de Usuario" title="Nombre de Usuario"
-                                    v-validate="'required'"
                                     class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
                                 <has-error :form="form" field="name"></has-error>
                             </div>
                             <div class="form-group">
                                 <select name="role_id" id="role_id" class="form-control"
-                                    v-model="form.role_id" v-validate="'required'" title="Seleccione Rol"
+                                    v-model="form.role_id" title="Seleccione Rol"
                                     :class="{ 'is-invalid': form.errors.has('role_id') }">
                                     <option value="">-Seleccione Rol-</option>
                                     <option v-for="rol in roles" :key="rol.id" :value="rol.id">
@@ -127,14 +131,12 @@
                             <div class="form-group">
                                 <input type="email" name="email" v-model="form.email"
                                     placeholder="Correo Electrónico" title="Correo Electrónico"
-                                    v-validate="'required'"
                                     class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
                                 <has-error :form="form" field="email"></has-error>
                             </div>
                             <div class="form-group">
                                 <input type="password" name="password" v-model="form.password"
                                     placeholder="Contraseña" title="Contraseña"
-                                    v-validate="'required'"
                                     class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
                                 <has-error :form="form" field="password"></has-error>
                             </div>
@@ -143,7 +145,7 @@
                             <button type="button" class="btn btn-danger" data-dismiss="modal">
                                 <i class="fas fa-times"></i> Close
                             </button>
-                            <button class="btn btn-success">
+                            <button type="submit" class="btn btn-success">
                                 <i class="fas fa-save"></i> Guardar
                             </button>
                         </div>
@@ -162,6 +164,7 @@
     export default {
         created() {
             this.listarRoles()
+            this.listarUsers()
         },
         data() {
             return {
@@ -173,6 +176,7 @@
                     email:'',
                     password:'',
                     role_id:'',
+                    foto:'',
                     remember:false
                 }),
                 roles:{}
@@ -193,6 +197,9 @@
                         this.roles = response.data
                     })
             },
+            listarUsers() {
+                axios.get('api/user').then(({ data }) => (this.users =data.data))
+            },
             nuevoUsuario() {
                 this.form.reset
                 this.editmode = false
@@ -201,6 +208,8 @@
             },
             createUser() {
                 this.form.post('api/user')
+                swal.fire('Usuario','Nuevo Usuario Registrado Satifactoriamente')
+                //$('#modal-create').modal('hide')
             }
         }
     }
