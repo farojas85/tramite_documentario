@@ -286,15 +286,7 @@
                         });                        
                     }
                 });         
-            },
-            busqueda() {
-                this.buscar = (this.buscar === '' || this.buscar === null) ? 11 : this.buscar
-                axios.get('api/rolesearch/'+this.buscar)
-                    .then(response => {
-                        console.log(response)
-                        this.users = response
-                    })
-            }
+            }, 
         }
     }
 </script>

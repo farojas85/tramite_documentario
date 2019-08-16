@@ -2211,15 +2211,6 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       });
-    },
-    busqueda: function busqueda() {
-      var _this7 = this;
-
-      this.buscar = this.buscar === '' || this.buscar === null ? 11 : this.buscar;
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/rolesearch/' + this.buscar).then(function (response) {
-        console.log(response);
-        _this7.users = response;
-      });
     }
   }
 });
