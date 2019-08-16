@@ -8,12 +8,12 @@ import Axios from 'axios'
 import routes from './routes'
 import VeeValidate, { Validator } from 'vee-validate'
 import es from 'vee-validate/dist/locale/es'
-import swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 import Form  from 'vform'
 import VueProgressBar from 'vue-progressbar'
 
 window.Vue = require('vue')
-window.swal = swal
+window.swal = Swal
 window.form  = Form
 
 //USOS
@@ -26,6 +26,16 @@ Vue.use(VueProgressBar,{
     failedColor: 'red',
     height: '5px'
 })
+
+//Pequeñas ALertas
+const toast = swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+})
+
+window.toast = toast
 
 //REQUIRE 
 require('./filtros')

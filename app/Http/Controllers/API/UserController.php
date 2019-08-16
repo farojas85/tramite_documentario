@@ -53,7 +53,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        return User::with('roles')->where('id','=',$id)->first();
     }
 
     /**
@@ -76,7 +76,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //obtenemos Usuario a Eliminar
+        $user = User::with('roles')->where('id','=',$id)->first();
+        //recorremos el rol que tiene
+        foreach($user->roles() as $role) {
+            $role_id = $role->id;
+        }
+        //Separamos los datos de la tabla pivote
+        $user->roles()->detach($role_id);
+        $user->delete();
+
+        return "Usuario Eliminado Satisfactoriamente";
     }
 
     public function search($busqueda){

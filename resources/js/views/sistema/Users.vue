@@ -54,7 +54,7 @@
                                                     <th>Id</th>
                                                     <th>Usuario</th>
                                                     <th>Correo Electrónico</th>
-                                                    <th>Tipo</th>
+                                                    <th>Rol</th>
                                                     <th>Fecha Creada</th>                                                    
                                                     <th>Acciones</th>
                                                 </tr>
@@ -71,7 +71,7 @@
                                                     <td>{{ us.created_at | miFecha }}</td>
                                                     <td>
                                                         <button type="button" class="btn btn-success btn-circle"
-                                                            title="Mostrar Usuario">
+                                                            title="Mostrar Usuario" @click="showUser(us.id)">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                         <button type="button" class="btn btn-warning btn-circle"
@@ -83,7 +83,7 @@
                                                             <i class="fas fa-key"></i>
                                                         </button>
                                                         <button type="button" class="btn btn-danger btn-circle"
-                                                            title="Eliminar Usuario">
+                                                            title="Eliminar Usuario" @click="deleteUser(us.id)">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </td>
@@ -172,7 +172,7 @@
         },
         data() {
             return {
-                editmode: false,
+                crudmode: '',
                 users:{},
                 form: new form({
                     id:'',
@@ -212,21 +212,80 @@
                         this.users = response.data
                     });
             },
+            limpiar() {
+                this.form.reset
+                $("input.is-invalid").removeClass('is-invalid')
+            },
             nuevoUsuario() {
                 this.form.reset
-                this.editmode = false
+                this.limpiar()
+                this.crudmode = 'create'
                 $('#form-user').trigger('reset');
                 $('#modal-create').modal('show')
             },
-            createUser() {
-                this.$Progress.start()
+            createUser() {                
                 this.form.post('api/user')
-                swal.fire('Usuario','Nuevo Usuario Registrado Satifactoriamente')
-                $('#modal-create').modal('hide')
-                this.listarUsers()
-                this.getResults()
-                this.$Progress.finish()
+                .then(() => {
+                    this.$Progress.start()
+                    $('#modal-create').modal('hide')
+                    toast.fire({type:'success',title:'Usuario Registrado Satisfactoriamente'})
+                    this.listarUsers()
+                    this.getResults()
+                    this.$Progress.finish()
+                })
+                .catch( () => {
+                    
+                })
                 
+            },
+            showUser(id){
+                this.crudmode == 'show'
+                axios.get('api/user/'+id)
+                    .then( response => {
+                        let user = response.data
+                        let role = user.roles
+                        for(let i=0;i<role.length;i++) {
+                            this.form.role_id = role[0]['id'];
+                        }
+
+                        this.form.id = user.id
+                        this.form.name = user.name
+                        this.form.email = user.email
+                        this.form.password = user.password
+                        $('#modal-create-title').html('Mostrar Usuario')
+                        $('#modal-create').modal('show')
+                    })
+            },
+            deleteUser(id) {
+                swal.fire({
+                    title:"¿Está Seguro de Eliminar?",
+                    text:'No podrás revertirlo',
+                    type:"question",
+                    showCancelButton: true,
+                    confirmButtonText:"Si",
+                    confirmButtonColor:"#38c172",
+                    cancelButtonText:"No",
+                    cancelButtonColor:"#e3342f"
+                }).then( response => {
+                    if(response.value){
+                        axios.post('/api/user/delete/'+id)
+                        .then(response => {
+                            swal.fire({
+                                title:"Componente",
+                                text:response.data,
+                                type:"success",
+                                confirmButtonColor:"#148f77",
+                                confirmButtonText:"Aceptar"
+                            }).then(response => {
+                                if(response.value) {
+                                    this.listarUsers();
+                                    this.getResults();
+                                }                                    
+                            });
+                            
+                        });                        
+                    }
+                });         
             },
             busqueda() {
                 this.buscar = (this.buscar === '' || this.buscar === null) ? 11 : this.buscar

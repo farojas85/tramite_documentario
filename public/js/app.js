@@ -1511,7 +1511,7 @@ module.exports = function spread(callback) {
 
 
 var bind = __webpack_require__(/*! ./helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
-var isBuffer = __webpack_require__(/*! is-buffer */ "./node_modules/is-buffer/index.js");
+var isBuffer = __webpack_require__(/*! is-buffer */ "./node_modules/axios/node_modules/is-buffer/index.js");
 
 /*global toString:true*/
 
@@ -1846,6 +1846,28 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/axios/node_modules/is-buffer/index.js":
+/*!************************************************************!*\
+  !*** ./node_modules/axios/node_modules/is-buffer/index.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+module.exports = function isBuffer (obj) {
+  return obj != null && obj.constructor != null &&
+    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js& ***!
@@ -2062,7 +2084,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      editmode: false,
+      crudmode: '',
       users: {},
       form: new form({
         id: '',
@@ -2108,28 +2130,95 @@ __webpack_require__.r(__webpack_exports__);
         _this3.users = response.data;
       });
     },
+    limpiar: function limpiar() {
+      this.form.reset;
+      $("input.is-invalid").removeClass('is-invalid');
+    },
     nuevoUsuario: function nuevoUsuario() {
       this.form.reset;
-      this.editmode = false;
+      this.limpiar();
+      this.crudmode = 'create';
       $('#form-user').trigger('reset');
       $('#modal-create').modal('show');
     },
     createUser: function createUser() {
-      this.$Progress.start();
-      this.form.post('api/user');
-      swal.fire('Usuario', 'Nuevo Usuario Registrado Satifactoriamente');
-      $('#modal-create').modal('hide');
-      this.listarUsers();
-      this.getResults();
-      this.$Progress.finish();
+      var _this4 = this;
+
+      this.form.post('api/user').then(function () {
+        _this4.$Progress.start();
+
+        $('#modal-create').modal('hide');
+        toast.fire({
+          type: 'success',
+          title: 'Usuario Registrado Satisfactoriamente'
+        });
+
+        _this4.listarUsers();
+
+        _this4.getResults();
+
+        _this4.$Progress.finish();
+      })["catch"](function () {});
+    },
+    showUser: function showUser(id) {
+      var _this5 = this;
+
+      this.crudmode == 'show';
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/user/' + id).then(function (response) {
+        var user = response.data;
+        var role = user.roles;
+
+        for (var i = 0; i < role.length; i++) {
+          _this5.form.role_id = role[0]['id'];
+        }
+
+        _this5.form.id = user.id;
+        _this5.form.name = user.name;
+        _this5.form.email = user.email;
+        _this5.form.password = user.password;
+        $('#modal-create-title').html('Mostrar Usuario');
+        $('#modal-create').modal('show');
+      });
+    },
+    deleteUser: function deleteUser(id) {
+      var _this6 = this;
+
+      swal.fire({
+        title: "¿Está Seguro de Eliminar?",
+        text: 'No podrás revertirlo',
+        type: "question",
+        showCancelButton: true,
+        confirmButtonText: "Si",
+        confirmButtonColor: "#38c172",
+        cancelButtonText: "No",
+        cancelButtonColor: "#e3342f"
+      }).then(function (response) {
+        if (response.value) {
+          axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/user/delete/' + id).then(function (response) {
+            swal.fire({
+              title: "Componente",
+              text: response.data,
+              type: "success",
+              confirmButtonColor: "#148f77",
+              confirmButtonText: "Aceptar"
+            }).then(function (response) {
+              if (response.value) {
+                _this6.listarUsers();
+
+                _this6.getResults();
+              }
+            });
+          });
+        }
+      });
     },
     busqueda: function busqueda() {
-      var _this4 = this;
+      var _this7 = this;
 
       this.buscar = this.buscar === '' || this.buscar === null ? 11 : this.buscar;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/rolesearch/' + this.buscar).then(function (response) {
         console.log(response);
-        _this4.users = response;
+        _this7.users = response;
       });
     }
   }
@@ -6578,38 +6667,6 @@ __webpack_require__.r(__webpack_exports__);
 
 }));
 //# sourceMappingURL=bootstrap.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/is-buffer/index.js":
-/*!*****************************************!*\
-  !*** ./node_modules/is-buffer/index.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-
-// The _isBuffer check is for Safari 5-7 support, because it's missing
-// Object.prototype.constructor. Remove this eventually
-module.exports = function (obj) {
-  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
-}
-
-function isBuffer (obj) {
-  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
-// For Node v0.10 support. Remove this eventually.
-function isSlowBuffer (obj) {
-  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
-}
 
 
 /***/ }),
@@ -71995,7 +72052,45 @@ var render = function() {
                                   )
                                 ]),
                                 _vm._v(" "),
-                                _vm._m(4, true)
+                                _c("td", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-success btn-circle",
+                                      attrs: {
+                                        type: "button",
+                                        title: "Mostrar Usuario"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.showUser(us.id)
+                                        }
+                                      }
+                                    },
+                                    [_c("i", { staticClass: "fas fa-eye" })]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._m(4, true),
+                                  _vm._v(" "),
+                                  _vm._m(5, true),
+                                  _vm._v(" "),
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-danger btn-circle",
+                                      attrs: {
+                                        type: "button",
+                                        title: "Eliminar Usuario"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.deleteUser(us.id)
+                                        }
+                                      }
+                                    },
+                                    [_c("i", { staticClass: "fas fa-trash" })]
+                                  )
+                                ])
                               ],
                               2
                             )
@@ -72046,7 +72141,7 @@ var render = function() {
               [_vm._v("Nuevo Usuario")]
             ),
             _vm._v(" "),
-            _vm._m(5)
+            _vm._m(6)
           ]),
           _vm._v(" "),
           _c(
@@ -72284,7 +72379,7 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(6)
+              _vm._m(7)
             ]
           )
         ])
@@ -72353,7 +72448,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Correo Electrónico")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Tipo")]),
+        _c("th", [_vm._v("Rol")]),
         _vm._v(" "),
         _c("th", [_vm._v("Fecha Creada")]),
         _vm._v(" "),
@@ -72365,43 +72460,27 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-success btn-circle",
-          attrs: { type: "button", title: "Mostrar Usuario" }
-        },
-        [_c("i", { staticClass: "fas fa-eye" })]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-warning btn-circle",
-          attrs: { type: "button", title: "Editar Usuario" }
-        },
-        [_c("i", { staticClass: "fas fa-edit" })]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-info btn-circle",
-          attrs: { type: "button", title: "Cambiar Contraseña" }
-        },
-        [_c("i", { staticClass: "fas fa-key" })]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-danger btn-circle",
-          attrs: { type: "button", title: "Eliminar Usuario" }
-        },
-        [_c("i", { staticClass: "fas fa-trash" })]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-warning btn-circle",
+        attrs: { type: "button", title: "Editar Usuario" }
+      },
+      [_c("i", { staticClass: "fas fa-edit" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-info btn-circle",
+        attrs: { type: "button", title: "Cambiar Contraseña" }
+      },
+      [_c("i", { staticClass: "fas fa-key" })]
+    )
   },
   function() {
     var _vm = this
@@ -87500,8 +87579,16 @@ vee_validate__WEBPACK_IMPORTED_MODULE_4__["Validator"].localize("es", vee_valida
 Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_8___default.a, {
   color: 'rgb(143,255,199)',
   failedColor: 'red',
-  height: '10px'
-}); //REQUIRE 
+  height: '5px'
+}); //Pequeñas ALertas
+
+var toast = swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000
+});
+window.toast = toast; //REQUIRE 
 
 __webpack_require__(/*! ./filtros */ "./resources/js/filtros.js");
 
