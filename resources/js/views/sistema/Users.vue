@@ -35,8 +35,7 @@
                                 <div class="col-md-6 text-right">
                                     <div class="input-group">
                                         <input type="text" name="table-search" id="table-search"
-                                            class="form-control" v-model="buscar" @change="busqueda"
-                                            placeholder="Buscar...">
+                                            class="form-control" v-model="buscar" placeholder="Buscar...">
                                         <div class="input-group-append">
                                             <button type="button" class="btn btn-info">
                                                 <i class="fas fa-search"></i>
@@ -106,7 +105,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" v-show="!editmode" id="modal-create-title">Nuevo Usuario</h4>
+                        <h4 class="modal-title" v-show="!crudmode" id="modal-create-title">Nuevo Usuario</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>

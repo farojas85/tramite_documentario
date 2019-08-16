@@ -2074,7 +2074,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
@@ -71959,7 +71958,6 @@ var render = function() {
                       },
                       domProps: { value: _vm.buscar },
                       on: {
-                        change: _vm.busqueda,
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -72122,8 +72120,8 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: !_vm.editmode,
-                    expression: "!editmode"
+                    value: !_vm.crudmode,
+                    expression: "!crudmode"
                   }
                 ],
                 staticClass: "modal-title",
