@@ -24,7 +24,7 @@ Validator.localize("es",es)
 Vue.use(VueProgressBar,{
     color: 'rgb(143,255,199)',
     failedColor: 'red',
-    height: '5px'
+    height: '30px'
 })
 
 //Pequeñas ALertas

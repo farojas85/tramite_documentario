@@ -30,7 +30,8 @@ class UserController extends Controller
         $this->validate($request, [
             'name'      => 'required|string|max:191',
             'email'     => 'required|string|email|max:191|unique:users',
-            'password'  => 'required|string|min:8'
+            'password'  => 'required|string|min:8',
+            'role_id' => 'required'
         ]);
 
 
@@ -65,7 +66,31 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //obtenemos Usuario a Actualizar
+        $user = User::with('roles')->where('id','=',$id)->first();
+
+        //Validamos datos a Modificar
+        $this->validate($request, [
+            'name'      => 'required|string|max:191',
+            'email'     => 'required|string|email|max:191|unique:users,email,'.$user->id,
+            'role_id' => 'required'
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->foto = $request->foto;
+        //recorremos el rol que tiene
+        foreach($user->roles as $role) {
+            $role_id = $role->id;
+        }
+        if($user->role_id != $request->role_id){
+            $user->roles()->detach($role_id);
+            $user->roles()->attach($request->role_id);
+        }
+        
+        $user->save();
+
+        return "Registro Modificado Satisfactoriamente";
     }
 
     /**
@@ -78,15 +103,16 @@ class UserController extends Controller
     {
         //obtenemos Usuario a Eliminar
         $user = User::with('roles')->where('id','=',$id)->first();
+
         //recorremos el rol que tiene
-        foreach($user->roles() as $role) {
+        foreach($user->roles as $role) {
             $role_id = $role->id;
         }
         //Separamos los datos de la tabla pivote
         $user->roles()->detach($role_id);
         $user->delete();
 
-        return "Usuario Eliminado Satisfactoriamente";
+        return "Registro Eliminado Satisfactoriamente";
     }
 
     public function search($busqueda){

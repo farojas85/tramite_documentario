@@ -2074,6 +2074,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
@@ -2100,10 +2106,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     validatesubmit: function validatesubmit() {
-      swal.fire('text', 'titulo');
-      this.$validator.validate().then(function (valid) {
-        if (valid) {}
-      });
+      switch (this.crudmode) {
+        case 'create':
+          this.createUser();
+          break;
+
+        case 'update':
+          this.updateUser();
+          break;
+      }
     },
     listarRoles: function listarRoles() {
       var _this = this;
@@ -2130,11 +2141,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     limpiar: function limpiar() {
-      this.form.reset;
-      $("input.is-invalid").removeClass('is-invalid');
+      this.form.reset();
+      this.form.clear();
     },
     nuevoUsuario: function nuevoUsuario() {
-      this.form.reset;
       this.limpiar();
       this.crudmode = 'create';
       $('#form-user').trigger('reset');
@@ -2143,9 +2153,8 @@ __webpack_require__.r(__webpack_exports__);
     createUser: function createUser() {
       var _this4 = this;
 
+      this.$Progress.start();
       this.form.post('api/user').then(function () {
-        _this4.$Progress.start();
-
         $('#modal-create').modal('hide');
         toast.fire({
           type: 'success',
@@ -2157,12 +2166,13 @@ __webpack_require__.r(__webpack_exports__);
         _this4.getResults();
 
         _this4.$Progress.finish();
-      })["catch"](function () {});
+      })["catch"](function () {
+        _this4.$Progress.fail();
+      });
     },
-    showUser: function showUser(id) {
+    loadUserData: function loadUserData(id, title) {
       var _this5 = this;
 
-      this.crudmode == 'show';
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/user/' + id).then(function (response) {
         var user = response.data;
         var role = user.roles;
@@ -2175,12 +2185,49 @@ __webpack_require__.r(__webpack_exports__);
         _this5.form.name = user.name;
         _this5.form.email = user.email;
         _this5.form.password = user.password;
-        $('#modal-create-title').html('Mostrar Usuario');
+        $('#modal-create-title').html(title);
         $('#modal-create').modal('show');
+      })["catch"](function (error) {
+        swal.fire('Error', "Ocurri\xF3 un Error: ".concat(error.status), 'error');
+      });
+    },
+    showUser: function showUser(id) {
+      this.crudmode = 'show';
+      this.loadUserData(id, 'Mostrar Usuario');
+    },
+    editUser: function editUser(id) {
+      this.crudmode = 'update';
+      this.loadUserData(id, 'Editar Usuario');
+    },
+    updateUser: function updateUser(id) {
+      var _this6 = this;
+
+      this.$Progress.start();
+      this.form.put('api/user/' + this.form.id).then(function (respuesta) {
+        console.log(respuesta.data);
+        swal.fire({
+          title: "Usuario",
+          text: respuesta.data,
+          type: "success",
+          confirmButtonColor: "#148f77",
+          confirmButtonText: "Aceptar"
+        }).then(function (response) {
+          if (response.value) {
+            $('#modal-create').modal('hide');
+
+            _this6.listarUsers();
+
+            _this6.getResults();
+
+            _this6.$Progress.finish();
+          }
+        });
+      })["catch"](function () {
+        _this6.$Progress.fail();
       });
     },
     deleteUser: function deleteUser(id) {
-      var _this6 = this;
+      var _this7 = this;
 
       swal.fire({
         title: "¿Está Seguro de Eliminar?",
@@ -2193,22 +2240,30 @@ __webpack_require__.r(__webpack_exports__);
         cancelButtonColor: "#e3342f"
       }).then(function (response) {
         if (response.value) {
-          axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/user/delete/' + id).then(function (response) {
+          _this7.form["delete"]('api/user/' + id).then(function (respuesta) {
+            _this7.$Progress.start();
+
             swal.fire({
-              title: "Componente",
-              text: response.data,
+              title: "Usuario",
+              text: respuesta.data,
               type: "success",
               confirmButtonColor: "#148f77",
               confirmButtonText: "Aceptar"
             }).then(function (response) {
               if (response.value) {
-                _this6.listarUsers();
+                _this7.listarUsers();
 
-                _this6.getResults();
+                _this7.getResults();
+
+                _this7.$Progress.finish();
               }
-            });
+            })["catch"](function () {});
+          })["catch"](function (error) {
+            swal.fire('Error', "Ocurri\xF3 un Error: ".concat(error.status), 'error');
           });
         }
+      })["catch"](function (error) {
+        swal.showValidationError("Ocurri\xF3 un Error: ".concat(error.status));
       });
     }
   }
@@ -71974,6 +72029,8 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "row mt-2" }, [
                 _c("div", { staticClass: "col-md-12" }, [
+                  _vm._m(3),
+                  _vm._v(" "),
                   _c("div", { staticClass: "table-responsive" }, [
                     _c(
                       "table",
@@ -71982,7 +72039,7 @@ var render = function() {
                           "table table-sm table-striped table-bordered table-hover"
                       },
                       [
-                        _vm._m(3),
+                        _vm._m(4),
                         _vm._v(" "),
                         _c(
                           "tbody",
@@ -72059,7 +72116,22 @@ var render = function() {
                                     [_c("i", { staticClass: "fas fa-eye" })]
                                   ),
                                   _vm._v(" "),
-                                  _vm._m(4, true),
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-warning btn-circle",
+                                      attrs: {
+                                        type: "button",
+                                        title: "Editar Usuario"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.editUser(us.id)
+                                        }
+                                      }
+                                    },
+                                    [_c("i", { staticClass: "fas fa-edit" })]
+                                  ),
                                   _vm._v(" "),
                                   _vm._m(5, true),
                                   _vm._v(" "),
@@ -72112,26 +72184,7 @@ var render = function() {
     _c("div", { staticClass: "modal fade", attrs: { id: "modal-create" } }, [
       _c("div", { staticClass: "modal-dialog" }, [
         _c("div", { staticClass: "modal-content" }, [
-          _c("div", { staticClass: "modal-header" }, [
-            _c(
-              "h4",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: !_vm.crudmode,
-                    expression: "!crudmode"
-                  }
-                ],
-                staticClass: "modal-title",
-                attrs: { id: "modal-create-title" }
-              },
-              [_vm._v("Nuevo Usuario")]
-            ),
-            _vm._v(" "),
-            _vm._m(6)
-          ]),
+          _vm._m(6),
           _vm._v(" "),
           _c(
             "form",
@@ -72140,7 +72193,7 @@ var render = function() {
               on: {
                 submit: function($event) {
                   $event.preventDefault()
-                  return _vm.createUser($event)
+                  return _vm.validatesubmit($event)
                 }
               }
             },
@@ -72368,7 +72421,38 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(7)
+              _c(
+                "div",
+                { staticClass: "modal-footer justify-content-between" },
+                [
+                  _vm._m(7),
+                  _vm._v(" "),
+                  _vm.crudmode != "show"
+                    ? _c("span", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success",
+                            attrs: { type: "submit" }
+                          },
+                          [
+                            _vm.crudmode == "create"
+                              ? _c("span", [
+                                  _c("i", { staticClass: "fas fa-save" }),
+                                  _vm._v(" Guardar")
+                                ])
+                              : _vm.crudmode == "update"
+                              ? _c("span", [
+                                  _c("i", { staticClass: "fas fa-sync-alt" }),
+                                  _vm._v(" Actualizar")
+                                ])
+                              : _vm._e()
+                          ]
+                        )
+                      ])
+                    : _vm._e()
+                ]
+              )
             ]
           )
         ])
@@ -72429,6 +72513,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "table-responsive-top" }, [
+      _c("div", { staticClass: "scroll-div1" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "bg-dark" }, [
       _c("tr", [
         _c("th", [_vm._v("Id")]),
@@ -72452,19 +72544,6 @@ var staticRenderFns = [
     return _c(
       "button",
       {
-        staticClass: "btn btn-warning btn-circle",
-        attrs: { type: "button", title: "Editar Usuario" }
-      },
-      [_c("i", { staticClass: "fas fa-edit" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
         staticClass: "btn btn-info btn-circle",
         attrs: { type: "button", title: "Cambiar Contraseña" }
       },
@@ -72475,45 +72554,42 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "close",
-        attrs: {
-          type: "button",
-          "data-dismiss": "modal",
-          "aria-label": "Close"
-        }
-      },
-      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-    )
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h4",
+        { staticClass: "modal-title", attrs: { id: "modal-create-title" } },
+        [_vm._v("Nuevo Usuario")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer justify-content-between" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-danger",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [
-          _c("i", { staticClass: "fas fa-times" }),
-          _vm._v(" Close\n                        ")
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-success", attrs: { type: "submit" } },
-        [
-          _c("i", { staticClass: "fas fa-save" }),
-          _vm._v(" Guardar\n                        ")
-        ]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-danger",
+        attrs: { type: "button", "data-dismiss": "modal" }
+      },
+      [
+        _c("i", { staticClass: "fas fa-times" }),
+        _vm._v(" Close\n                        ")
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -87568,7 +87644,7 @@ vee_validate__WEBPACK_IMPORTED_MODULE_4__["Validator"].localize("es", vee_valida
 Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_8___default.a, {
   color: 'rgb(143,255,199)',
   failedColor: 'red',
-  height: '5px'
+  height: '30px'
 }); //Pequeñas ALertas
 
 var toast = swal.mixin({

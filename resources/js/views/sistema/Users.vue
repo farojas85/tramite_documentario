@@ -46,6 +46,9 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col-md-12">
+                                    <div class="table-responsive-top">
+                                        <div class="scroll-div1"></div>
+                                    </div>
                                     <div class="table-responsive">
                                         <table class="table table-sm table-striped table-bordered table-hover">
                                             <thead class="bg-dark">
@@ -74,7 +77,7 @@
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                         <button type="button" class="btn btn-warning btn-circle"
-                                                            title="Editar Usuario">
+                                                            title="Editar Usuario" @click="editUser(us.id)">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                         <button type="button" class="btn btn-info btn-circle"
@@ -105,12 +108,12 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" v-show="!crudmode" id="modal-create-title">Nuevo Usuario</h4>
+                        <h4 class="modal-title" id="modal-create-title">Nuevo Usuario</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                     <form @submit.prevent="createUser" id="form-user" >
+                     <form @submit.prevent="validatesubmit" id="form-user" >
                         <div class="modal-body" id="modal-create-body">
                             <input type="hidden" name="id" v-model="form.id" id="id">
                             <div class="form-group">
@@ -147,9 +150,12 @@
                             <button type="button" class="btn btn-danger" data-dismiss="modal">
                                 <i class="fas fa-times"></i> Close
                             </button>
-                            <button type="submit" class="btn btn-success">
-                                <i class="fas fa-save"></i> Guardar
-                            </button>
+                            <span v-if="crudmode!='show'">
+                                <button type="submit" class="btn btn-success">
+                                    <span v-if="crudmode=='create'"><i class="fas fa-save"></i> Guardar</span>
+                                    <span v-else-if="crudmode=='update'"><i class="fas fa-sync-alt"></i> Actualizar</span>
+                                </button>
+                            </span>
                         </div>
                     </form>
                 </div>
@@ -188,12 +194,10 @@
         },
         methods: {
             validatesubmit() {
-                swal.fire('text','titulo')
-                this.$validator.validate().then(valid => {
-                    if(valid){
-                        
-                    }
-                });
+                switch(this.crudmode){
+                    case 'create' : this.createUser();break;
+                    case 'update' : this.updateUser();break;
+                }
             },
             listarRoles() {
                 axios.get('api/rolelist')
@@ -212,33 +216,30 @@
                     });
             },
             limpiar() {
-                this.form.reset
-                $("input.is-invalid").removeClass('is-invalid')
+                this.form.reset()
+                this.form.clear()
             },
             nuevoUsuario() {
-                this.form.reset
                 this.limpiar()
                 this.crudmode = 'create'
                 $('#form-user').trigger('reset');
                 $('#modal-create').modal('show')
             },
-            createUser() {                
+            createUser() {
+                this.$Progress.start()       
                 this.form.post('api/user')
-                .then(() => {
-                    this.$Progress.start()
+                .then(() => {                    
                     $('#modal-create').modal('hide')
                     toast.fire({type:'success',title:'Usuario Registrado Satisfactoriamente'})
                     this.listarUsers()
                     this.getResults()
                     this.$Progress.finish()
                 })
-                .catch( () => {
-                    
-                })
-                
+                .catch(() => {
+                    this.$Progress.fail()
+                })                
             },
-            showUser(id){
-                this.crudmode == 'show'
+            loadUserData(id,title) {
                 axios.get('api/user/'+id)
                     .then( response => {
                         let user = response.data
@@ -246,13 +247,46 @@
                         for(let i=0;i<role.length;i++) {
                             this.form.role_id = role[0]['id'];
                         }
-
                         this.form.id = user.id
                         this.form.name = user.name
                         this.form.email = user.email
                         this.form.password = user.password
-                        $('#modal-create-title').html('Mostrar Usuario')
+                        $('#modal-create-title').html(title)
                         $('#modal-create').modal('show')
+                    }).catch(error => {
+                        swal.fire('Error', `Ocurrió un Error: ${error.status}`,'error')
+                    })
+            },
+            showUser(id){
+                this.crudmode = 'show'
+                this.loadUserData(id,'Mostrar Usuario')
+            },
+            editUser(id) {
+                this.crudmode = 'update'
+                this.loadUserData(id,'Editar Usuario')
+            },
+            updateUser(id){
+                this.$Progress.start()  
+                this.form.put('api/user/'+this.form.id)
+                    .then((respuesta) => {
+                        console.log(respuesta.data)
+                        swal.fire({
+                                title:"Usuario",
+                                text:respuesta.data,
+                                type:"success",
+                                confirmButtonColor:"#148f77",
+                                confirmButtonText:"Aceptar"
+                            }).then(response => {
+                                if(response.value) {
+                                    $('#modal-create').modal('hide')
+                                    this.listarUsers()
+                                    this.getResults()
+                                    this.$Progress.finish()
+                                }                                    
+                            })
+                    })
+                    .catch(() => {
+                        this.$Progress.fail()
                     })
             },
             deleteUser(id) {
@@ -267,24 +301,34 @@
                     cancelButtonColor:"#e3342f"
                 }).then( response => {
                     if(response.value){
-                        axios.post('/api/user/delete/'+id)
-                        .then(response => {
+                        this.form.delete('api/user/'+id).then( (respuesta) => {
+                            this.$Progress.start()
                             swal.fire({
-                                title:"Componente",
-                                text:response.data,
+                                title:"Usuario",
+                                text:respuesta.data,
                                 type:"success",
                                 confirmButtonColor:"#148f77",
                                 confirmButtonText:"Aceptar"
                             }).then(response => {
                                 if(response.value) {
-                                    this.listarUsers();
-                                    this.getResults();
+                                    this.listarUsers()
+                                    this.getResults()
+                                    this.$Progress.finish()
                                 }                                    
-                            });
-                            
-                        });                        
+                            })
+                            .catch(() => {
+                                
+                            })
+                        })
+                        .catch( error => {
+                            swal.fire('Error', `Ocurrió un Error: ${error.status}`,'error')
+                        })                       
                     }
-                });         
+                }).catch(error => {
+                    swal.showValidationError(
+                        `Ocurrió un Error: ${error.status}`
+                    )
+                })         
             }, 
         }
     }
