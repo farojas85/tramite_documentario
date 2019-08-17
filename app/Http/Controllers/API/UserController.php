@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        //$this->middleware('auth');
+    }
+    
     public function index()
     {
         return User::with('roles')->latest()->paginate(5);
@@ -87,7 +87,7 @@ class UserController extends Controller
             $user->roles()->detach($role_id);
             $user->roles()->attach($request->role_id);
         }
-        
+
         $user->save();
 
         return "Registro Modificado Satisfactoriamente";
