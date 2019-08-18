@@ -9,7 +9,7 @@ import Dessarrollador from './views/sistema/Dessarrollador'
 
 //RUTAS
 let routes = [
-    { path:'/', name:'home', component: Home},
+    { path:'/home', name:'home', component: Home},
     { path: '/role', name: 'role',component: Role},
     { path: '/users',name: 'user', component: Users},
     { path: '/desarrollador', name: 'desarrollador', component: Dessarrollador},

@@ -91951,7 +91951,7 @@ __webpack_require__.r(__webpack_exports__);
  //RUTAS
 
 var routes = [{
-  path: '/',
+  path: '/home',
   name: 'home',
   component: _views_Home__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
