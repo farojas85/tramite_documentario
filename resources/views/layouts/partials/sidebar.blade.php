@@ -53,11 +53,11 @@
                             <i class="fas fa-users nav-icon"></i>
                             <p>Usuarios</p>
                         </a>
-                    </router-link>
-                    <router-link to="/permiso" tag="li" class="nav-item">
+                    </router-link>                    
+                    <router-link to="/perfil" tag="li" class="nav-item">
                         <a class="nav-link">
-                            <i class="fas fa-user-lock nav-icon"></i>
-                            <p>Permisos</p>
+                            <i class="fas fa-address-card nav-icon"></i>
+                            <p>Perfil</p>
                         </a>
                     </router-link>
                     <router-link to="/desarrollador" tag="li" class="nav-item">
