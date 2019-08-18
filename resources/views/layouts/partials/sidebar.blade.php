@@ -60,10 +60,10 @@
                             <p>Permisos</p>
                         </a>
                     </router-link>
-                    <router-link to="/personal" tag="li" class="nav-item">
+                    <router-link to="/desarrollador" tag="li" class="nav-item">
                         <a class="nav-link" > 
-                            <i class="fas fa-user-tie nav-icon"></i>
-                            <p>Personal</p>
+                            <i class="fas fa-laptop-code nav-icon"></i>
+                            <p>Desarrollador</p>
                         </a>
                     </router-link>
                 </ul>
