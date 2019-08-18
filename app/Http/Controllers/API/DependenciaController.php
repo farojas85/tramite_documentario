@@ -4,61 +4,65 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Dependencia;
 
 class DependenciaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        return Dependencia::with('UnidadOrganica')->latest()->paginate(5);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        //Validamos
+        $this->validate($request, [
+            'nombre'      => 'required|string|max:191',
+            'siglas'     => 'required|string|max:191',
+            'unidad_organica_id' => 'required'
+        ]);
+        //Insertamos la nueva Dependencia 
+        $dependencia = Dependencia::create([
+            'nombre' => $request->nombre,
+            'siglas' => $request->siglas,
+            'unidad_organica_id' => $request->unidad_organica_id
+        ]);
+
+        return $dependencia;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        return Dependencia::where('id','=',$id)->first();
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        //obtenemos Dependencia a Actualizar
+        $dependencia = dependencia::where('id','=',$id)->first();
+
+         //Validamos datos a Modificar
+        $this->validate($request, [
+            'nombre'      => 'required|string|max:191',
+            'siglas'     => 'required|string|max:191',
+            'unidad_organica_id' => 'required'
+        ]);
+      
+        //Actualizamos datos de la Dependencia Seleccionada
+        $dependencia->nombre = $request->nombre;
+        $dependencia->siglas = $request->siglas;
+        $dependencia->unidad_organica_id = $request->unidad_organica_id;
+        $dependencia->save();
+            
+        //Mensaje de Satisfactorio
+        return $dependencia;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $dependencia = Dependencia::where('id','=',$id)->first();
+        $dependencia->delete();
+
+        return $dependencia;
     }
 }

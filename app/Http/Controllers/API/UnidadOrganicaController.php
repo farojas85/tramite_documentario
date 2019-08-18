@@ -61,7 +61,7 @@ class UnidadOrganicaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //obtenemos Usuario a Actualizar
+        //obtenemos Unidad a Actualizar
         $unidadorganica = UnidadOrganica::where('id','=',$id)->first();
 
          //Validamos datos a Modificar
@@ -89,9 +89,13 @@ class UnidadOrganicaController extends Controller
     public function destroy($id)
     {
         $unidadorganica = UnidadOrganica::where('id','=',$id)->first();
-
         $unidadorganica->delete();
 
         return $unidadorganica;
+    }
+
+    public function lista() 
+    {
+        return UnidadOrganica::select('id','nombre','siglas')->get();
     }
 }

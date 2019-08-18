@@ -21,5 +21,8 @@ Route::apiResources(['role' => 'API\RoleController']);
 Route::apiResources(['user' => 'API\UserController']);
 Route::apiResources(['institucional' => 'API\InstitucionalController']);
 Route::apiResources(['unidadorganica' => 'API\UnidadOrganicaController']);
+Route::apiResources(['dependencia' => 'API\DependenciaController']);
+
 Route::get('rolelist','API\RoleController@lista')->name('role.list');
+Route::get('unidadorganicalist','API\UnidadOrganicaController@lista');
 Route::get('rolesearch/{busqueda}','API\UserController@search')->name('role.search');

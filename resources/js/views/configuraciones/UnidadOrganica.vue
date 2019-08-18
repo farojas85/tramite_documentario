@@ -61,7 +61,7 @@
                 <pagination :data="modelos" @pagination-change-page="getResults"></pagination>
             </div>
         </div>
-         <div class="modal fade" id="modal-table">
+        <div class="modal fade" id="modal-table">
             <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -100,8 +100,7 @@
                 </form>
                 </div>
                 <!-- /.modal-content -->
-            </div>
-        <!-- /.modal-dialog -->
+            </div><!-- /.modal-dialog -->
         </div>
     </div>
 </template>
