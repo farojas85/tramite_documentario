@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\UnidadOrganica;
 
 class UnidadOrganicaController extends Controller
 {
@@ -14,7 +15,7 @@ class UnidadOrganicaController extends Controller
      */
     public function index()
     {
-        //
+        return UnidadOrganica::latest()->paginate(5);
     }
 
     /**
@@ -25,7 +26,19 @@ class UnidadOrganicaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'nombre'      => 'required|string|max:191',
+            'siglas'     => 'required|string|max:191'
+        ]);
+
+
+        $unidadorganica = UnidadOrganica::create([
+            'nombre' => $request->nombre,
+            'siglas' => $request->siglas
+        ]);
+
+        return $unidadorganica;
+
     }
 
     /**
@@ -36,7 +49,7 @@ class UnidadOrganicaController extends Controller
      */
     public function show($id)
     {
-        //
+        return UnidadOrganica::where('id','=',$id)->first();
     }
 
     /**
@@ -48,7 +61,23 @@ class UnidadOrganicaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //obtenemos Usuario a Actualizar
+        $unidadorganica = UnidadOrganica::where('id','=',$id)->first();
+
+         //Validamos datos a Modificar
+        $this->validate($request, [
+            'nombre'      => 'required|string|max:191',
+            'siglas'     => 'required|string|max:191',
+        ]);
+      
+        //Actualizamos datos de la Unidad Orgánica Seleccionada
+        $unidadorganica->nombre = $request->nombre;
+        $unidadorganica->siglas = $request->siglas;
+        $unidadorganica->save();
+            
+        //Mensaje de Satisfactorio
+        return $unidadorganica;
+
     }
 
     /**
@@ -59,6 +88,10 @@ class UnidadOrganicaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $unidadorganica = UnidadOrganica::where('id','=',$id)->first();
+
+        $unidadorganica->delete();
+
+        return $unidadorganica;
     }
 }

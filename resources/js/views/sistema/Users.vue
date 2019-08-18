@@ -46,9 +46,6 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col-md-12">
-                                    <div class="table-responsive-top">
-                                        <div class="scroll-div1"></div>
-                                    </div>
                                     <div class="table-responsive">
                                         <table class="table table-sm table-striped table-bordered table-hover">
                                             <thead class="bg-dark">
@@ -167,7 +164,7 @@
 </template>
 
 <script>
-    import axios from 'axios'
+   // import axios from 'axios'
     
     export default {
         created() {

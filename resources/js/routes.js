@@ -4,6 +4,7 @@ import Users from './views/sistema/Users'
 import Role from './views/sistema/Role'
 import Personal from './views/sistema/Personal'
 import Permiso from './views/sistema/Permiso'
+import Institucional from './views/configuraciones/Institucional';
 
 //RUTAS
 let routes = [
@@ -11,7 +12,8 @@ let routes = [
     { path: '/role', name: 'role',component: Role},
     { path: '/users',name: 'user', component: Users},
     { path: '/personal',name: 'personal', component: Personal},
-    { path: '/permiso',name: 'permiso',component: Permiso}
+    { path: '/permiso',name: 'permiso',component: Permiso},
+    { path: '/institucional', name:'institucional', component: Institucional}
 ]
 
 export default  routes

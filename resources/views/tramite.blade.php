@@ -17,12 +17,8 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <div class="content">
-            <div class="container-fluid">
-                <router-view></router-view>
-                <vue-progress-bar></vue-progress-bar>
-            </div>
-        </div>
+      <router-view></router-view>
+      <vue-progress-bar></vue-progress-bar>
     </div>
     @include('layouts.partials.modals')
     @include('layouts.partials.footer')
