@@ -63,17 +63,17 @@
                 <pagination :data="modelos" @pagination-change-page="getResults"></pagination>
             </div>
         </div>
-        <div class="modal fade" id="modal-cargo-calificado">
+        <div class="modal fade" id="modal-cargo">
             <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-cargo-calificado-title">Nuevo Cargo</h4>
+                        <h4 class="modal-title" id="modal-cargo-title">Nuevo Cargo</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <form  @submit.prevent="validatesubmit">
-                        <div class="modal-body" id="modal-cargo-calificado-body">
+                        <div class="modal-body" id="modal-cargo-body">
                             <input type="hidden" name="id" v-model="form.id" id="id">
                             <div class="form-group">
                                 <input type="text" name="nombre_cargo" v-model="form.nombre_cargo" id="nombre_cargo"
@@ -187,8 +187,8 @@
                 this.crudmode = 'create'
                 this.listarCargoCalificados()
                 this.listarDependencia()
-                $('#modal-cargo-calificado-title').html('Nuevo Cargo')
-                $('#modal-cargo-calificado').modal('show')
+                $('#modal-cargo-title').html('Nuevo Cargo')
+                $('#modal-cargo').modal('show')
             },
             cargarDatos(id,title) {
                 axios.get('api/cargo/'+id)
@@ -200,8 +200,8 @@
                         this.form.siglas = model.siglas
                         this.form.dependencia_id = model.dependencia_id
                         this.form.cargo_calificado_id = model.cargo_calificado_id
-                        $('#modal-cargo-calificado-title').html(title)
-                        $('#modal-cargo-calificado').modal('show')
+                        $('#modal-cargo-title').html(title)
+                        $('#modal-cargo').modal('show')
                     }).catch(error => {
                         this.$Progress.fail()
                         swal.fire('Error', `Ocurrió un Error: ${error.response.status}`,'error')
@@ -223,7 +223,7 @@
                 this.$Progress.start()       
                 this.form.post('api/cargo')
                 .then((response) => {                    
-                    $('#modal-cargo-calificado').modal('hide')
+                    $('#modal-cargo').modal('hide')
                     toast.fire({type:'success',title:'Datos Registrados Satisfactoriamente'})
                     this.listar()
                     this.getResults()
@@ -243,7 +243,7 @@
                 this.$Progress.start()  
                 this.form.put('api/cargo/'+this.form.id)
                 .then((respuesta) => {
-                    $('#modal-cargo-calificado').modal('hide')
+                    $('#modal-cargo').modal('hide')
                     toast.fire({type:'success',title:'Datos Modificados Satisfactoriamente'})
                     this.listar()
                     this.getResults()

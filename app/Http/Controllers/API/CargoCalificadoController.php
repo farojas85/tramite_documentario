@@ -29,7 +29,7 @@ class CargoCalificadoController extends Controller
         ]);
         //Insertamos
         $cargocalificado = CargoCalificado::create([
-            'nombre_cargo' => $request->nombre_cargo,
+            'nombre' => $request->nombre,
             'abreviatura' => $request->abreviatura
         ]);
 
@@ -70,7 +70,7 @@ class CargoCalificadoController extends Controller
     public function destroy($id)
     {
         $cargocalificado = CargoCalificado::where('id','=',$id)->first();
-        $cargocalificado->detele();
+        $cargocalificado->delete();
 
         return   $cargocalificado;
     }
