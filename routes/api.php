@@ -22,7 +22,12 @@ Route::apiResources(['user' => 'API\UserController']);
 Route::apiResources(['institucional' => 'API\InstitucionalController']);
 Route::apiResources(['unidadorganica' => 'API\UnidadOrganicaController']);
 Route::apiResources(['dependencia' => 'API\DependenciaController']);
+Route::apiResources(['cargo' => 'API\CargoController']);
+Route::apiResources(['cargocalificado' => 'API\CargoCalificadoController']);
 
 Route::get('rolelist','API\RoleController@lista')->name('role.list');
 Route::get('unidadorganicalist','API\UnidadOrganicaController@lista');
+Route::get('dependencialist','API\DependenciaController@lista');
+Route::get('cargolist','API\CargoController@lista')->name('cargo.lista');
+Route::get('cargocalificadolist','API\CargoCalificadoController@lista')->name('cargocalificado.lista');
 Route::get('rolesearch/{busqueda}','API\UserController@search')->name('role.search');

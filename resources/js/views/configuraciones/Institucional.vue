@@ -38,7 +38,12 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " id="custom-content-below-messages-tab" 
-                                data-toggle="pill" href="" role="tab" 
+                                data-toggle="pill" href="" role="tab" @click="mostrarVista('cargo-calificado')"
+                                aria-controls="custom-content-below-messages" aria-selected="true">Cargo Clasificados</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " id="custom-content-below-messages-tab" 
+                                data-toggle="pill" href="" role="tab" @click="mostrarVista('cargo')"
                                 aria-controls="custom-content-below-messages" aria-selected="true">Cargos</a>
                             </li>
                             <li class="nav-item">
@@ -50,6 +55,8 @@
                         <div class="tab-content container-fluid" id="content-tabcontent">
                             <unidad-organica v-show="entidad=='unidadorganica'"></unidad-organica>
                             <dependencia v-show="entidad == 'dependencia'"></dependencia>
+                            <cargo v-show="entidad=='cargo'"></cargo>
+                            <cargo-calificado v-show="entidad=='cargo-calificado'"></cargo-calificado>
                         </div>
                     </div>
                 </div>

@@ -12,4 +12,9 @@ class Dependencia extends Model
     {
         return $this->belongsTo(UnidadOrganica::class);
     }
+
+    public function cargos()
+    {
+        return $this->hasMany(Cargo::class);
+    }
 }

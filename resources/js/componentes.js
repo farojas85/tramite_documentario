@@ -10,3 +10,5 @@ Vue.component('passport-personal-access-tokens',require('./components/passport/P
 
 Vue.component('unidad-organica', require('./views/configuraciones/UnidadOrganica.vue').default)
 Vue.component('dependencia', require('./views/configuraciones/Dependencia.vue').default)
+Vue.component('cargo', require('./views/configuraciones/Cargo.vue').default)
+Vue.component('cargo-calificado', require('./views/configuraciones/CargoCalificado.vue').default)

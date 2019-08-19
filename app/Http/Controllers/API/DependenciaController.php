@@ -10,7 +10,7 @@ class DependenciaController extends Controller
 {
     public function index()
     {
-        return Dependencia::with('UnidadOrganica')->latest()->paginate(5);
+        return Dependencia::with('UnidadOrganica:id,nombre')->latest()->paginate(5);
     }
 
     public function store(Request $request)
@@ -64,5 +64,10 @@ class DependenciaController extends Controller
         $dependencia->delete();
 
         return $dependencia;
+    }
+
+    public function lista()
+    {
+        return Dependencia::select('id','nombre')->get();
     }
 }
