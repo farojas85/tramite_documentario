@@ -3136,7 +3136,8 @@ __webpack_require__.r(__webpack_exports__);
         id: '',
         nombre: '',
         abreviatura: ''
-      })
+      }),
+      total: 0
     };
   },
   methods: {

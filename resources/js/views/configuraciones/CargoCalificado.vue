@@ -119,7 +119,8 @@
                     id:'',
                     nombre:'',
                     abreviatura:''
-                })
+                }),
+                total:0
             }
         },
         methods: {
