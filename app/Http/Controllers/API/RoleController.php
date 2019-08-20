@@ -74,6 +74,6 @@ class RoleController extends Controller
         return DB::table('role_user as ru')
                     ->join('roles as ro','ru.role_id','=','ro.id')
                     ->select('ro.id','ro.nombre','ro.descripcion')
-                    ->where('ru.user_id','=',auth('api')->user()->id)->get();
+                    ->where('ru.user_id','=',auth('api')->user()['id'])->get();
     }
 }
