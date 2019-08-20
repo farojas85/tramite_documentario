@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Role;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index()
     {
         //
@@ -66,5 +68,12 @@ class RoleController extends Controller
     public function lista()
     {
         return Role::select('id','nombre','slug','descripcion')->get();
+    }
+
+    public function rolebyuser() {
+        return DB::table('role_user as ru')
+                    ->join('roles as ro','ru.role_id','=','ro.id')
+                    ->select('ro.id','ro.nombre','ro.descripcion')
+                    ->where('ru.user_id','=',Auth::user()->id)->get();
     }
 }

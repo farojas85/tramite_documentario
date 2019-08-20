@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -92,5 +93,9 @@ class UserController extends Controller
 
     public function search($busqueda){
         return User::with('roles')->where('name','LIKE'.$cadena)->latest()->paginate(5);
+    }
+
+    public function perfil() {
+        return auth('api')->user();
     }
 }
