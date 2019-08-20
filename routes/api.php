@@ -31,3 +31,4 @@ Route::get('dependencialist','API\DependenciaController@lista');
 Route::get('cargolist','API\CargoController@lista')->name('cargo.lista');
 Route::get('cargocalificadolist','API\CargoCalificadoController@lista')->name('cargocalificado.lista');
 Route::get('rolesearch/{busqueda}','API\UserController@search')->name('role.search');
+Route::post('ubigeoProcesar','API\UbigeoController@procesar')->name('ubigeo.procesar');

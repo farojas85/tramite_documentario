@@ -16,6 +16,7 @@ window.Vue = require('vue')
 window.swal = Swal
 window.form  = Form
 
+
 //USOS
 Vue.use(VueRouter);
 Vue.use(VueAxios,Axios);

@@ -48,7 +48,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-content-below-settings-tab" 
-                                data-toggle="pill" href="" role="tab" 
+                                data-toggle="pill" href="" role="tab" @click="mostrarVista('ubigeo')"
                                 aria-controls="custom-content-below-settings" aria-selected="false">Ubigeo</a>
                             </li>
                         </ul>
@@ -57,6 +57,7 @@
                             <dependencia v-show="entidad == 'dependencia'"></dependencia>
                             <cargo v-show="entidad=='cargo'"></cargo>
                             <cargo-calificado v-show="entidad=='cargo-calificado'"></cargo-calificado>
+                            <ubigeo v-show="entidad=='ubigeo'"></ubigeo>
                         </div>
                     </div>
                 </div>

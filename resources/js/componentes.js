@@ -12,3 +12,4 @@ Vue.component('unidad-organica', require('./views/configuraciones/UnidadOrganica
 Vue.component('dependencia', require('./views/configuraciones/Dependencia.vue').default)
 Vue.component('cargo', require('./views/configuraciones/Cargo.vue').default)
 Vue.component('cargo-calificado', require('./views/configuraciones/CargoCalificado.vue').default)
+Vue.component('ubigeo', require('./views/configuraciones/Ubigeo.vue').default)

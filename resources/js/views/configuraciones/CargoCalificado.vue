@@ -114,7 +114,7 @@
             return {
                 crudmode:'',
                 buscar:'',
-                modelos:'',
+                modelos:{},
                 form: new form({
                     id:'',
                     nombre:'',
