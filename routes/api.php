@@ -24,6 +24,7 @@ Route::apiResources(['unidadorganica' => 'API\UnidadOrganicaController']);
 Route::apiResources(['dependencia' => 'API\DependenciaController']);
 Route::apiResources(['cargo' => 'API\CargoController']);
 Route::apiResources(['cargocalificado' => 'API\CargoCalificadoController']);
+Route::apiResources(['procedimiento' => 'API\ProcedimientoController']);
 
 Route::get('rolelist','API\RoleController@lista')->name('role.list');
 Route::get('unidadorganicalist','API\UnidadOrganicaController@lista');

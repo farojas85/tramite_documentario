@@ -4218,13 +4218,255 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {},
+  created: function created() {
+    this.listar();
+    this.getResults();
+  },
   data: function data() {
-    return {};
+    return {
+      crudmode: '',
+      buscar: '',
+      modelos: {},
+      total: 0,
+      form: new form({
+        id: '',
+        denominacion: ''
+      })
+    };
   },
   methods: {
-    nuevo: function nuevo() {}
+    listar: function listar() {
+      var _this = this;
+
+      axios.get('/api/procedimiento').then(function (_ref) {
+        var data = _ref.data;
+        return _this.modelos = data;
+      });
+    },
+    getResults: function getResults() {
+      var _this2 = this;
+
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get('/api/procedimiento?page=' + page).then(function (response) {
+        _this2.modelos = response.data;
+        _this2.total = _this2.modelos.total;
+      });
+    },
+    validatesubmit: function validatesubmit() {
+      switch (this.crudmode) {
+        case 'create':
+          this.agregar();
+          break;
+
+        case 'update':
+          this.actualizar();
+          break;
+      }
+    },
+    limpiar: function limpiar() {
+      this.form.clear();
+      this.form.reset();
+    },
+    nuevo: function nuevo() {
+      this.limpiar();
+      this.crudmode = 'create';
+      $('#modal-procedimiento-title').html('Nuevo Procediminto');
+      $('#modal-procedimiento').modal('show');
+    },
+    cargarDatos: function cargarDatos(id, title) {
+      var _this3 = this;
+
+      axios.get('api/procedimiento/' + id).then(function (response) {
+        var model = response.data;
+        _this3.form.id = model.id;
+        _this3.form.denominacion = model.denominacion;
+        $('#modal-procedimiento-title').html(title);
+        $('#modal-procedimiento').modal('show');
+      })["catch"](function (error) {
+        _this3.$Progress.fail();
+
+        swal.fire('Error', "Ocurri\xF3 un Error: ".concat(error.response.status), 'error');
+      });
+    },
+    mostrar: function mostrar(id) {
+      this.crudmode = 'show';
+      this.cargarDatos(id, 'Mostrar Procedimiento');
+    },
+    editar: function editar(id) {
+      this.crudmode = 'update';
+      this.cargarDatos(id, 'Editar Procedimiento');
+    },
+    agregar: function agregar() {
+      var _this4 = this;
+
+      this.$Progress.start();
+      this.form.post('api/procedimiento').then(function (response) {
+        $('#modal-procedimiento').modal('hide');
+        toast.fire({
+          type: 'success',
+          title: 'Datos Registrados Satisfactoriamente'
+        });
+
+        _this4.listar();
+
+        _this4.getResults();
+
+        _this4.$Progress.finish();
+      })["catch"](function (error) {
+        _this4.$Progress.fail();
+
+        if (error.response.status == 422) {
+          console.clear();
+        } else {
+          swal.fire('Error', "Ocurri\xF3 un Error: ".concat(error.response.status), 'error');
+        }
+      });
+    },
+    actualizar: function actualizar() {
+      var _this5 = this;
+
+      this.$Progress.start();
+      this.form.put('api/procedimiento/' + this.form.id).then(function (respuesta) {
+        $('#modal-procedimiento').modal('hide');
+        toast.fire({
+          type: 'success',
+          title: 'Datos Modificados Satisfactoriamente'
+        });
+
+        _this5.listar();
+
+        _this5.getResults();
+
+        _this5.$Progress.finish();
+      })["catch"](function (error) {
+        _this5.$Progress.fail();
+
+        if (error.response.status == 422) {
+          console.clear();
+        } else {
+          swal.fire('Error', "Ocurri\xF3 un Error: ".concat(error.response.status), 'error');
+        }
+      });
+    },
+    eliminar: function eliminar(id) {
+      var _this6 = this;
+
+      swal.fire({
+        title: "¿Está Seguro de Eliminar?",
+        text: 'No podrás revertirlo',
+        type: "question",
+        showCancelButton: true,
+        confirmButtonText: "Si",
+        confirmButtonColor: "#38c172",
+        cancelButtonText: "No",
+        cancelButtonColor: "#e3342f"
+      }).then(function (response) {
+        _this6.$Progress.start();
+
+        if (response.value) {
+          _this6.form["delete"]('api/procedimiento/' + id).then(function (respuesta) {
+            toast.fire({
+              type: 'success',
+              title: 'Registro Eliminado Satisfactoriamente'
+            });
+
+            _this6.listar();
+
+            _this6.getResults();
+
+            _this6.$Progress.finish();
+          })["catch"](function (error) {
+            _this6.$Progress.fail();
+
+            if (error.response.status == 422) {
+              console.clear();
+            } else {
+              swal.fire('Error', "Ocurri\xF3 un Error: ".concat(error.response.status), 'error');
+            }
+          });
+        }
+      })["catch"](function (error) {
+        _this6.$Progress.fail();
+
+        swal.showValidationError("Ocurri\xF3 un Error: ".concat(error.response.status));
+      });
+    }
   }
 });
 
@@ -78885,7 +79127,274 @@ var render = function() {
       ]),
       _vm._v(" "),
       _vm._m(0)
-    ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row mt-2" }, [
+      _c(
+        "div",
+        { staticClass: "col-md-12" },
+        [
+          _c("div", { staticClass: "table-responsive" }, [
+            _c(
+              "table",
+              {
+                staticClass:
+                  "table table-sm table-striped table-bordered table-hover"
+              },
+              [
+                _vm._m(1),
+                _vm._v(" "),
+                _c(
+                  "tr",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.total == 0,
+                        expression: "total== 0"
+                      }
+                    ]
+                  },
+                  [
+                    _c(
+                      "td",
+                      {
+                        staticClass: "text-center text-danger",
+                        attrs: { colspan: "3" }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            -- Datos No Registrados - Tabla Vacía --\n                        "
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.modelos.data, function(proc) {
+                  return _c(
+                    "tr",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.total > 0,
+                          expression: "total>0"
+                        }
+                      ],
+                      key: proc.id
+                    },
+                    [
+                      _c("td", { staticClass: "text-center" }, [
+                        _vm._v(_vm._s(proc.id))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(proc.denominacion))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success btn-circle",
+                            attrs: {
+                              type: "button",
+                              title: "Mostrar Procedimiento"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.mostrar(proc.id)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fas fa-eye" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-warning btn-circle",
+                            attrs: {
+                              type: "button",
+                              title: "Editar Procedimiento"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.editar(proc.id)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fas fa-edit" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger btn-circle",
+                            attrs: {
+                              type: "button",
+                              title: "Eliminar Procedimiento"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.eliminar(proc.id)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fas fa-trash" })]
+                        )
+                      ])
+                    ]
+                  )
+                })
+              ],
+              2
+            )
+          ]),
+          _vm._v(" "),
+          _c("pagination", {
+            attrs: { data: _vm.modelos },
+            on: { "pagination-change-page": _vm.getResults }
+          })
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "modal fade", attrs: { id: "modal-procedimiento" } },
+      [
+        _c("div", { staticClass: "modal-dialog " }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.validatesubmit($event)
+                  }
+                }
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass: "modal-body",
+                    attrs: { id: "modal-procedimiento-body" }
+                  },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.id,
+                          expression: "form.id"
+                        }
+                      ],
+                      attrs: { type: "hidden", name: "id", id: "id" },
+                      domProps: { value: _vm.form.id },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "id", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.denominacion,
+                              expression: "form.denominacion"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("denominacion")
+                          },
+                          attrs: {
+                            name: "denominacion",
+                            id: "denominacion",
+                            placeholder: "Ingrese Denominación",
+                            title: "Denominación",
+                            rows: "3"
+                          },
+                          domProps: { value: _vm.form.denominacion },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "denominacion",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "denominacion" }
+                        })
+                      ],
+                      1
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "modal-footer justify-content-between" },
+                  [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _vm.crudmode != "show"
+                      ? _c("span", [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-success",
+                              attrs: { type: "submit" }
+                            },
+                            [
+                              _vm.crudmode == "create"
+                                ? _c("span", [
+                                    _c("i", { staticClass: "fas fa-save" }),
+                                    _vm._v(" Guardar")
+                                  ])
+                                : _vm.crudmode == "update"
+                                ? _c("span", [
+                                    _c("i", { staticClass: "fas fa-sync-alt" }),
+                                    _vm._v(" Actualizar")
+                                  ])
+                                : _vm._e()
+                            ]
+                          )
+                        ])
+                      : _vm._e()
+                  ]
+                )
+              ]
+            )
+          ])
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -78914,6 +79423,64 @@ var staticRenderFns = [
         ])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "bg-dark" }, [
+      _c("tr", [
+        _c("th", { staticClass: "text-center" }, [_vm._v("Id")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("denominación")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Acciones")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h4",
+        {
+          staticClass: "modal-title",
+          attrs: { id: "modal-procedimiento-title" }
+        },
+        [_vm._v("Nuevo Procemiento")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-danger",
+        attrs: { type: "button", "data-dismiss": "modal" }
+      },
+      [
+        _c("i", { staticClass: "fas fa-times" }),
+        _vm._v(" Cerrar\n                        ")
+      ]
+    )
   }
 ]
 render._withStripped = true
