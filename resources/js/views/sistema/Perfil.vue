@@ -50,7 +50,7 @@
                         </div>
                     </div>
                     <div class="col-md-9">
-                        <div class="card">
+                        <div class="card card-success card-outline">
                             <div class="card-header p-2">
                                 <ul class="nav nav-pills">
                                     <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Datos Personales</a></li>
@@ -138,65 +138,63 @@
                                             </div>
                                             <div class="form-group row">
                                                 <button class="btn btn-success">
-                                                    <spam v-show="total_persona == 0">
+                                                    <span v-show="total_persona == 0" id="id_guardar">
                                                         <i  class="fas fa-save"></i> Guardar
-                                                    </spam>
-                                                    <spam v-show="total_persona > 0">
+                                                    </span>
+                                                    <span v-show="total_persona > 0">
                                                         <i  class="fas fa-sync-alt"></i> Actualizar
-                                                    </spam>
+                                                    </span>
                                                 </button>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="tab-pane" id="settings">
                                         <form class="form-horizontal" @submit.prevent="submitUser">
-                                            <div class="form-group">
-                                                <label for="inputName" class="col-sm-2 control-label">Name</label>
-
-                                                <div class="col-sm-10">
-                                                <input type="email" class="form-control" id="inputName" placeholder="Name">
+                                            <div class="form-group row">
+                                                <label for="name" class="col-form-label col-md-3">Nombre Usuario</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" id="name" 
+                                                            placeholder="Ingrese Nombre Usuario" name="name"
+                                                            v-model="form.name" title="Nombre de Usuario"
+                                                            :class="{ 'is-invalid': form.errors.has('name') }">    
+                                                    <has-error :form="form" field="name"></has-error>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-
-                                                <div class="col-sm-10">
-                                                <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                                            <div class="form-group row">
+                                                <label for="email_user" class="col-form-label col-md-3">Correo Elect.:</label>
+                                                <div class="col-md-8">
+                                                    <input type="email" class="form-control" id="email_user" 
+                                                            placeholder="Ingrese Correo Electrónico" email_user="email_user"
+                                                            v-model="form.email" title="Correo Electrónico"
+                                                            :class="{ 'is-invalid': form.errors.has('email_user') }">    
+                                                    <has-error :form="form" field="email_user"></has-error>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="inputName2" class="col-sm-2 control-label">Name</label>
-
-                                                <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="inputName2" placeholder="Name">
+                                            <div class="form-group row">
+                                                <label for="photo" class="col-md-3 col-form-labrl">Foto Usuario</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group">
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input btn btn-success" id="foto" name="foto" >
+                                                            <label class="custom-file-label" for="exampleInputFile">Seleccione Archivo...</label>
+                                                        </div>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text" id="">Subir</span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <input type="file" @change="updateProfile" name="photo" class="form-input"> -->
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
-
-                                                <div class="col-sm-10">
-                                                <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputSkills" class="col-sm-2 control-label">Skills</label>
-
-                                                <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="col-sm-offset-2 col-sm-10">
-                                                <div class="checkbox">
-                                                    <label>
-                                                    <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                                                    </label>
-                                                </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="col-sm-offset-2 col-sm-10">
-                                                <button type="submit" class="btn btn-danger">Submit</button>
+                                            <div class="form-group row">
+                                                <div class="col-md-10">
+                                                    <button type="submit" class="btn btn-success">
+                                                        <span v-show="total_user == 0" id="id_guardar">
+                                                        <i  class="fas fa-save"></i> Guardar
+                                                        </span>
+                                                        <span v-show="total_user > 0">
+                                                            <i  class="fas fa-sync-alt"></i> Actualizar
+                                                        </span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </form>
@@ -217,6 +215,7 @@
             this.obtenerPerfilUsuario()
             this.obtenerRolUsuario()
             this.obtenerTipoDocumentos()
+            this.listarRoles()
         },
         mounted() {
             
@@ -252,13 +251,13 @@
                     foto:'',
                     remember:false
                 }),
+                roles:{}
             }
         },
         methods: {
             obtenerPerfilUsuario() {
                axios.get('api/perfil').then( response => {
                    this.form.fill(response.data),
-                    console.log(response.data),
                    this.total_user = Object.keys(response.data).length         
                })                
             },
@@ -281,11 +280,20 @@
                     this.documento_identidads = data
                 ))
             },
+            listarRoles(){
+                axios.get('api/rolelist')
+                .then(({data}) => (
+                    this.roles = data
+                ))
+            },
             submitPersonal() {
 
             },
             submitUser() {
 
+            },
+            updateProfile() {
+                
             }
         }
     }
