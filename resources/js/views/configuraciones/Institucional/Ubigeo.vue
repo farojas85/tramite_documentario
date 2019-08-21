@@ -56,7 +56,7 @@
 </template>
 
 <script>
-    import UbigeoJson  from '../../../json/ubigeo-inei'
+    import UbigeoJson  from '../../../../json/ubigeo-inei'
 import { setTimeout } from 'timers';
     export default {
         created() {

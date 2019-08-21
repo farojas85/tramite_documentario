@@ -98,6 +98,12 @@
                                 <p>Institucional</p>
                             </a>
                         </router-link>
+                        <router-link to="/tupa" tag="li" class="nav-item">
+                            <a class="nav-link">
+                                <i class="fas fa-book nav-icon"></i>
+                                <p>Tupa</p>
+                            </a>
+                        </router-link>
                     </ul>
                 </li>            
                 <li class="nav-item has-treeview">
