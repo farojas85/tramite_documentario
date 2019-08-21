@@ -16,3 +16,11 @@ Vue.filter('capitalText',function(text){
 Vue.filter('miFecha', function(created){
     return moment(created).locale('es').format('D MMMM YYYY, HH:mm:ss ');
 });
+
+//formato de subsr
+Vue.filter('subStr',function(texto){
+    if(texto.length >=40) {
+        return texto.substring(0,40)+'...'
+    }
+    return texto
+})

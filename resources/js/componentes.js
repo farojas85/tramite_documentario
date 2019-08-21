@@ -15,3 +15,4 @@ Vue.component('cargo-calificado', require('./views/configuraciones/Institucional
 Vue.component('ubigeo', require('./views/configuraciones/Institucional/Ubigeo.vue').default)
 
 Vue.component('procedimiento', require('./views/configuraciones/tupa/Procedimiento.vue').default)
+Vue.component('ruta',require('./views/configuraciones/tupa/Ruta.vue').default)

@@ -49,6 +49,7 @@
                         </ul>
                         <div class="tab-content container-fluid" id="content-tabcontent">
                             <procedimiento v-show="entidad=='procedimiento'"></procedimiento>
+                            <ruta v-show="entidad=='ruta'"></ruta>
                         </div>
                     </div>
                 </div>
@@ -67,7 +68,7 @@
                 entidad:'procedimiento'
             }
         },
-        methods: {   
+        methods: {
             mostrarVista(vista) {
                 this.entidad=vista;
             },           
