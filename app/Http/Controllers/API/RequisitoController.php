@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Requisito;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +15,7 @@ class RequisitoController extends Controller
      */
     public function index()
     {
-        //
+        return Requisito::with('TipoDocumento')->latest()->paginate(5);
     }
 
     /**
@@ -25,7 +26,19 @@ class RequisitoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        ////Validamos
+        $this->validate($request, [
+            'descripcion'      => 'required|string|max:191',
+            'tipo_documento_id' => 'required'
+        ]);
+        //Insertamos
+        $requisito = Requisito::create([
+            'descripcion' => $request->descripcion,
+            'tipo_documento_id' => $request->tipo_documento_id
+        ]);
+
+        return $requisito;
+
     }
 
     /**
@@ -36,7 +49,7 @@ class RequisitoController extends Controller
      */
     public function show($id)
     {
-        //
+        return Requisito::with('TipoDocumento')->where('id','=',$id)->first();
     }
 
     /**
@@ -48,7 +61,22 @@ class RequisitoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //obtenemos Datos a Actualizar
+        $requisito = Requisito::where('id','=',$id)->first();
+
+        //Validamos datos a Modificar
+        $this->validate($request, [
+            'descripcion'      => 'required|string|max:191',
+            'tipo_documento_id' => 'required'
+        ]);
+      
+        //Actualizamos Datos
+        $requisito->descripcion = $request->descripcion;
+        $requisito->tipo_documento_id = $request->tipo_documento_id;
+        $requisito->save();
+            
+        //Mensaje de Satisfactorio
+        return $requisito;
     }
 
     /**
@@ -59,6 +87,10 @@ class RequisitoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //obtenemos Datos a Actualizar
+        $requisito = Requisito::where('id','=',$id)->first();
+        $requisito->delete();
+
+        return $requisito;
     }
 }

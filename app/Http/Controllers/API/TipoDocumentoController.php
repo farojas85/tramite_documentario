@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\TipoDocumento;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -60,5 +61,9 @@ class TipoDocumentoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function lista() {
+        return TipoDocumento::select('id','descripcion')->get();
     }
 }

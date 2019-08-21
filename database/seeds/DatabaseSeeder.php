@@ -14,7 +14,8 @@ class DatabaseSeeder extends Seeder
         $this->call(
             RolesTableSeeder::class,
             Cargo_calificadosTableSeeder::class,
-            Documento_IdentidadsTableSeeder::class
+            Documento_IdentidadsTableSeeder::class,
+            Tipo_documentosTableSeeder::class
         );
     }
 }

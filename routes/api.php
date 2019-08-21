@@ -26,6 +26,7 @@ Route::apiResources(['cargo' => 'API\CargoController']);
 Route::apiResources(['cargocalificado' => 'API\CargoCalificadoController']);
 Route::apiResources(['procedimiento' => 'API\ProcedimientoController']);
 Route::apiResources(['ruta' => 'API\RutaController']);
+Route::apiResources(['requisito' => 'API\RequisitoController']);
 
 Route::get('rolelist','API\RoleController@lista')->name('role.list');
 Route::get('unidadorganicalist','API\UnidadOrganicaController@lista');
@@ -38,5 +39,6 @@ Route::get('rolebyUser','API\RoleController@rolebyuser');
 Route::get('dataPersonalUser','API\UserControler@datosPersonales');
 Route::get('documentoIdentidadList','API\DocumentoIdentidadController@lista');
 Route::get('procedimientoLista','API\ProcedimientoController@lista')->name('procedimiento.lista');
+Route::get('tipoDocumentoLista','API\TipoDocumentoController@lista')->name('tipodocumento.lista');
 
 Route::post('ubigeoProcesar','API\UbigeoController@procesar')->name('ubigeo.procesar');

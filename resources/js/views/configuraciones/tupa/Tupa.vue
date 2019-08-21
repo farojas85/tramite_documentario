@@ -34,7 +34,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="dependencias-tab" 
                                     data-toggle="pill" href="" role="tab" @click="mostrarVista('ruta')"
-                                    aria-controls="dependencias" aria-selected="false">Rutas</a>
+                                    aria-controls="dependencias" aria-selected="false"> Procedimientos - Rutas</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " id="custom-content-below-messages-tab" 
@@ -50,6 +50,7 @@
                         <div class="tab-content container-fluid" id="content-tabcontent">
                             <procedimiento v-show="entidad=='procedimiento'"></procedimiento>
                             <ruta v-show="entidad=='ruta'"></ruta>
+                            <requisito v-show="entidad=='requisito'"></requisito>
                         </div>
                     </div>
                 </div>

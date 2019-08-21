@@ -17,8 +17,8 @@ class CargoController extends Controller
 
     public function store(Request $request)
     {
-         //Validamos
-         $this->validate($request, [
+        //Validamos
+        $this->validate($request, [
             'nombre_cargo'      => 'required|string|max:191',
             'cargo_calificado_id' => 'required',
             'dependencia_id' => 'required'
