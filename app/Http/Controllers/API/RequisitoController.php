@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Requisito;
+use App\Procedimiento;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+
 
 class RequisitoController extends Controller
 {
@@ -92,5 +95,20 @@ class RequisitoController extends Controller
         $requisito->delete();
 
         return $requisito;
+    }
+
+    public function lista() {
+        return Requisito::select('id','descripcion')->get();
+    }
+    
+    public function requiproc_paginate() {
+        return DB::table('requisito_procedimiento as rp')
+                    ->join('requisitos as re','rp.requisito_id','=','re.id')
+                    ->join('procedimientos as pr','rp.procedimiento_id','=','pr.id')
+                ->select(
+                    'rc.id','re.descripcion as requisito',
+                    'pr.descripcion as procedimiento',
+                    'rp.requisito_id','rp.procedimiento_id'
+                )->latest()->paginate(5);
     }
 }

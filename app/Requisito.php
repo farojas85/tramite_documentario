@@ -12,4 +12,9 @@ class Requisito extends Model
     {
         return $this->belongsTo(TipoDocumento::class);
     }
+
+    public function procedimientos()
+    {
+        return $this->belongsToMany(Procedimiento::class)->withTimestamps();
+    }
 }

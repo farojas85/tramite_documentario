@@ -17,3 +17,4 @@ Vue.component('ubigeo', require('./views/configuraciones/Institucional/Ubigeo.vu
 Vue.component('procedimiento', require('./views/configuraciones/tupa/Procedimiento.vue').default)
 Vue.component('ruta',require('./views/configuraciones/tupa/Ruta.vue').default)
 Vue.component('requisito',require('./views/configuraciones/tupa/Requisito.vue').default)
+Vue.component('requisito-procedimiento',require('./views/configuraciones/tupa/RequisitoProcedimiento.vue').default)

@@ -12,4 +12,9 @@ class Procedimiento extends Model
     {
         return $this->hasMany(Ruta::class);
     }
+
+    public function requisitos()
+    {
+        return $this->belongsToMany(Requisito::class)->withTimestamps();
+    }
 }

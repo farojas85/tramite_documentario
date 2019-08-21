@@ -51,6 +51,7 @@
                             <procedimiento v-show="entidad=='procedimiento'"></procedimiento>
                             <ruta v-show="entidad=='ruta'"></ruta>
                             <requisito v-show="entidad=='requisito'"></requisito>
+                            <requisito-procedimiento v-show="entidad=='requisito-procedimiento'"></requisito-procedimiento>
                         </div>
                     </div>
                 </div>
