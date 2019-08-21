@@ -33,5 +33,7 @@ Route::get('cargocalificadolist','API\CargoCalificadoController@lista')->name('c
 Route::get('rolesearch/{busqueda}','API\UserController@search')->name('role.search');
 Route::get('perfil','API\UserController@perfil');
 Route::get('rolebyUser','API\RoleController@rolebyuser');
+Route::get('dataPersonalUser','API\UserControler@datosPersonales');
+Route::get('documentoIdentidadList','API\DocumentoIdentidadController@lista');
 
 Route::post('ubigeoProcesar','API\UbigeoController@procesar')->name('ubigeo.procesar');

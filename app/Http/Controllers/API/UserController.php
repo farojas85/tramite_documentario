@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\User;
+use App\Persona;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -97,5 +98,10 @@ class UserController extends Controller
 
     public function perfil() {
         return auth('api')->user();
+    }
+
+    public function datosPersonales() {
+        return Persona::with('DocumentoIdentidad')
+                        ->where('user_id','=',auth('api')->user()['id'])->first();
     }
 }

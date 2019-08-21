@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\DocumentoIdentidad;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -60,5 +61,9 @@ class DocumentoIdentidadController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function lista() {
+        return DocumentoIdentidad::select('id','descripcion_corta','descripcion_larga')->get();
     }
 }

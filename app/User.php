@@ -27,4 +27,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class)->withTimestamps();
     }
+
+    public function empleado()
+    {
+        return $this->belongsTo(Empleado::class);
+    }
 }
