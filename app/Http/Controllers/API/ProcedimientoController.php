@@ -11,7 +11,7 @@ class ProcedimientoController extends Controller
 
     public function index()
     {
-        return Procedimiento::latest()->paginate(5);
+        return Procedimiento::paginate(5);
     }
 
     public function store(Request $request)
@@ -31,7 +31,7 @@ class ProcedimientoController extends Controller
 
     public function show($id)
     {
-        return Procedimiento::where('id','=',$id)->first();
+        return Procedimiento::with('requisitos')->where('id','=',$id)->first();
     }
 
     public function update(Request $request, $id)
@@ -62,5 +62,18 @@ class ProcedimientoController extends Controller
 
     public function lista(){
         return Procedimiento::select('id','denominacion')->get();
+    }
+
+    public function store_procedimiento_requisito(Request $request) {
+        //Validación
+        $this->validate($request, [
+            'procedimiento_id'  => 'required',
+            'requisito_id'      => 'required'
+        ]);
+        
+        $procedimiento = Procedimiento::findOrFail($request->procedimiento_id);
+
+        $procedimiento->requisitos()->attach($request->requisito_id);
+        return $procedimiento;
     }
 }

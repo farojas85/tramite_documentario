@@ -4856,12 +4856,130 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
-    this.listar();
-    this.getResults();
-    this.listarRequisitos();
     this.listarProcedimientos();
+    this.getResultsProcedimientos();
+    this.listarRequisitos();
   },
   data: function data() {
     return {
@@ -4870,12 +4988,18 @@ __webpack_require__.r(__webpack_exports__);
       modelos: {},
       requisitos: {},
       procedimientos: {},
-      total: 0,
+      procedimiento_seleccionado: -1,
+      total_procedimiento: 0,
+      tota_requisito_select: 0,
       form: new form({
         id: '',
-        requisito_id: '',
+        requisito_id: [],
         procedimiento_id: ''
-      })
+      }),
+      procedimiento_requisitos: {},
+      procedimiento_nuevos: {},
+      requisito_seleccionado: {},
+      requisitos_seleccionados: []
     };
   },
   methods: {
@@ -4887,32 +5011,95 @@ __webpack_require__.r(__webpack_exports__);
         return _this.requisitos = data;
       });
     },
-    listarProcedimientos: function listarProcedimientos() {
+    listarProdecimientosNuevo: function listarProdecimientosNuevo() {
       var _this2 = this;
 
       axios.get('/api/procedimientoLista').then(function (_ref2) {
         var data = _ref2.data;
-        return _this2.procedimientos = data;
+        return _this2.procedimiento_nuevos = data;
       });
     },
-    listar: function listar() {
+    listarProcedimientos: function listarProcedimientos() {
       var _this3 = this;
 
-      axios.get('api/requiprocLista').then(function (_ref3) {
+      axios.get('/api/procedimiento').then(function (_ref3) {
         var data = _ref3.data;
-        return _this3.modelos = data;
+        return _this3.procedimientos = data;
       });
     },
-    getResults: function getResults() {
+    getResultsProcedimientos: function getResultsProcedimientos() {
       var _this4 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get('api/requiprocLista?page=' + page).then(function (response) {
-        _this4.modelos = response.data;
-        _this4.total = _this4.modelos.total;
+      axios.get('api/procedimiento?page=' + page).then(function (response) {
+        _this4.procedimientos = response.data;
+        _this4.total_procedimiento = _this4.procedimientos.total;
       });
     },
-    nuevo: function nuevo() {}
+    limpiar: function limpiar() {
+      this.form.clear();
+      this.form.reset();
+    },
+    selecccionarProcedimiento: function selecccionarProcedimiento(id) {
+      var _this5 = this;
+
+      this.procedimiento_seleccionado = id;
+      axios.get('/api/procedimiento/' + id).then(function (_ref4) {
+        var data = _ref4.data;
+        return _this5.procedimiento_requisitos = data;
+      });
+    },
+    nuevo: function nuevo() {
+      this.limpiar();
+      this.listarProdecimientosNuevo();
+      this.requisitos_seleccionados = [];
+      this.crudmode = 'create';
+      $('#modal-proc-requisito-title').html('Nuevo Procediento-Requisito');
+      $('#modal-proc-requisito').modal('show');
+    },
+    anadirSeleccionado: function anadirSeleccionado() {
+      var _this6 = this;
+
+      if (!this.requisitos_seleccionados.find(function (r) {
+        return r.id === _this6.requisito_seleccionado.id;
+      })) {
+        this.requisitos_seleccionados.push(this.requisito_seleccionado);
+        this.form.requisito_id.push(this.requisito_seleccionado.id);
+      } else {
+        swal.fire('Requisito Ya está Añadido!', 'Seleccione Otro', 'error');
+      }
+    },
+    eliminarRequisitoSeleccionado: function eliminarRequisitoSeleccionado(ind, id) {
+      this.requisitos_seleccionados.splice(ind, 1);
+      this.form.requisito_id.splice(ind, 1);
+    },
+    guardarSeleccionados: function guardarSeleccionados() {
+      var _this7 = this;
+
+      this.form.post('api/guardarProcRequi').then(function (response) {
+        swal.fire('Requisitos Añadidos', 'al procedimiento Seleccionado', 'success').then(function (respuesta) {
+          _this7.$Progress.start();
+
+          if (respuesta.value) {
+            $('#modal-proc-requisito').modal('hide');
+
+            _this7.listarProcedimientos();
+
+            _this7.getResultsProcedimientos();
+
+            _this7.$Progress.finish();
+          }
+        });
+      })["catch"](function (error) {
+        _this7.$Progress.fail();
+
+        if (error.response.status == 422) {
+          console.clear();
+        } else {
+          swal.fire('Error', "Ocurri\xF3 un Error: ".concat(error.response.status), 'error');
+        }
+      });
+    }
   }
 });
 
@@ -80759,13 +80946,13 @@ var render = function() {
         _c(
           "button",
           {
-            staticClass: "btn btn-primary btn-sm",
+            staticClass: "btn btn-success btn-sm",
             attrs: { type: "button" },
             on: { click: _vm.nuevo }
           },
           [
             _c("i", { staticClass: "fas fa-plus" }),
-            _vm._v(" Nuevo Requisito Procedimiento \n            ")
+            _vm._v(" Nuevo Procedimiento-Requisito \n            ")
           ]
         )
       ]),
@@ -80774,139 +80961,526 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "row mt-2" }, [
-      _c(
-        "div",
-        { staticClass: "col-md-12" },
-        [
-          _c("div", { staticClass: "table-responsive" }, [
+      _c("div", { staticClass: "col-md-5" }, [
+        _c(
+          "div",
+          {
+            staticClass: "card card-primary",
+            staticStyle: { border: "1px #3490dc solid" }
+          },
+          [
+            _vm._m(1),
+            _vm._v(" "),
             _c(
-              "table",
-              {
-                staticClass:
-                  "table table-sm table-striped table-bordered table-hover"
-              },
+              "div",
+              { staticClass: "card-body" },
               [
-                _vm._m(1),
-                _vm._v(" "),
                 _c(
-                  "tr",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.total == 0,
-                        expression: "total== 0"
-                      }
-                    ]
-                  },
+                  "table",
+                  { staticClass: "table table-sm table-bordered table-hover" },
                   [
+                    _vm._m(2),
+                    _vm._v(" "),
                     _c(
-                      "td",
+                      "tr",
                       {
-                        staticClass: "text-center text-danger",
-                        attrs: { colspan: "4" }
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.total_procedimiento == 0,
+                            expression: "total_procedimiento== 0"
+                          }
+                        ]
                       },
                       [
-                        _vm._v(
-                          "\n                            -- Datos No Registrados - Tabla Vacía --\n                        "
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-center text-danger",
+                            attrs: { colspan: "3" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                -- Datos No Registrados - Tabla Vacía --\n                            "
+                            )
+                          ]
                         )
                       ]
-                    )
+                    ),
+                    _vm._v(" "),
+                    _vm._l(_vm.procedimientos.data, function(proc) {
+                      return _c(
+                        "tr",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.total_procedimiento > 0,
+                              expression: "total_procedimiento>0"
+                            }
+                          ],
+                          key: proc.id,
+                          staticClass: "mouse-pointer",
+                          on: {
+                            click: function($event) {
+                              return _vm.selecccionarProcedimiento(proc.id)
+                            }
+                          }
+                        },
+                        [
+                          _c("td", { staticClass: "text-center" }, [
+                            _vm._v(_vm._s(proc.id))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(proc.denominacion))]),
+                          _vm._v(" "),
+                          _vm._m(3, true)
+                        ]
+                      )
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c("pagination", {
+                  attrs: { data: _vm.procedimientos },
+                  on: { "pagination-change-page": _vm.getResultsProcedimientos }
+                })
+              ],
+              1
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-7" }, [
+        _c(
+          "div",
+          {
+            staticClass: "card card-danger",
+            staticStyle: { border: "1px #e3342f solid" }
+          },
+          [
+            _vm._m(4),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c(
+                "span",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.procedimiento_seleccionado == -1,
+                      expression: "procedimiento_seleccionado==-1"
+                    }
+                  ]
+                },
+                [
+                  _c("h5", { staticClass: "text-blue text-center" }, [
+                    _vm._v("--Seleccione un Procedimiento--")
+                  ]),
+                  _vm._v(" "),
+                  _c("h6", { staticClass: "text-success text-center" }, [
+                    _vm._v("-- Se Mostrará Los Requisitos del Procedimiento --")
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.procedimiento_seleccionado > 0,
+                      expression: "procedimiento_seleccionado>0"
+                    }
+                  ]
+                },
+                [
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("h6", { staticClass: "text-blue" }, [
+                      _c("b", [
+                        _vm._v(
+                          _vm._s(_vm.procedimiento_requisitos.denominacion)
+                        )
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm.procedimiento_requisitos.requisitos &&
+                  _vm.procedimiento_requisitos.requisitos.length >= 1
+                    ? _c(
+                        "span",
+                        [
+                          _vm._l(
+                            _vm.procedimiento_requisitos.requisitos,
+                            function(req) {
+                              return _c("div", { key: req.id }, [
+                                _c("div", { staticClass: "form-group row" }, [
+                                  _c("div", { staticClass: "form-check" }, [
+                                    _c("input", {
+                                      staticClass: "form-check-input",
+                                      attrs: {
+                                        type: "checkbox",
+                                        id: "requisito_id[]",
+                                        checked: ""
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "label",
+                                      { staticClass: "form-check-label" },
+                                      [_vm._v(_vm._s(req.descripcion))]
+                                    )
+                                  ])
+                                ])
+                              ])
+                            }
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group text-center" })
+                        ],
+                        2
+                      )
+                    : _c("span", [
+                        _c(
+                          "div",
+                          { staticClass: "form-group text-center text-orange" },
+                          [
+                            _vm._v(
+                              "\n                                -- Requisitos no Registrados --\n                            "
+                            )
+                          ]
+                        )
+                      ])
+                ]
+              )
+            ])
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "modal fade", attrs: { id: "modal-proc-requisito" } },
+      [
+        _c("div", { staticClass: "modal-dialog modal-lg " }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(5),
+            _vm._v(" "),
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.guardarSeleccionados($event)
+                  }
+                }
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass: "modal-body",
+                    attrs: { id: "modal-proc-requisito-body" }
+                  },
+                  [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c(
+                          "div",
+                          { staticClass: "form-group" },
+                          [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.form.procedimiento_id,
+                                    expression: "form.procedimiento_id"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.form.errors.has(
+                                    "procedimiento_id"
+                                  )
+                                },
+                                attrs: {
+                                  id: "procedimiento_id",
+                                  name: "procedimiento_id",
+                                  title: "Seleccione Procedimiento"
+                                },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.form,
+                                      "procedimiento_id",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("-Seleccione Procedimiento-")
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.procedimiento_nuevos, function(
+                                  proce
+                                ) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: proce.id,
+                                      domProps: { value: proce.id }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                            " +
+                                          _vm._s(proce.denominacion) +
+                                          "\n                                        "
+                                      )
+                                    ]
+                                  )
+                                })
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: {
+                                form: _vm.form,
+                                field: "procedimiento_id"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "input-group" },
+                          [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.requisito_seleccionado,
+                                    expression: "requisito_seleccionado"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: {
+                                  "is-invalid": _vm.form.errors.has(
+                                    "requisito_id"
+                                  )
+                                },
+                                attrs: {
+                                  id: "requisito_id",
+                                  name: "requisito_id",
+                                  title: "Seleccione Procedimiento"
+                                },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.requisito_seleccionado = $event.target
+                                      .multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  }
+                                }
+                              },
+                              [
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("-Seleccione requisito-")
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.requisitos, function(requ) {
+                                  return _c(
+                                    "option",
+                                    { key: requ.id, domProps: { value: requ } },
+                                    [
+                                      _vm._v(
+                                        "\n                                            " +
+                                          _vm._s(requ.descripcion) +
+                                          "\n                                        "
+                                      )
+                                    ]
+                                  )
+                                })
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "input-group-append" }, [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-info",
+                                  attrs: {
+                                    type: "button",
+                                    title: "Añadir Requisito"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.anadirSeleccionado()
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "fas fa-plus" })]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: { form: _vm.form, field: "requisito_id" }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c(
+                          "table",
+                          { staticClass: "table table-sm table-bordered" },
+                          [
+                            _vm._m(6),
+                            _vm._v(" "),
+                            _c(
+                              "tbody",
+                              [
+                                _vm.requisitos_seleccionados.length < 1
+                                  ? _c("tr", [
+                                      _c(
+                                        "td",
+                                        {
+                                          staticClass:
+                                            "text-center text-danger",
+                                          attrs: { colspan: "3" }
+                                        },
+                                        [
+                                          _vm._v(
+                                            " -- Requisitos No Seleccionados -- "
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm._l(_vm.requisitos_seleccionados, function(
+                                  rs,
+                                  index
+                                ) {
+                                  return _c("tr", { key: rs.id }, [
+                                    _c("td", [_vm._v(_vm._s(rs.id))]),
+                                    _vm._v(" "),
+                                    _c("td", [_vm._v(_vm._s(rs.descripcion))]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass: "btn btn-danger btn-sm",
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.eliminarRequisitoSeleccionado(
+                                                index,
+                                                rs.id
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("i", {
+                                            staticClass: "fas fa-trash"
+                                          })
+                                        ]
+                                      )
+                                    ])
+                                  ])
+                                })
+                              ],
+                              2
+                            )
+                          ]
+                        )
+                      ])
+                    ])
                   ]
                 ),
                 _vm._v(" "),
-                _vm._l(_vm.modelos.data, function(requ) {
-                  return _c(
-                    "tr",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: _vm.total > 0,
-                          expression: "total>0"
-                        }
-                      ],
-                      key: requ.id
-                    },
-                    [
-                      _c("td", { staticClass: "text-center" }, [
-                        _vm._v(_vm._s(requ.id))
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(requ.requisito))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(requ.procedimiento))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-success btn-circle",
-                            attrs: {
-                              type: "button",
-                              title: "Mostrar requisito"
+                _c(
+                  "div",
+                  { staticClass: "modal-footer justify-content-between" },
+                  [
+                    _vm._m(7),
+                    _vm._v(" "),
+                    _vm.crudmode != "show"
+                      ? _c("span", [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-success",
+                              attrs: { type: "submit" }
                             },
-                            on: {
-                              click: function($event) {
-                                return _vm.mostrar(requ.id)
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "fas fa-eye" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-warning btn-circle",
-                            attrs: {
-                              type: "button",
-                              title: "Editar Requisito"
-                            },
-                            on: {
-                              click: function($event) {
-                                return _vm.editar(requ.id)
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "fas fa-edit" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-danger btn-circle",
-                            attrs: {
-                              type: "button",
-                              title: "Eliminar Requisito"
-                            },
-                            on: {
-                              click: function($event) {
-                                return _vm.eliminar(requ.id)
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "fas fa-trash" })]
-                        )
-                      ])
-                    ]
-                  )
-                })
-              ],
-              2
+                            [
+                              _vm.crudmode == "create"
+                                ? _c("span", [
+                                    _c("i", { staticClass: "fas fa-save" }),
+                                    _vm._v(" Guardar")
+                                  ])
+                                : _vm.crudmode == "update"
+                                ? _c("span", [
+                                    _c("i", { staticClass: "fas fa-sync-alt" }),
+                                    _vm._v(" Actualizar")
+                                  ])
+                                : _vm._e()
+                            ]
+                          )
+                        ])
+                      : _vm._e()
+                  ]
+                )
+              ]
             )
-          ]),
-          _vm._v(" "),
-          _c("pagination", {
-            attrs: { data: _vm.modelos },
-            on: { "pagination-change-page": _vm.getResults }
-          })
-        ],
-        1
-      )
-    ])
+          ])
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -80940,17 +81514,95 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Procedimientos")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "bg-dark" }, [
       _c("tr", [
         _c("th", { staticClass: "text-center" }, [_vm._v("Id")]),
         _vm._v(" "),
         _c("th", [_vm._v("Procedimiento")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Requisito")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Acciones")])
+        _c("th")
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("i", { staticClass: "fas fa-eye text-red" })])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Requisitos")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h4",
+        {
+          staticClass: "modal-title",
+          attrs: { id: "modal-proc-requisito-title" }
+        },
+        [_vm._v("Nueva Ruta")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-dark" }, [
+      _c("tr", [
+        _c("th", [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Requisito")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Acción")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-danger",
+        attrs: { type: "button", "data-dismiss": "modal" }
+      },
+      [
+        _c("i", { staticClass: "fas fa-times" }),
+        _vm._v(" Cerrar\n                        ")
+      ]
+    )
   }
 ]
 render._withStripped = true

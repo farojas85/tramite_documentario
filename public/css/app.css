@@ -26620,3 +26620,12 @@ readers do not read off random characters that represent icons */
   border-color: #ffbb00;
 }
 
+.mouse-pointer {
+  cursor: pointer;
+  background-color: #FFF;
+}
+
+.mouse-pointer:hover {
+  background-color: #ffbb00;
+}
+

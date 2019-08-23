@@ -13,7 +13,7 @@ class CreateRequisitoProcedimientoTable extends Migration
      */
     public function up()
     {
-        Schema::create('requisito_procedimiento', function (Blueprint $table) {
+        Schema::create('procedimiento_requisito', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('requisito_id')->index();
             $table->unsignedBigInteger('procedimiento_id')->index();

@@ -52,3 +52,12 @@ $fa-font-path: "../webfonts";
     background-color: #ffbb00;
     border-color: #ffbb00
 }
+
+.mouse-pointer {
+    cursor: pointer;
+    background-color:#FFF;
+}
+
+.mouse-pointer:hover {
+    background-color: #ffbb00;
+}

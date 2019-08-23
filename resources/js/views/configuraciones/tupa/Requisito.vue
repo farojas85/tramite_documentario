@@ -219,7 +219,7 @@
                         swal.fire('Error', `Ocurrió un Error: ${error.response.status}`,'error')
                     }  
                 })
-            },
+            }, 
              eliminar(id) {
                 swal.fire({
                     title:"¿Está Seguro de Eliminar?",
