@@ -8,6 +8,7 @@ import Institucional from './views/configuraciones/Institucional/Institucional'
 import Dessarrollador from './views/sistema/Dessarrollador'
 import Perfil from './views/sistema/Perfil'
 import Tupa from './views/configuraciones/tupa/Tupa'
+import Solicitante from './views/tramite/Solicitante';
 
 //RUTAS
 let routes = [
@@ -19,7 +20,8 @@ let routes = [
     { path: '/personal',name: 'personal', component: Personal},
     { path: '/permiso',name: 'permiso',component: Permiso},
     { path: '/institucional', name:'institucional', component: Institucional},
-    { path: '/tupa', name: 'tupa', component: Tupa}
+    { path: '/tupa', name: 'tupa', component: Tupa},
+    { path: '/solicitante', name:'solicitante',component: Solicitante }
 ]
 
 export default  routes

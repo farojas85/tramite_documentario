@@ -287,7 +287,10 @@
                 ))
             },
             submitPersonal() {
-
+                this.form.post('/api/persona/')
+                .then(() => {
+                    toast.fire({type:'success',title:'Usuario Registrado Satisfactoriamente'})
+                })
             },
             submitUser() {
 

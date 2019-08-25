@@ -14,7 +14,7 @@
             html, body {
                 background-color: #fff;
                 color: #636b6f;
-                font-family: 'Nunito', sans-serif;
+                font-family: 'Impact', sans-serif;
                 font-weight: 200;
                 height: 100vh;
                 margin: 0;
@@ -68,30 +68,24 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ url('/home') }}" class="btn btn-primary">Home</a>
                     @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
+                        <a href="{{ route('login') }}"  class="btn btn-danger">Iniciar Sesión</a>
+                       <!-- @if (Route::has('register'))
+                            <a href="{{ route('register') }}"  class="btn btn-danger">Reg</a>
+                        @endif-->
                     @endauth
                 </div>
             @endif
-
             <div class="content">
-                <div class="title m-b-md">
-                   <img src="img/logo.png" width="80" > Pachitea
+                <div class="title" vali>
+                    Municipalidad Provincial de Pachitea
+                    <div><img src="img/logo.png" width="80" ></div>
+                    Sistema de Gestión de Tramite Documentario
                 </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div class="title">
+                    <font style="font-size:12pt">Buscar Expediente: <input type="text" placeholder="Ingrese Nro. Expediente"></font>
+                    <button>Buscar</button>
                 </div>
             </div>
         </div>

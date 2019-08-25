@@ -14,7 +14,7 @@ class PersonaController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -25,7 +25,23 @@ class PersonaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name'      => 'required|string|max:191',
+            'email'     => 'required|string|email|max:191|unique:users',
+            'password'  => 'required|string|min:8',
+            'role_id' => 'required'
+        ]);
+
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
+
+        $user->roles()->attach($request->role_id);
+
+        return $user;
     }
 
     /**

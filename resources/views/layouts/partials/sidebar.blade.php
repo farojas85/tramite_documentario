@@ -110,75 +110,21 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-copy text-teal"></i>
                         <p>
-                        Trámite
-                        <i class="fas fa-angle-left right"></i>
-                        <span class="badge badge-info right">6</span>
+                            Trámite
+                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                        <a href="pages/layout/top-nav.html" class="nav-link">
-                            <i class="fas fa-users nav-icon"></i>
-                            <p>Solicitantes</p>
-                        </a>
-                        </li>
+                        <router-link to="/solicitante" tag="li" class="nav-item">
+                            <a class="nav-link">
+                                <i class="fas fa-users nav-icon"></i>
+                                <p>Solicitantes</p>
+                            </a>
+                        </router-link>
                         <li class="nav-item">
                         <a href="pages/layout/boxed.html" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Boxed</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="pages/layout/fixed.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Fixed</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="pages/layout/fixed-topnav.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Fixed Navbar</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="pages/layout/fixed-footer.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Fixed Footer</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="pages/layout/collapsed-sidebar.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Collapsed Sidebar</p>
-                        </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-pie text-green"></i>
-                        <p>
-                        Movimiento
-                        <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                        <a href="pages/charts/chartjs.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Mantenimiento</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="pages/charts/flot.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Estado Movimiento</p>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                        <a href="pages/charts/inline.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Inline</p>
+                            <p>Movimiento</p>
                         </a>
                         </li>
                     </ul>
