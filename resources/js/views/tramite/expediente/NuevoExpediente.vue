@@ -14,7 +14,6 @@
         </ul>
         <form @submit.prevent="validatesubmit">
             <div class="tab-content" id="custom-content-below-tabContent">
-
                 <div class="tab-pane fade active show" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
                     <input type="hidden" name="id" v-model="form.id" id="id">
                     <div class="form-group row mt-2">
@@ -37,7 +36,7 @@
                                 @change="buscarpersona">
                             <has-error :form="form" field="numero_documento"></has-error>
                         </div>
-                         <div class="col-xl-3">
+                        <div class="col-xl-3">
                             <div class="custom-control custom-switch custom-switch-on-success">
                                 <input type="checkbox" class="custom-control-input" id="estado" 
                                     v-model="form.solicitante.estado">
@@ -93,7 +92,50 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
-                    Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam. 
+                    <div class="form-group row mt-2">
+                        <label class="col-form-label col-md-2 text-right">Movimiento</label>
+                         <div class="col-md-3">
+                            <select class="form-control" id="tipo_movimiento" name="tipo_movimiento"
+                                v-model="form.movimiento.tipo_movimiento_id" title="Seleccione Documento Identidad"
+                                placeholder="seleccione Tipo Documento Identidad"
+                                :class="{ 'is-invalid': form.errors.has('tipo_movimiento') }">
+                                <option value="">Tipo Movimiento-</option>
+                                <option v-for="mov in tipo_movimientos" :key="mov.id" :value="mov.id" :title="mov.descripcion_larga">
+                                    {{ mov.descripcion }}
+                                </option>   
+                            </select>
+                            <has-error :form="form" field="tipo_movimiento"></has-error>
+                        </div>
+                        <label class="col-form-label col-md-2 text-right">Tipo Documento</label>
+                        <div class="col-md-3">
+                            <select class="form-control" id="tipo_documento_id" name="tipo_documento_id"
+                                v-model="form.documento.tipo_documento_id" title="Seleccione Documento Identidad"
+                                placeholder="seleccione Tipo Documento Identidad"
+                                :class="{ 'is-invalid': form.errors.has('tipo_documento_id') }">
+                                <option value="">Tipo Documento-</option>
+                                <option v-for="tipo in tipo_documentos" :key="tipo.id" :value="tipo.id" :title="tipo.descripcion_larga">
+                                    {{ tipo.descripcion }}
+                                </option>   
+                            </select>
+                            <has-error :form="form" field="tipo_documento_id"></has-error>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-md-2 text-right">N&deg; Expediente</label>
+                        <div class="col-md-3">
+                            <input type="text" name="numero_expediente" v-model="form.expediente.numero_expediente" id="numero_expediente"
+                                placeholder="Número Expediente" title="Número Expediente"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('numero_expediente') }">
+                            <has-error :form="form" field="numero_expediente"></has-error>
+                        </div>
+                        <label class="col-form-label col-md-2 text-right">Cabecera</label>
+                        <div class="col-md-5">
+                            <input type="text" name="cabecera" v-model="form.expediente.cabecera" id="cabecera"
+                                placeholder="Cabecera Expediente" title="Cabecera Expediente"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('cabecera') }">
+                            <has-error :form="form" field="cabecera"></has-error>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
@@ -103,13 +145,17 @@
 <script>
     export default {
         created() {
-            this.obtenerTipoDocumentos()
+            this.listarTipoDocumentos()
+            this.listarDocumentoIdentidads()
+            this.listarTipoMovimientos()
             this.form.reset()
             this.form.clear()
         },
         data() {
             return {
                 documento_identidads:{},
+                tipo_documentos:{},
+                tipo_movimientos:{},
                 form: new form({
                     id:'',
                     persona_id:'',
@@ -126,12 +172,32 @@
                         id:'',
                         estado:1,
                         eliminado:0
+                    },
+                    documento:{
+                        id:'',
+                        tipo_documento_id:''
+                    },
+                    movimiento:{
+                        tipo_movimiento_id:''
+                    },
+                    expediente:{
+                        cabecera:'',
                     }
                 }),
             }
         },
         methods: {
-            obtenerTipoDocumentos() {
+            listarTipoDocumentos() {
+                axios.get('api/tipoDocumentoLista').then(({ data }) => {
+                    this.tipo_documentos= data
+                })
+            },
+            listarTipoMovimientos() {
+                axios.get('api/tipoMovimientoLista').then(({ data }) => {
+                    this.tipo_movimientos = data
+                })
+            },
+            listarDocumentoIdentidads() {
                 axios.get('api/documentoIdentidadList')
                 .then(({data})=>(
                     this.documento_identidads = data

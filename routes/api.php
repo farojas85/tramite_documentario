@@ -48,6 +48,7 @@ Route::get('requisitoLista','API\RequisitoController@lista')->name('requisito.li
 route::get('requiprocLista','API\RequisitoController@requiproc_paginate');
 route::get('buscardni','API\PersonaController@buscar_dni')->name('persona.buscardni');
 route::get('buscarruc','API\PersonaController@buscar_ruc')->name('persona.buscar.ruc');
+Route::get('tipoMovimientoLista','API\TipoMovimientoController@lista')->name('tipomovimiento.lista');
 
 Route::post('ubigeoProcesar','API\UbigeoController@procesar')->name('ubigeo.procesar');
 Route::post('guardarProcRequi','API\ProcedimientoController@store_procedimiento_requisito');
