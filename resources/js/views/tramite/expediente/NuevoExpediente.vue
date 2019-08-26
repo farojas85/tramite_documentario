@@ -102,7 +102,7 @@
                                 <option value="">Tipo Movimiento-</option>
                                 <option v-for="mov in tipo_movimientos" :key="mov.id" :value="mov.id" :title="mov.descripcion_larga">
                                     {{ mov.descripcion }}
-                                </option>   
+                                </option>  
                             </select>
                             <has-error :form="form" field="tipo_movimiento"></has-error>
                         </div>
