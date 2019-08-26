@@ -6461,6 +6461,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     this.obtenerTipoDocumentos();
@@ -6473,8 +6475,16 @@ __webpack_require__.r(__webpack_exports__);
       form: new form({
         id: '',
         persona_id: '',
-        persona: {},
-        estado: 0,
+        persona: {
+          documento_identidad_id: '',
+          numero_documento: '',
+          nombres: '',
+          apellidos: '',
+          razon_social: '',
+          correo: '',
+          direccion: ''
+        },
+        estado: 1,
         eliminado: 0
       }),
       modelos: {},
@@ -6511,6 +6521,17 @@ __webpack_require__.r(__webpack_exports__);
         return _this3.documento_identidads = data;
       });
     },
+    validatesubmit: function validatesubmit() {
+      switch (this.crudmode) {
+        case 'create':
+          this.agregar();
+          break;
+
+        case 'update':
+          this.actualizar();
+          break;
+      }
+    },
     limpiar: function limpiar() {
       this.form.clear();
       this.form.reset();
@@ -6521,7 +6542,35 @@ __webpack_require__.r(__webpack_exports__);
       this.crudmode = 'create';
       $('#modal-solicitante-title').html('Nuevo Solicitante');
       $('#modal-solicitante').modal('show');
-    }
+    },
+    agregar: function agregar() {
+      var _this4 = this;
+
+      this.$Progress.start();
+      this.form.post('api/solicitante').then(function (response) {
+        console.log(response.data);
+        $('#modal-solicitante').modal('hide');
+        toast.fire({
+          type: 'success',
+          title: 'Datos Registrados Satisfactoriamente'
+        });
+
+        _this4.listar();
+
+        _this4.getResults();
+
+        _this4.$Progress.finish();
+      })["catch"](function (error) {
+        _this4.$Progress.fail();
+
+        if (error.response.status == 422) {
+          console.clear();
+        } else {
+          swal.fire('Error', "Ocurri\xF3 un Error: ".concat(error.response.status), 'error');
+        }
+      });
+    },
+    actualizar: function actualizar() {}
   }
 });
 
@@ -84669,15 +84718,68 @@ var render = function() {
                                       ])
                                     : _c("td", [
                                         _vm._v(
-                                          _vm._s(sol.persona.apellidos) +
+                                          _vm._s(sol.apellidos) +
                                             " " +
-                                            _vm._s(sol.persona.nombres)
+                                            _vm._s(sol.nombres)
                                         )
                                       ]),
                                   _vm._v(" "),
-                                  _c("td"),
+                                  _c("td", [
+                                    _vm._v(
+                                      _vm._s(
+                                        sol.documento_identidad
+                                          .descripcion_corta
+                                      )
+                                    )
+                                  ]),
                                   _vm._v(" "),
-                                  _c("td"),
+                                  _c("td", [
+                                    _vm._v(_vm._s(sol.numero_documento))
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "show",
+                                          rawName: "v-show",
+                                          value: sol.solicitante.estado == 1,
+                                          expression:
+                                            "sol.solicitante.estado == 1"
+                                        }
+                                      ]
+                                    },
+                                    [
+                                      _c(
+                                        "span",
+                                        { staticClass: "badge bg-success" },
+                                        [_vm._v("Activo")]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "show",
+                                          rawName: "v-show",
+                                          value: sol.solicitante.estado == 0,
+                                          expression:
+                                            "sol.solicitante.estado == 0"
+                                        }
+                                      ]
+                                    },
+                                    [
+                                      _c(
+                                        "span",
+                                        { staticClass: "badge bg-dark" },
+                                        [_vm._v("Inactivo")]
+                                      )
+                                    ]
+                                  ),
                                   _vm._v(" "),
                                   _c("td", [
                                     _c(
@@ -84837,7 +84939,7 @@ var render = function() {
                               attrs: {
                                 id: "documento_identidad_id",
                                 name: "documento_identidad_id",
-                                title: "Seleccione Procedimiento",
+                                title: "Seleccione Documento Identidad",
                                 placeholder:
                                   "seleccione Tipo Documento Identidad"
                               },
@@ -84907,32 +85009,34 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.form.documento_numero,
-                                expression: "form.documento_numero"
+                                value: _vm.form.persona.numero_documento,
+                                expression: "form.persona.numero_documento"
                               }
                             ],
                             staticClass: "form-control",
                             class: {
                               "is-invalid": _vm.form.errors.has(
-                                "documento_numero"
+                                "numero_documento"
                               )
                             },
                             attrs: {
                               type: "text",
-                              name: "documento_numero",
-                              id: "documento_numero",
+                              name: "numero_documento",
+                              id: "numero_documento",
                               placeholder: "Número Documento de Identidad",
                               title: "Número de Documento de Identidad"
                             },
-                            domProps: { value: _vm.form.documento_numero },
+                            domProps: {
+                              value: _vm.form.persona.numero_documento
+                            },
                             on: {
                               input: function($event) {
                                 if ($event.target.composing) {
                                   return
                                 }
                                 _vm.$set(
-                                  _vm.form,
-                                  "documento_numero",
+                                  _vm.form.persona,
+                                  "numero_documento",
                                   $event.target.value
                                 )
                               }
@@ -84940,7 +85044,7 @@ var render = function() {
                           }),
                           _vm._v(" "),
                           _c("has-error", {
-                            attrs: { form: _vm.form, field: "documento_numero" }
+                            attrs: { form: _vm.form, field: "numero_documento" }
                           })
                         ],
                         1
@@ -85288,20 +85392,20 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.form.estado,
-                                expression: "form.estado"
+                                value: _vm.form.eliminado,
+                                expression: "form.eliminado"
                               }
                             ],
                             staticClass: "form-check-input",
                             attrs: { type: "checkbox", id: "eliminado" },
                             domProps: {
-                              checked: Array.isArray(_vm.form.estado)
-                                ? _vm._i(_vm.form.estado, null) > -1
-                                : _vm.form.estado
+                              checked: Array.isArray(_vm.form.eliminado)
+                                ? _vm._i(_vm.form.eliminado, null) > -1
+                                : _vm.form.eliminado
                             },
                             on: {
                               change: function($event) {
-                                var $$a = _vm.form.estado,
+                                var $$a = _vm.form.eliminado,
                                   $$el = $event.target,
                                   $$c = $$el.checked ? true : false
                                 if (Array.isArray($$a)) {
@@ -85311,21 +85415,21 @@ var render = function() {
                                     $$i < 0 &&
                                       _vm.$set(
                                         _vm.form,
-                                        "estado",
+                                        "eliminado",
                                         $$a.concat([$$v])
                                       )
                                   } else {
                                     $$i > -1 &&
                                       _vm.$set(
                                         _vm.form,
-                                        "estado",
+                                        "eliminado",
                                         $$a
                                           .slice(0, $$i)
                                           .concat($$a.slice($$i + 1))
                                       )
                                   }
                                 } else {
-                                  _vm.$set(_vm.form, "estado", $$c)
+                                  _vm.$set(_vm.form, "eliminado", $$c)
                                 }
                               }
                             }

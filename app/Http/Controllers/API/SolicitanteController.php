@@ -16,7 +16,7 @@ class SolicitanteController extends Controller
      */
     public function index()
     {
-        return Solicitante::with('persona')->latest()->paginate(5);
+        return Persona::with('solicitante')->with('DocumentoIdentidad')->latest()->paginate(5);
     }
 
     /**
@@ -27,23 +27,23 @@ class SolicitanteController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        //return $request->persona->nombres;
+        /*$this->validate($request, [
             'documento_identidad_id'      => 'required',
-            'numero_documento'     => 'required|string|max:20',
-            'persona_id'  => 'required|unique:personas'
-        ]);
+            'numero_documento'     => 'required|string|max:20'
+        ]);*/
 
         $persona = Persona::create([
-            'nombres' => $request->nombres,
-            'apellidos' => $request->nombres,
-            'razon_social' => $request->razon_social,
-            'documento_identidad_id' => $request->documento_identidad_id,
-            'numero_documento' => $request->numero_documento,
-            'correo' => $request->correo,
-            'direccion' => $request->direccion
+            'nombres' => $request->persona['nombres'],
+            'apellidos' => $request->persona['apellidos'],
+            'razon_social' => $request->persona['razon_social'],
+            'documento_identidad_id' => $request->persona['documento_identidad_id'],
+            'numero_documento' => $request->persona['numero_documento'],
+            'correo' => $request->persona['correo'],
+            'direccion' => $request->persona['direccion']
         ]);
 
-        $persona_id = $persona->id();
+        $persona_id = $persona->id;
 
         $solicitante = Solicitante::create([
             'persona_id' => $persona_id

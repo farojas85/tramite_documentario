@@ -67,9 +67,11 @@
                                                 <tr v-show="total>0" v-for="sol in modelos.data" :key="sol.id">
                                                     <td class="text-center">{{ sol.id }}</td>
                                                     <td v-if="sol.documento_identidad_id == 3">{{ sol.persona.razon_social }}</td>
-                                                    <td v-else>{{  sol.persona.apellidos}} {{ sol.persona.nombres }}</td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td v-else>{{  sol.apellidos}} {{ sol.nombres }}</td>
+                                                    <td>{{ sol.documento_identidad.descripcion_corta }}</td>
+                                                    <td>{{ sol.numero_documento }}</td>
+                                                    <td v-show="sol.solicitante.estado == 1"><span class="badge bg-success">Activo</span></td>
+                                                    <td v-show="sol.solicitante.estado == 0"><span class="badge bg-dark">Inactivo</span></td>
                                                     <td>
                                                         <button type="button" class="btn btn-success btn-circle"
                                                             title="Mostrar Solicitante" @click="mostrar(sol.id)">
@@ -113,7 +115,7 @@
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <select class="form-control" id="documento_identidad_id" name="documento_identidad_id"
-                                        v-model="form.persona.documento_identidad_id" title="Seleccione Procedimiento"
+                                        v-model="form.persona.documento_identidad_id" title="Seleccione Documento Identidad"
                                         placeholder="seleccione Tipo Documento Identidad"
                                         :class="{ 'is-invalid': form.errors.has('documento_identidad_id') }">
                                         <option value="">-Seleccione Tipo Documento-</option>
@@ -124,10 +126,10 @@
                                     <has-error :form="form" field="documento_identidad_id"></has-error>
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="text" name="documento_numero" v-model="form.documento_numero" id="documento_numero"
+                                    <input type="text" name="numero_documento" v-model="form.persona.numero_documento" id="numero_documento"
                                         placeholder="Número Documento de Identidad" title="Número de Documento de Identidad"
-                                        class="form-control" :class="{ 'is-invalid': form.errors.has('documento_numero') }">
-                                    <has-error :form="form" field="documento_numero"></has-error>
+                                        class="form-control" :class="{ 'is-invalid': form.errors.has('numero_documento') }">
+                                    <has-error :form="form" field="numero_documento"></has-error>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -176,7 +178,7 @@
                                 </div>
                                 <div class="col-md-6">
                                      <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="eliminado" v-model="form.estado">
+                                        <input type="checkbox" class="form-check-input" id="eliminado" v-model="form.eliminado">
                                         <label class="form-check-label" for="eliminado">Eliminado</label>
                                     </div>
                                 </div>
@@ -213,8 +215,16 @@
                 form: new form({
                     id:'',
                     persona_id:'',
-                    persona:{},
-                    estado:0,
+                    persona:{
+                        documento_identidad_id:'',
+                        numero_documento:'',
+                        nombres:'',
+                        apellidos:'',
+                        razon_social:'',
+                        correo:'',
+                        direccion:''
+                    },
+                    estado:1,
                     eliminado:0,
                 }),
                 modelos:{},
@@ -243,6 +253,12 @@
                     this.documento_identidads = data
                 ))
             },
+            validatesubmit() {
+                switch(this.crudmode) {
+                    case 'create':this.agregar();break;
+                    case 'update':this.actualizar();break;
+                }
+            },
             limpiar() {
                 this.form.clear()
                 this.form.reset()
@@ -254,6 +270,31 @@
                 $('#modal-solicitante-title').html('Nuevo Solicitante')
                 $('#modal-solicitante').modal('show')
             },
+            agregar() {
+                this.$Progress.start()       
+                this.form.post('api/solicitante')
+                .then((response) => {         
+                    console.log(response.data)           
+                    $('#modal-solicitante').modal('hide')
+                    toast.fire({type:'success',title:'Datos Registrados Satisfactoriamente'})
+                    this.listar()
+                    this.getResults()
+                    this.$Progress.finish()
+                })
+                .catch(error => {
+                    this.$Progress.fail()
+                    if(error.response.status == 422) {
+                        console.clear() 
+                    }
+                    else {
+                        swal.fire('Error', `Ocurrió un Error: ${error.response.status}`,'error')
+                    }                    
+                })
+            },
+            actualizar() {
+
+            }
+            
         
         }
     }

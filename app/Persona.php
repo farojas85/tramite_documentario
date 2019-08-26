@@ -16,6 +16,6 @@ class Persona extends Model
 
     public function solicitante()
     {
-        return $this->belongsTo(Solicitante::class);
+        return $this->hasOne(Solicitante::class);
     }
 }
