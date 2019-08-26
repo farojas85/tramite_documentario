@@ -1511,7 +1511,7 @@ module.exports = function spread(callback) {
 
 
 var bind = __webpack_require__(/*! ./helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
-var isBuffer = __webpack_require__(/*! is-buffer */ "./node_modules/axios/node_modules/is-buffer/index.js");
+var isBuffer = __webpack_require__(/*! is-buffer */ "./node_modules/is-buffer/index.js");
 
 /*global toString:true*/
 
@@ -1843,61 +1843,6 @@ module.exports = {
   trim: trim
 };
 
-
-/***/ }),
-
-/***/ "./node_modules/axios/node_modules/is-buffer/index.js":
-/*!************************************************************!*\
-  !*** ./node_modules/axios/node_modules/is-buffer/index.js ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-
-module.exports = function isBuffer (obj) {
-  return obj != null && obj.constructor != null &&
-    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
-  }
-});
 
 /***/ }),
 
@@ -6843,19 +6788,97 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//import datetime from 'vuejs-datetimepicker'
 /* harmony default export */ __webpack_exports__["default"] = ({
+  // components:{ datetime },
   created: function created() {
     this.listarTipoDocumentos();
     this.listarDocumentoIdentidads();
     this.listarTipoMovimientos();
+    this.listarProcedimientos();
     this.form.reset();
     this.form.clear();
   },
   data: function data() {
     return {
+      datenow: new Date(),
       documento_identidads: {},
       tipo_documentos: {},
       tipo_movimientos: {},
+      procedimientos: {},
       form: new form({
         id: '',
         persona_id: '',
@@ -6881,7 +6904,10 @@ __webpack_require__.r(__webpack_exports__);
           tipo_movimiento_id: ''
         },
         expediente: {
-          cabecera: ''
+          cabecera: '',
+          fecha: '',
+          hora: '',
+          procedimiento_id: ''
         }
       })
     };
@@ -6903,16 +6929,24 @@ __webpack_require__.r(__webpack_exports__);
         _this2.tipo_movimientos = data;
       });
     },
-    listarDocumentoIdentidads: function listarDocumentoIdentidads() {
+    listarProcedimientos: function listarProcedimientos() {
       var _this3 = this;
 
-      axios.get('api/documentoIdentidadList').then(function (_ref3) {
+      axios.get('api/procedimientoLista').then(function (_ref3) {
         var data = _ref3.data;
-        return _this3.documento_identidads = data;
+        _this3.procedimientos = data;
+      });
+    },
+    listarDocumentoIdentidads: function listarDocumentoIdentidads() {
+      var _this4 = this;
+
+      axios.get('api/documentoIdentidadList').then(function (_ref4) {
+        var data = _ref4.data;
+        return _this4.documento_identidads = data;
       });
     },
     buscarpersona: function buscarpersona() {
-      var _this4 = this;
+      var _this5 = this;
 
       if (this.form.persona.numero_documento.length > 0) {
         if (this.form.persona.documento_identidad_id == 1) {
@@ -6925,8 +6959,8 @@ __webpack_require__.r(__webpack_exports__);
               swal.fire('DNI No Encontrado', 'Nro. de DNI no es Válido y/o No Existe', 'error');
             } else {
               var persona = response.data;
-              _this4.form.persona.nombres = persona.nombres;
-              _this4.form.persona.apellidos = persona.apellidoPaterno + ' ' + persona.apellidoMaterno;
+              _this5.form.persona.nombres = persona.nombres;
+              _this5.form.persona.apellidos = persona.apellidoPaterno + ' ' + persona.apellidoMaterno;
             }
           });
         } else if (this.form.persona.documento_identidad_id == 3) {
@@ -6936,7 +6970,7 @@ __webpack_require__.r(__webpack_exports__);
             }
           }).then(function (response) {
             var persona = response.data;
-            _this4.form.persona.razon_social = persona.razonSocial;
+            _this5.form.persona.razon_social = persona.razonSocial;
           });
         }
       }
@@ -11530,6 +11564,38 @@ function toComment(sourceMap) {
 	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
 
 	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/is-buffer/index.js":
+/*!*****************************************!*\
+  !*** ./node_modules/is-buffer/index.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+// The _isBuffer check is for Safari 5-7 support, because it's missing
+// Object.prototype.constructor. Remove this eventually
+module.exports = function (obj) {
+  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
+}
+
+function isBuffer (obj) {
+  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+// For Node v0.10 support. Remove this eventually.
+function isSlowBuffer (obj) {
+  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
 
@@ -76993,53 +77059,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof="fun
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e&":
-/*!*******************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e& ***!
-  \*******************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Example Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
-              )
-            ])
-          ])
-        ])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/passport/AuthorizedClients.vue?vue&type=template&id=397d14ca&scoped=true&":
 /*!*****************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/passport/AuthorizedClients.vue?vue&type=template&id=397d14ca&scoped=true& ***!
@@ -86873,7 +86892,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "col-md-3" },
+                    { staticClass: "col-md-4" },
                     [
                       _c(
                         "select",
@@ -86952,12 +86971,276 @@ var render = function() {
                   _c(
                     "label",
                     { staticClass: "col-form-label col-md-2 text-right" },
+                    [_vm._v("Fecha / Hora:")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-4" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-7" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.expediente.fecha,
+                              expression: "form.expediente.fecha"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "date" },
+                          domProps: { value: _vm.form.expediente.fecha },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form.expediente,
+                                "fecha",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-5" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.expediente.hora,
+                              expression: "form.expediente.hora"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "time" },
+                          domProps: { value: _vm.form.expediente.hora },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form.expediente,
+                                "hora",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c(
+                    "label",
+                    { staticClass: "col-form-label col-md-2 text-right" },
+                    [_vm._v("Procedimiento")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-md-10" },
+                    [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.expediente.procedimiento_id,
+                              expression: "form.expediente.procedimiento_id"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has(
+                              "procedimiento_id"
+                            )
+                          },
+                          attrs: {
+                            id: "procedimiento_id",
+                            name: "procedimiento_id",
+                            title: "Seleccione Procedimiento",
+                            placeholder: "seleccione Procedimiento"
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form.expediente,
+                                "procedimiento_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("-Seleccione Procedimiento-")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.procedimientos, function(tipo) {
+                            return _c(
+                              "option",
+                              {
+                                key: tipo.id,
+                                attrs: { title: tipo.descripcion_larga },
+                                domProps: { value: tipo.id }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(tipo.denominacion) +
+                                    "\n                            "
+                                )
+                              ]
+                            )
+                          })
+                        ],
+                        2
+                      ),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "procedimiento_id" }
+                      })
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c(
+                    "label",
+                    { staticClass: "col-form-label col-md-2 text-right" },
+                    [_vm._v("Nro. Expediente")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-md-4" },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.expediente.numero_expediente,
+                            expression: "form.expediente.numero_expediente"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: {
+                          "is-invalid": _vm.form.errors.has("numero_expediente")
+                        },
+                        attrs: {
+                          type: "text",
+                          name: "numero_expediente",
+                          id: "numero_expediente",
+                          placeholder: "Número Expediente",
+                          title: "Número Expediente"
+                        },
+                        domProps: {
+                          value: _vm.form.expediente.numero_expediente
+                        },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form.expediente,
+                              "numero_expediente",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "numero_expediente" }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    { staticClass: "col-form-label col-md-2 text-right" },
+                    [_vm._v("Cab. Expediente")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-md-4" },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.expediente.cabecera,
+                            expression: "form.expediente.cabecera"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: {
+                          "is-invalid": _vm.form.errors.has("cabecera")
+                        },
+                        attrs: {
+                          type: "text",
+                          name: "cabecera",
+                          id: "cabecera",
+                          placeholder: "Cabecera Expediente",
+                          title: "Cabecera Expediente"
+                        },
+                        domProps: { value: _vm.form.expediente.cabecera },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form.expediente,
+                              "cabecera",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "cabecera" }
+                      })
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c(
+                    "label",
+                    { staticClass: "col-form-label col-md-2 text-right" },
                     [_vm._v("Tipo Documento")]
                   ),
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "col-md-3" },
+                    { staticClass: "col-md-4" },
                     [
                       _c(
                         "select",
@@ -87033,42 +87316,40 @@ var render = function() {
                       })
                     ],
                     1
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group row" }, [
+                  ),
+                  _vm._v(" "),
                   _c(
                     "label",
                     { staticClass: "col-form-label col-md-2 text-right" },
-                    [_vm._v("N° Expediente")]
+                    [_vm._v("Nro. Documento")]
                   ),
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "col-md-3" },
+                    { staticClass: "col-md-4" },
                     [
                       _c("input", {
                         directives: [
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.form.expediente.numero_expediente,
-                            expression: "form.expediente.numero_expediente"
+                            value: _vm.form.documento.numero_documento,
+                            expression: "form.documento.numero_documento"
                           }
                         ],
                         staticClass: "form-control",
                         class: {
-                          "is-invalid": _vm.form.errors.has("numero_expediente")
+                          "is-invalid": _vm.form.errors.has("numero_documento")
                         },
                         attrs: {
                           type: "text",
-                          name: "numero_expediente",
-                          id: "numero_expediente",
-                          placeholder: "Número Expediente",
-                          title: "Número Expediente"
+                          name: "numero_documento",
+                          id: "numero_documento",
+                          placeholder: "Número de Documento",
+                          title: "Ingrese Número de Documento"
                         },
                         domProps: {
-                          value: _vm.form.expediente.numero_expediente
+                          value: _vm.form.documento.numero_documento
                         },
                         on: {
                           input: function($event) {
@@ -87076,8 +87357,8 @@ var render = function() {
                               return
                             }
                             _vm.$set(
-                              _vm.form.expediente,
-                              "numero_expediente",
+                              _vm.form.documento,
+                              "numero_documento",
                               $event.target.value
                             )
                           }
@@ -87085,50 +87366,54 @@ var render = function() {
                       }),
                       _vm._v(" "),
                       _c("has-error", {
-                        attrs: { form: _vm.form, field: "numero_expediente" }
+                        attrs: { form: _vm.form, field: "numero_documento" }
                       })
                     ],
                     1
-                  ),
-                  _vm._v(" "),
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
                   _c(
                     "label",
                     { staticClass: "col-form-label col-md-2 text-right" },
-                    [_vm._v("Cabecera")]
+                    [_vm._v("Cab. Documento")]
                   ),
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "col-md-5" },
+                    { staticClass: "col-md-4" },
                     [
                       _c("input", {
                         directives: [
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.form.expediente.cabecera,
-                            expression: "form.expediente.cabecera"
+                            value: _vm.form.documento.cabecera,
+                            expression: "form.documento.cabecera"
                           }
                         ],
                         staticClass: "form-control",
                         class: {
-                          "is-invalid": _vm.form.errors.has("cabecera")
+                          "is-invalid": _vm.form.errors.has(
+                            "cabecera_documento"
+                          )
                         },
                         attrs: {
                           type: "text",
-                          name: "cabecera",
-                          id: "cabecera",
-                          placeholder: "Cabecera Expediente",
-                          title: "Cabecera Expediente"
+                          name: "cabecera_documento",
+                          id: "cabecera_documento",
+                          placeholder: "Cabecera Documento",
+                          title: "Cabecera Documento"
                         },
-                        domProps: { value: _vm.form.expediente.cabecera },
+                        domProps: { value: _vm.form.documento.cabecera },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
                             _vm.$set(
-                              _vm.form.expediente,
+                              _vm.form.documento,
                               "cabecera",
                               $event.target.value
                             )
@@ -87137,7 +87422,163 @@ var render = function() {
                       }),
                       _vm._v(" "),
                       _c("has-error", {
-                        attrs: { form: _vm.form, field: "cabecera" }
+                        attrs: { form: _vm.form, field: "cabecera_documento" }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    { staticClass: "col-form-label col-md-2 text-right" },
+                    [_vm._v("Nro. Folios")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-md-4" },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.documento.folios,
+                            expression: "form.documento.folios"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.form.errors.has("folios") },
+                        attrs: {
+                          type: "number",
+                          name: "folios",
+                          id: "folios",
+                          placeholder: "Número de Folios",
+                          title: "Número de Folios"
+                        },
+                        domProps: { value: _vm.form.documento.folios },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form.documento,
+                              "folios",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "folios" }
+                      })
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c(
+                    "label",
+                    { staticClass: "col-form-label col-md-2 text-right" },
+                    [_vm._v("Asunto")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-md-10" },
+                    [
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.documento.asunto,
+                            expression: "form.documento.asunto"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: { "is-invalid": _vm.form.errors.has("asunto") },
+                        attrs: {
+                          name: "asunto",
+                          id: "asunto",
+                          placeholder: "Ingrese Asunto",
+                          title: "Ingrese Asunto",
+                          rows: "3"
+                        },
+                        domProps: { value: _vm.form.documento.asunto },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form.documento,
+                              "asunto",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "asunto" }
+                      })
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c(
+                    "label",
+                    { staticClass: "col-form-label col-md-2 text-right" },
+                    [_vm._v("Observaciones")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-md-10" },
+                    [
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.expediente.observaciones,
+                            expression: "form.expediente.observaciones"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        class: {
+                          "is-invalid": _vm.form.errors.has("observaciones")
+                        },
+                        attrs: {
+                          name: "observaciones",
+                          id: "observaciones",
+                          placeholder: "Ingrese observaciones",
+                          title: "Ingrese observaciones",
+                          rows: "3"
+                        },
+                        domProps: { value: _vm.form.expediente.observaciones },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form.expediente,
+                              "observaciones",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("has-error", {
+                        attrs: { form: _vm.form, field: "observaciones" }
                       })
                     ],
                     1
@@ -102272,8 +102713,8 @@ __webpack_require__(/*! ./componentes */ "./resources/js/componentes.js");
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history',
   routes: _routes__WEBPACK_IMPORTED_MODULE_3__["default"]
-});
-Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
+}); //Vue.component('example-component', require('./components/ExampleComponent.vue').default)
+
 var app = new Vue({
   el: '#app',
   router: router
@@ -102339,75 +102780,6 @@ Vue.component('ruta', __webpack_require__(/*! ./views/configuraciones/tupa/Ruta.
 Vue.component('requisito', __webpack_require__(/*! ./views/configuraciones/tupa/Requisito.vue */ "./resources/js/views/configuraciones/tupa/Requisito.vue")["default"]);
 Vue.component('requisito-procedimiento', __webpack_require__(/*! ./views/configuraciones/tupa/RequisitoProcedimiento.vue */ "./resources/js/views/configuraciones/tupa/RequisitoProcedimiento.vue")["default"]);
 Vue.component('expediente-nuevo', __webpack_require__(/*! ./views/tramite/expediente/NuevoExpediente.vue */ "./resources/js/views/tramite/expediente/NuevoExpediente.vue")["default"]);
-
-/***/ }),
-
-/***/ "./resources/js/components/ExampleComponent.vue":
-/*!******************************************************!*\
-  !*** ./resources/js/components/ExampleComponent.vue ***!
-  \******************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ExampleComponent.vue?vue&type=template&id=299e239e& */ "./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e&");
-/* harmony import */ var _ExampleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ExampleComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _ExampleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/ExampleComponent.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************!*\
-  !*** ./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ExampleComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e&":
-/*!*************************************************************************************!*\
-  !*** ./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e& ***!
-  \*************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./ExampleComponent.vue?vue&type=template&id=299e239e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ExampleComponent.vue?vue&type=template&id=299e239e&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
 
 /***/ }),
 

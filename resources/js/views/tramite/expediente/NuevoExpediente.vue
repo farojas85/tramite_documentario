@@ -94,7 +94,7 @@
                 <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
                     <div class="form-group row mt-2">
                         <label class="col-form-label col-md-2 text-right">Movimiento</label>
-                         <div class="col-md-3">
+                         <div class="col-md-4">
                             <select class="form-control" id="tipo_movimiento" name="tipo_movimiento"
                                 v-model="form.movimiento.tipo_movimiento_id" title="Seleccione Documento Identidad"
                                 placeholder="seleccione Tipo Documento Identidad"
@@ -106,8 +106,52 @@
                             </select>
                             <has-error :form="form" field="tipo_movimiento"></has-error>
                         </div>
+                        <label class="col-form-label col-md-2 text-right">Fecha / Hora:</label>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <input type="date" class="form-control" v-model="form.expediente.fecha">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="time" class="form-control" v-model="form.expediente.hora">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-md-2 text-right">Procedimiento</label>
+                        <div class="col-md-10">
+                           <select class="form-control" id="procedimiento_id" name="procedimiento_id"
+                                v-model="form.expediente.procedimiento_id" title="Seleccione Procedimiento"
+                                placeholder="seleccione Procedimiento"
+                                :class="{ 'is-invalid': form.errors.has('procedimiento_id') }">
+                                <option value="">-Seleccione Procedimiento-</option>
+                                <option v-for="tipo in procedimientos" :key="tipo.id" :value="tipo.id" :title="tipo.descripcion_larga">
+                                    {{ tipo.denominacion }}
+                                </option>   
+                            </select>
+                            <has-error :form="form" field="procedimiento_id"></has-error>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-md-2 text-right">Nro. Expediente</label>
+                        <div class="col-md-4">
+                            <input type="text" name="numero_expediente" v-model="form.expediente.numero_expediente" id="numero_expediente"
+                                placeholder="Número Expediente" title="Número Expediente"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('numero_expediente') }">
+                            <has-error :form="form" field="numero_expediente"></has-error>
+                        </div>                      
+                        <label class="col-form-label col-md-2 text-right">Cab. Expediente</label>
+                        <div class="col-md-4">
+                            <input type="text" name="cabecera" v-model="form.expediente.cabecera" id="cabecera"
+                                placeholder="Cabecera Expediente" title="Cabecera Expediente"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('cabecera') }">
+                            <has-error :form="form" field="cabecera"></has-error>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-form-label col-md-2 text-right">Tipo Documento</label>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <select class="form-control" id="tipo_documento_id" name="tipo_documento_id"
                                 v-model="form.documento.tipo_documento_id" title="Seleccione Documento Identidad"
                                 placeholder="seleccione Tipo Documento Identidad"
@@ -119,21 +163,50 @@
                             </select>
                             <has-error :form="form" field="tipo_documento_id"></has-error>
                         </div>
+                        <label class="col-form-label col-md-2 text-right">Nro. Documento</label>
+                        <div class="col-md-4">
+                            <input type="text" name="numero_documento" v-model="form.documento.numero_documento" 
+                                    id="numero_documento" placeholder="Número de Documento" title="Ingrese Número de Documento"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('numero_documento') }">
+                            <has-error :form="form" field="numero_documento"></has-error>
+                        </div>                        
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-md-2 text-right">N&deg; Expediente</label>
-                        <div class="col-md-3">
-                            <input type="text" name="numero_expediente" v-model="form.expediente.numero_expediente" id="numero_expediente"
-                                placeholder="Número Expediente" title="Número Expediente"
-                                class="form-control" :class="{ 'is-invalid': form.errors.has('numero_expediente') }">
-                            <has-error :form="form" field="numero_expediente"></has-error>
+                        <label class="col-form-label col-md-2 text-right">Cab. Documento</label>
+                        <div class="col-md-4">
+                            <input type="text" name="cabecera_documento" v-model="form.documento.cabecera" 
+                                id="cabecera_documento" placeholder="Cabecera Documento" title="Cabecera Documento"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('cabecera_documento') }">
+                            <has-error :form="form" field="cabecera_documento"></has-error>
                         </div>
-                        <label class="col-form-label col-md-2 text-right">Cabecera</label>
-                        <div class="col-md-5">
-                            <input type="text" name="cabecera" v-model="form.expediente.cabecera" id="cabecera"
-                                placeholder="Cabecera Expediente" title="Cabecera Expediente"
-                                class="form-control" :class="{ 'is-invalid': form.errors.has('cabecera') }">
-                            <has-error :form="form" field="cabecera"></has-error>
+                        <label class="col-form-label col-md-2 text-right">Nro. Folios</label>
+                        <div class="col-md-4">
+                            <input type="number" name="folios" v-model="form.documento.folios" 
+                                id="folios" placeholder="Número de Folios" title="Número de Folios"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('folios') }">
+                            <has-error :form="form" field="folios"></has-error>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-md-2 text-right">Asunto</label>
+                        <div class="col-md-10">
+                            <textarea name="asunto" id="asunto" 
+                                    v-model="form.documento.asunto" placeholder="Ingrese Asunto" 
+                                    title="Ingrese Asunto" class="form-control" 
+                                    :class="{ 'is-invalid': form.errors.has('asunto') }"
+                                    rows="3"></textarea>
+                            <has-error :form="form" field="asunto"></has-error>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-md-2 text-right">Observaciones</label>
+                        <div class="col-md-10">
+                            <textarea name="observaciones" id="observaciones" 
+                                    v-model="form.expediente.observaciones" placeholder="Ingrese observaciones" 
+                                    title="Ingrese observaciones" class="form-control" 
+                                    :class="{ 'is-invalid': form.errors.has('observaciones') }"
+                                    rows="3"></textarea>
+                            <has-error :form="form" field="observaciones"></has-error>
                         </div>
                     </div>
                 </div>
@@ -143,19 +216,25 @@
 </template>
 
 <script>
+    //import datetime from 'vuejs-datetimepicker'
+
     export default {
+       // components:{ datetime },
         created() {
             this.listarTipoDocumentos()
             this.listarDocumentoIdentidads()
             this.listarTipoMovimientos()
+            this.listarProcedimientos();
             this.form.reset()
             this.form.clear()
         },
         data() {
             return {
+                datenow:new Date(),
                 documento_identidads:{},
                 tipo_documentos:{},
                 tipo_movimientos:{},
+                procedimientos:{},
                 form: new form({
                     id:'',
                     persona_id:'',
@@ -182,6 +261,9 @@
                     },
                     expediente:{
                         cabecera:'',
+                        fecha:'',
+                        hora:'',
+                        procedimiento_id:''
                     }
                 }),
             }
@@ -195,6 +277,11 @@
             listarTipoMovimientos() {
                 axios.get('api/tipoMovimientoLista').then(({ data }) => {
                     this.tipo_movimientos = data
+                })
+            },
+            listarProcedimientos() {
+                axios.get('api/procedimientoLista').then(({ data }) => {
+                    this.procedimientos = data
                 })
             },
             listarDocumentoIdentidads() {
