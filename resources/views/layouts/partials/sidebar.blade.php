@@ -121,6 +121,12 @@
                                 <p>Solicitantes</p>
                             </a>
                         </router-link>
+                        <router-link to="/expediente" tag="li" class="nav-item">
+                            <a class="nav-link">
+                                <i class="fas fa-folder-open nav-icon"></i>
+                                <p>Expedientes</p>
+                            </a>
+                        </router-link>
                         <li class="nav-item">
                         <a href="pages/layout/boxed.html" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>

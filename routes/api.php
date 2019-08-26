@@ -29,6 +29,7 @@ Route::apiResources(['ruta' => 'API\RutaController']);
 Route::apiResources(['requisito' => 'API\RequisitoController']);
 Route::apiResources(['persona' => 'API\PersonaController']);
 Route::apiResources(['solicitante' => 'API\SolicitanteController']);
+Route::apiResources(['expediente' => 'API\ExpedienteController']);
 //Route::apiResources(['requisitoprocedimiento','API\RequisitoProcedimientoController']);
 
 Route::get('rolelist','API\RoleController@lista')->name('role.list');
