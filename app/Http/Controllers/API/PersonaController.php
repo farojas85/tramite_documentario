@@ -4,6 +4,9 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Peru\Http\ContextClient;
+use Peru\Jne\{Dni, DniParser};
+use Peru\Sunat\{HtmlParser, Ruc, RucParser};
 
 class PersonaController extends Controller
 {
@@ -76,5 +79,29 @@ class PersonaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function buscar_dni(Request $request) {
+       // $request->documento = '46658592';
+
+        $cs = new Dni(new ContextClient(), new DniParser());
+
+        $person = $cs->get($request->documento);
+        if (!$person) {
+            return  'No Encontrado';
+        }
+
+        return json_encode($person);
+    }
+
+    public function buscar_ruc(Request $request) {
+        $cs = new Ruc(new ContextClient(), new RucParser(new HtmlParser()));
+
+        $company = $cs->get($request->documento);
+        if (!$company) {
+            return 'No Encontrado';
+        }
+
+        return json_encode($company);
     }
 }

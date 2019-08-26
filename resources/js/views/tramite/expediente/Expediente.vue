@@ -27,7 +27,7 @@
                         </h3>
                     </div>
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row" v-show="modocreate==false">
                             <div class="col-md-6">
                                 <button type="button" class="btn btn-primary" @click="nuevo">
                                     <i class="fas fa-plus"></i> Nuevo Expediente
@@ -45,6 +45,37 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row mt-2" v-show="modocreate==false">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-striped table-bordered table-hover">
+                                        <thead class="bg-dark">
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Solicitante</th>
+                                                <th>Tipo Documento</th>
+                                                <th>Documento Número</th>
+                                                <th>Estado</th>                                                    
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="row" v-show="modocreate==true">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-danger" @click="retornar">
+                                    <i class="fas fa-reply"></i> Retornar
+                                </button>
+                                <button type="button" class="btn btn-success" @click="guardar">
+                                    <i class="fas fa-save"></i> Guardar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mt-2" v-show="modocreate==true">
+                            <expediente-nuevo></expediente-nuevo>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,9 +85,21 @@
 
 <script>
     export default {
+        data() {
+            return {
+                modocreate:false,
+                buscar:''
+            }
+        },
         methods: {
             nuevo() {
-                
+                this.modocreate=true
+            },
+            retornar() {
+                this.modocreate=false
+            },
+            guardar() {
+
             }
         }
     }

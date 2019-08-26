@@ -9,7 +9,7 @@ import Dessarrollador from './views/sistema/Dessarrollador'
 import Perfil from './views/sistema/Perfil'
 import Tupa from './views/configuraciones/tupa/Tupa'
 import Solicitante from './views/tramite/Solicitante';
-import Expediente from './views/tramite/Expediente';
+import Expediente from './views/tramite/expediente/Expediente';
 
 //RUTAS
 let routes = [

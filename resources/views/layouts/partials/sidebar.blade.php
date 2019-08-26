@@ -42,101 +42,95 @@
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <!-- Add icons to the links using the .nav-icon class
-                with font-awesome or any other icon font library -->
-            <router-link to="/home" tag="li" class="nav-item">
-                <a class="nav-link">
-                    <i class="nav-icon fas fa-th text-cyan"></i>
-                    <p>Inicio</p>
-                </a>
-            </router-link>
-            @guest
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                    with font-awesome or any other icon font library -->
+                <router-link to="/home" tag="li" class="nav-item">
+                    <a class="nav-link">
+                        <i class="nav-icon fas fa-th text-cyan"></i>
+                        <p>Inicio</p>
+                    </a>
+                </router-link>
+                @guest
 
-            @else
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-users-cog text-red"></i>
-                        <p>
-                        Sistema
-                        <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <router-link to="/users" tag="li" class="nav-item">
-                            <a class="nav-link">
-                                <i class="fas fa-users nav-icon"></i>
-                                <p>Usuarios</p>
-                            </a>
-                        </router-link>                    
-                        <router-link to="/perfil" tag="li" class="nav-item">
-                            <a class="nav-link">
-                                <i class="fas fa-address-card nav-icon"></i>
-                                <p>Perfil</p>
-                            </a>
-                        </router-link>
-                        <router-link to="/desarrollador" tag="li" class="nav-item">
-                            <a class="nav-link" > 
-                                <i class="fas fa-laptop-code nav-icon"></i>
-                                <p>Desarrollador</p>
-                            </a>
-                        </router-link>
-                    </ul>
-                </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-cogs text-orange"></i>
-                        <p>
-                        Configuraciones
-                        <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <router-link to="/institucional" tag="li" class="nav-item">
-                            <a class="nav-link">
-                                <i class="fas fa-building nav-icon"></i>
-                                <p>Institucional</p>
-                            </a>
-                        </router-link>
-                        <router-link to="/tupa" tag="li" class="nav-item">
-                            <a class="nav-link">
-                                <i class="fas fa-book nav-icon"></i>
-                                <p>Tupa</p>
-                            </a>
-                        </router-link>
-                    </ul>
-                </li>            
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-copy text-teal"></i>
-                        <p>
-                            Trámite
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <router-link to="/solicitante" tag="li" class="nav-item">
-                            <a class="nav-link">
-                                <i class="fas fa-users nav-icon"></i>
-                                <p>Solicitantes</p>
-                            </a>
-                        </router-link>
-                        <router-link to="/expediente" tag="li" class="nav-item">
-                            <a class="nav-link">
-                                <i class="fas fa-folder-open nav-icon"></i>
-                                <p>Expedientes</p>
-                            </a>
-                        </router-link>
-                        <li class="nav-item">
-                        <a href="pages/layout/boxed.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Movimiento</p>
+                @else
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-users-cog text-red"></i>
+                            <p>
+                            Sistema
+                            <i class="right fas fa-angle-left"></i>
+                            </p>
                         </a>
-                        </li>
-                    </ul>
-                </li>
-            @endguest
-        </ul>
+                        <ul class="nav nav-treeview">
+                            <router-link to="/users" tag="li" class="nav-item">
+                                <a class="nav-link">
+                                    <i class="fas fa-users nav-icon"></i>
+                                    <p>Usuarios</p>
+                                </a>
+                            </router-link>                    
+                            <router-link to="/perfil" tag="li" class="nav-item">
+                                <a class="nav-link">
+                                    <i class="fas fa-address-card nav-icon"></i>
+                                    <p>Perfil</p>
+                                </a>
+                            </router-link>
+                            <router-link to="/desarrollador" tag="li" class="nav-item">
+                                <a class="nav-link" > 
+                                    <i class="fas fa-laptop-code nav-icon"></i>
+                                    <p>Desarrollador</p>
+                                </a>
+                            </router-link>
+                        </ul>
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-cogs text-orange"></i>
+                            <p>
+                            Configuraciones
+                            <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <router-link to="/institucional" tag="li" class="nav-item">
+                                <a class="nav-link">
+                                    <i class="fas fa-building nav-icon"></i>
+                                    <p>Institucional</p>
+                                </a>
+                            </router-link>
+                            <router-link to="/tupa" tag="li" class="nav-item">
+                                <a class="nav-link">
+                                    <i class="fas fa-book nav-icon"></i>
+                                    <p>Tupa</p>
+                                </a>
+                            </router-link>
+                        </ul>
+                    </li>            
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-copy text-teal"></i>
+                            <p>
+                                Trámite
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <router-link to="/solicitante" tag="li" class="nav-item">
+                                <a class="nav-link">
+                                    <i class="fas fa-users nav-icon"></i>
+                                    <p>Solicitantes</p>
+                                </a>
+                            </router-link>
+                            <router-link to="/expediente" tag="li" class="nav-item">
+                                <a class="nav-link">
+                                    <i class="fas fa-folder-open nav-icon"></i>
+                                    <p>Expedientes</p>
+                                </a>
+                            </router-link>
+                        </ul>
+                    </li>
+                @endguest
+            </ul>
         </nav>
         <!-- /.sidebar-menu -->
     </div>

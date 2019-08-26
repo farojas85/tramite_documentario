@@ -18,3 +18,5 @@ Vue.component('procedimiento', require('./views/configuraciones/tupa/Procedimien
 Vue.component('ruta',require('./views/configuraciones/tupa/Ruta.vue').default)
 Vue.component('requisito',require('./views/configuraciones/tupa/Requisito.vue').default)
 Vue.component('requisito-procedimiento',require('./views/configuraciones/tupa/RequisitoProcedimiento.vue').default)
+
+Vue.component('expediente-nuevo',require('./views/tramite/expediente/NuevoExpediente.vue').default)
