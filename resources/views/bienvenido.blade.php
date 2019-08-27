@@ -29,8 +29,8 @@
             <div class="container-fluid">
                 <!-- LOGO -->
                 <a class="logo text-uppercase" href="index.html">
-                    <img src="img/logo.png" alt="" class="logo-light" height="48" /> 
-                    <img src="img/logo.png" alt="" class="logo-dark" height="48" /> 
+                    <img src="img/logo_mpp.png" alt="" class="logo-light" height="64" /> 
+                    <img src="landing/images/pachiteamuni.png" alt="" class="logo-dark" height="48" /> 
                 </a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
