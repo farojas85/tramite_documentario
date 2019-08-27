@@ -83,6 +83,10 @@ class PersonaController extends Controller
 
     public function buscar_dni(Request $request) {
        // $request->documento = '46658592';
+        //$persona = Persona::where('numero_documento','=',$request->documento)->first();
+
+       //$persona_count = Persona::where('numero_documento','=',$request->documento)->count();
+
 
         $cs = new Dni(new ContextClient(), new DniParser());
 

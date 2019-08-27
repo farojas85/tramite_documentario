@@ -19,7 +19,7 @@
         </section>
         <!-- /.content-header -->
         <section class="content">
-            <div class="container-fluid">
+            <div class="container-fluid"  v-show='modocreate==false'>
                 <div class="card card-default color-palette-box">
                     <div class="card-header">
                         <h3 class="card-title">
@@ -27,7 +27,7 @@
                         </h3>
                     </div>
                     <div class="card-body">
-                        <div class="row" v-show="modocreate==false">
+                        <div class="row">
                             <div class="col-md-6">
                                 <button type="button" class="btn btn-primary" @click="nuevo">
                                     <i class="fas fa-plus"></i> Nuevo Expediente
@@ -45,39 +45,51 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-2" v-show="modocreate==false">
+                        <div class="row mt-2" >
                             <div class="col-md-12">
                                 <div class="table-responsive">
                                     <table class="table table-sm table-striped table-bordered table-hover">
                                         <thead class="bg-dark">
                                             <tr>
                                                 <th>Id</th>
-                                                <th>Solicitante</th>
-                                                <th>Tipo Documento</th>
-                                                <th>Documento Número</th>
+                                                <th>Fecha/Hora</th>
+                                                <th>Expediente</th>
+                                                <th>Asunto</th>
                                                 <th>Estado</th>                                                    
                                                 <th>Acciones</th>
                                             </tr>
                                         </thead>
+                                        <tr v-if="total == 0">
+                                            <td class="text-center text-danger">-- Datos No Registrados - Tabla Vacía--</td>
+                                        </tr>
+                                        <tr v-else-if="total >=1" v-for="exp in expedientes.data" :key="exp.id">
+                                            <td>{{ exp.id }}</td>
+                                            <td>{{ exp.fecha }} {{ exp.hora }}</td>
+                                            <td>{{ exp.cabecera }} {{ exp.numero_expediente }}</td>
+                                            <td>{{ exp.documento.asunto }}</td>
+                                            <td v-show="exp.estado == 'Pendiente'">
+                                                <span class="badge bg-danger">{{ exp.estado }}</span>
+                                            </td>
+                                            <td>
+                                                <button v-show="exp.estado == 'Pendiente'"
+                                                    class="btn btn-warning btn-sm">
+                                                    <i class="fas fa-paper-plane"></i> Enviar
+                                                </button>
+                                            </td>
+                                        </tr>
                                     </table>
                                 </div>
                             </div>
                         </div>
-                         <div class="row" v-show="modocreate==true">
-                            <div class="col-md-6">
-                                <button type="button" class="btn btn-danger" @click="retornar">
-                                    <i class="fas fa-reply"></i> Retornar
-                                </button>
-                                <button type="button" class="btn btn-success" @click="guardar">
-                                    <i class="fas fa-save"></i> Guardar
-                                </button>
-                            </div>
-                        </div>
-                        <div class="row mt-2" v-show="modocreate==true">
-                            <expediente-nuevo></expediente-nuevo>
-                        </div>
+                       
                     </div>
                 </div>
+            </div>
+            <div class="container-fluid" v-show="modocreate==true">
+                <button type="button" class="btn btn-danger" @click="retornar">
+                    <i class="fas fa-reply"></i> Retornar
+                </button>
+                <expediente-nuevo></expediente-nuevo>
             </div>
         </section>
     </div>
@@ -85,22 +97,34 @@
 
 <script>
     export default {
+        created() {
+            this.listar();
+        },
         data() {
             return {
                 modocreate:false,
-                buscar:''
+                buscar:'',
+                expedientes:{},
+                total:0
             }
         },
         methods: {
+            listar() {
+                axios.get('api/expediente').then(({ data }) => {
+                    this.expedientes = data,
+                    this.total = this.expedientes.total;
+                })
+            },
+            getResults() {
+
+            },
             nuevo() {
                 this.modocreate=true
             },
             retornar() {
                 this.modocreate=false
             },
-            guardar() {
-
-            }
+          
         }
     }
 </script>
