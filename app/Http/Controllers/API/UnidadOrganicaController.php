@@ -98,4 +98,8 @@ class UnidadOrganicaController extends Controller
     {
         return UnidadOrganica::select('id','nombre','siglas')->get();
     }
+    
+    public function listaMovimiento() {
+        return UnidadOrganica::where('id','<>',8)->select('id','nombre','siglas')->get();
+    }
 }

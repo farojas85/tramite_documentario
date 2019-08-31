@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
             Cargo_calificadosTableSeeder::class,
             Documento_IdentidadsTableSeeder::class,
             Tipo_documentosTableSeeder::class,
-            Tipo_movimientosTableSeeder::class
+            Tipo_movimientosTableSeeder::class,
+            MotivosTableSeeder::class
         );
     }
 }

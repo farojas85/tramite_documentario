@@ -95,8 +95,8 @@ class ExpedienteController extends Controller
         $movimiento = new Movimiento();
         $movimiento->tipo_movimiento_id = $request->movimiento['tipo_movimiento_id'];
         $movimiento->expediente_id = $expediente_id;
-        $movimiento->unidad_origen=null;
-        $movimiento->dependencia_origen=null;
+        $movimiento->unidad_origen=8;
+        $movimiento->dependencia_origen=30;
         $movimiento->fecha = Carbon::now()->format('Y-m-d');
         $movimiento->hora = Carbon::now()->format('H:i:s');
         $movimiento->numero_recepcion = '';
@@ -106,6 +106,7 @@ class ExpedienteController extends Controller
 
         $movimiento->save();
 
+        $solicitante->movimientos()->attach($movimiento->id);
 
         return 'Datos registrados Satisfactoriamente';
     }

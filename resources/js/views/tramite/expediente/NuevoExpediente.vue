@@ -324,7 +324,9 @@
                             else {
                                 let persona = response.data
                                 this.form.persona.nombres = persona.nombres
-                                this.form.persona.apellidos = persona.apellidoPaterno+' '+persona.apellidoMaterno
+                                this.form.persona.apellidos = persona.apellidos
+                                this.form.persona.correo = persona.correo
+                                this.form.persona.direccion = persona.direccion
                             }
                         })
                     }
@@ -335,7 +337,10 @@
                             }
                         }).then(response => {
                             let persona = response.data
-                            this.form.persona.razon_social = persona.razonSocial
+                            console.log(persona)
+                            this.form.persona.razon_social = persona.razon_social
+                            this.form.persona.correo = persona.correo
+                            this.form.persona.direccion = persona.direccion
                         })
                     }
                 }

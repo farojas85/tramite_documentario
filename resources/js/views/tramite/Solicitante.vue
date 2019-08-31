@@ -66,12 +66,12 @@
                                                 </tr>
                                                 <tr v-show="total>0" v-for="sol in modelos.data" :key="sol.id">
                                                     <td class="text-center">{{ sol.id }}</td>
-                                                    <td v-if="sol.documento_identidad_id == 3">{{ sol.persona.razon_social }}</td>
+                                                    <td v-if="sol.documento_identidad_id == 3">{{ sol.razon_social }}</td>
                                                     <td v-else>{{  sol.apellidos}} {{ sol.nombres }}</td>
-                                                    <td>{{ sol.documento_identidad.descripcion_corta }}</td>
+                                                    <td>{{ sol.descripcion_corta }}</td>
                                                     <td>{{ sol.numero_documento }}</td>
-                                                    <td v-show="sol.solicitante.estado == 1"><span class="badge bg-success">Activo</span></td>
-                                                    <td v-show="sol.solicitante.estado == 0"><span class="badge bg-dark">Inactivo</span></td>
+                                                    <td v-show="sol.estado == 1"><span class="badge bg-success">Activo</span></td>
+                                                    <td v-show="sol.estado == 0"><span class="badge bg-dark">Inactivo</span></td>
                                                     <td>
                                                         <button type="button" class="btn btn-success btn-circle"
                                                             title="Mostrar Solicitante" @click="mostrar(sol.id)">
@@ -269,6 +269,33 @@
                 this.crudmode = 'create'
                 $('#modal-solicitante-title').html('Nuevo Solicitante')
                 $('#modal-solicitante').modal('show')
+            },
+            cargarDatos(id,title) {
+                axios.get('api/solicitante/'+id)
+                    .then( response => {
+                        let model = response.data
+
+                        this.form.id = model[0].id
+                        this.form.persona_id = model[0].persona_id,
+                        this.form.persona.documento_identidad_id = model[0].documento_identidad_id
+                        this.form.persona.numero_documento = model[0].numero_documento
+                        this.form.persona.nombres = model[0].nombres
+                        this.form.persona.apellidos = model[0].apellidos
+                        this.form.persona.razon_social = model[0].razon_social
+                        this.form.persona.correo = model[0].correo
+                        this.form.persona.direccion = model[0].direccion
+                        this.form.estado  = model[0].estado
+                        this.form.eliminado = model[0].eliminado
+                        $('#modal-solicitante-title').html(title)
+                        $('#modal-solicitante').modal('show')
+                    }).catch(error => {
+                        this.$Progress.fail()
+                        swal.fire('Error', `Ocurrió un Error: ${error.response.status}`,'error')
+                    })
+            },
+            mostrar(id) {
+                this.crudmode = 'show'
+                this.cargarDatos(id,'Mostrar Solicitante')
             },
             agregar() {
                 this.$Progress.start()       

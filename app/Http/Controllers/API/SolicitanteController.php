@@ -4,34 +4,26 @@ namespace App\Http\Controllers\API;
 
 use App\Solicitante;
 use App\Persona;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class SolicitanteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
-    {
-        return Persona::with('solicitante')->with('DocumentoIdentidad')->latest()->paginate(5);
+    {       
+        return DB::table('solicitantes as s')
+                    ->join('personas as p','s.persona_id','=','p.id')
+                    ->join('documento_identidads as di','p.documento_identidad_id','=','di.id')
+                    ->select('s.id','p.nombres','p.apellidos','p.razon_social',
+                            'p.documento_identidad_id','di.descripcion_corta',
+                            'p.numero_documento','s.estado','s.created_at')
+                    ->latest()->paginate(5);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //return $request->persona->nombres;
-        /*$this->validate($request, [
-            'documento_identidad_id'      => 'required',
-            'numero_documento'     => 'required|string|max:20'
-        ]);*/
 
         $persona = Persona::create([
             'nombres' => $request->persona['nombres'],
@@ -52,26 +44,20 @@ class SolicitanteController extends Controller
         return $solicitante;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $solicitante = Solicitante::with('persona')->with('DocumentoIdentidad')->where('id','=',$id)->first();
+        $solicitante = DB::table('solicitantes as s')
+                            ->join('personas as p','s.persona_id','=','p.id')
+                            ->join('documento_identidads as di','p.documento_identidad_id','=','di.id')
+                            ->select('s.id','p.nombres','p.apellidos','p.razon_social',
+                                    'p.documento_identidad_id','di.descripcion_corta',
+                                    's.persona_id','p.numero_documento','p.correo','p.direccion',
+                                    's.estado','s.eliminado','s.created_at')
+                            ->where('s.id','=',$id)->get();
 
         return $solicitante;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -99,12 +85,6 @@ class SolicitanteController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $solicitante = Solicitante::where('id','=',$id)->first();

@@ -30,6 +30,7 @@ Route::apiResources(['requisito' => 'API\RequisitoController']);
 Route::apiResources(['persona' => 'API\PersonaController']);
 Route::apiResources(['solicitante' => 'API\SolicitanteController']);
 Route::apiResources(['expediente' => 'API\ExpedienteController']);
+Route::apiResources(['motivo' => 'API\MotivoController']);
 
 //Route::apiResources(['requisitoprocedimiento','API\RequisitoProcedimientoController']);
 
@@ -50,6 +51,11 @@ route::get('requiprocLista','API\RequisitoController@requiproc_paginate');
 route::get('buscardni','API\PersonaController@buscar_dni')->name('persona.buscardni');
 route::get('buscarruc','API\PersonaController@buscar_ruc')->name('persona.buscar.ruc');
 Route::get('tipoMovimientoLista','API\TipoMovimientoController@lista')->name('tipomovimiento.lista');
+Route::get('unidadOrgListaMov','API\UnidadOrganicaController@listaMovimiento')->name('unidadorganica.listaMovimiento');
+Route::get('dependenciaListaMov','API\DependenciaController@listaMovimiento')->name('dependencia.listaMovimiento');
+Route::get('dependeciaid','API\DependenciaController@depedencias')->name('dependeciaid.dependencias');
+Route::get('cargoid','API\CargoController@cargos')->name('cargo.cargos');
+Route::get('motivoLista','API\MotivoController@lista')->name('motivo.lista');
 
 Route::post('ubigeoProcesar','API\UbigeoController@procesar')->name('ubigeo.procesar');
 Route::post('guardarProcRequi','API\ProcedimientoController@store_procedimiento_requisito');

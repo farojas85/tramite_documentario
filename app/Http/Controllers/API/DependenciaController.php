@@ -70,4 +70,13 @@ class DependenciaController extends Controller
     {
         return Dependencia::select('id','nombre')->get();
     }
+
+    public function listaMovimiento()
+    {
+        return Dependencia::whereNotIn('id',[30])->select('id','nombre')->get();
+    }
+    public function depedencias(Request $request) {
+        return Dependencia::Where('unidad_organica_id','=',$request->id)
+                            ->whereNotIn('id',[30])->select('id','nombre')->get();
+    }
 }

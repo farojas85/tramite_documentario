@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Persona;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Peru\Http\ContextClient;
@@ -82,28 +83,64 @@ class PersonaController extends Controller
     }
 
     public function buscar_dni(Request $request) {
-       // $request->documento = '46658592';
-        //$persona = Persona::where('numero_documento','=',$request->documento)->first();
+        $persona = Persona::where('numero_documento','=',$request->documento)->first();
+        $persona_count = Persona::where('numero_documento','=',$request->documento)->count();
 
-       //$persona_count = Persona::where('numero_documento','=',$request->documento)->count();
+        if($persona_count == 0 )
+        {
+            $cs = new Dni(new ContextClient(), new DniParser());
 
+            $person = $cs->get($request->documento);
 
-        $cs = new Dni(new ContextClient(), new DniParser());
+            if (!$person) {
+                return  'No Encontrado';
+            }
 
-        $person = $cs->get($request->documento);
-        if (!$person) {
-            return  'No Encontrado';
+            $person = [ 
+                'nombres' => $person->nombres,
+                'apellidos' => $person->apellidoPaterno." ".$person->apellidoMaterno,
+                'correo' =>'',
+                'direccion' => ''
+            ];
         }
-
+        else {
+            $person = [
+                'nombres' => $persona->nombres,
+                'apellidos' => $persona->apellidos,
+                'correo' => $persona->correo,
+                'direccion' => $persona->direccion
+            ];
+        }
         return json_encode($person);
     }
 
     public function buscar_ruc(Request $request) {
-        $cs = new Ruc(new ContextClient(), new RucParser(new HtmlParser()));
 
-        $company = $cs->get($request->documento);
-        if (!$company) {
-            return 'No Encontrado';
+        $persona = Persona::where('numero_documento','=',$request->documento)->first();
+        $persona_count = Persona::where('numero_documento','=',$request->documento)->count();
+
+        if($persona_count == 0 )
+        {
+            $cs = new Ruc(new ContextClient(), new RucParser(new HtmlParser()));
+
+            $company = $cs->get($request->documento);
+
+            if (!$company) {
+                return 'No Encontrado';
+            }
+
+            $company = [
+                'razon_social' => $company->razonSocial,
+                'correo' => '',
+                'direccion' => $company->direccion
+            ];
+        }
+        else {
+            $company = [
+                'razon_social' => $persona->razon_social,
+                'correo' => $persona->correo,
+                'direccion' => $persona->direccion
+            ];
         }
 
         return json_encode($company);

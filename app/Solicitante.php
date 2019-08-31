@@ -12,4 +12,9 @@ class Solicitante extends Model
     {
         return $this->belongsTo(Persona::class);
     }
+
+    public function movimientos()
+    {
+        return $this->belongsToMany(Movimiento::class)->withTimestamps();
+    }
 }
