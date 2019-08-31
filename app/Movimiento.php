@@ -15,4 +15,19 @@ class Movimiento extends Model
     {
         return $this->belongsToMany(Solicitante::class)->withTimestamps();
     }
+
+    public function MovimientoInternos()
+    {
+        return $this->hasMany(MovimientoInterno::class);
+    }
+
+    public function expediente()
+    {
+        return $this->belongsTo(Expediente::class);
+    }
+
+    public function TipoMovimiento()
+    {
+        return $this->belongsTo(TipoMovimiento::class);
+    }
 }

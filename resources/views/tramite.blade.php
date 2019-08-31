@@ -17,8 +17,12 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-      <router-view></router-view>
-      <vue-progress-bar></vue-progress-bar>
+      @if($usuario != null) 
+        <router-view></router-view>
+        <vue-progress-bar></vue-progress-bar>
+      @else
+        <h1>Invitado</h1>
+      @endif
     </div>
     @include('layouts.partials.modals')
     @include('layouts.partials.footer')

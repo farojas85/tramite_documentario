@@ -10,4 +10,9 @@ class Expediente extends Model
     {
         return $this->hasOne(Documento::class);
     }
+    
+    public function movimientos()
+    {
+        return $this->hasMany(Movimiento::class);
+    }
 }

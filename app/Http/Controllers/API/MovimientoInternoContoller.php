@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use App\TipoMovimiento;
+use App\MovimientoInterno;
+use App\Movimiento;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class TipoMovimientoController extends Controller
+class MovimientoInternoContoller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,7 @@ class TipoMovimientoController extends Controller
      */
     public function index()
     {
-        return TipoMovimiento::latest()->paginate(5);
+        //
     }
 
     /**
@@ -26,7 +27,23 @@ class TipoMovimientoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'unidad_destino' => 'required',
+            'dependencia_destino' => 'required'
+        ]);
+
+        $movimiento_interno =new  MovimientoInterno();
+        $movimiento_interno->movimiento_id = $request->movimiento_id;
+        $movimiento_interno->unidad_destino = $request->unidad_destino;
+        $movimiento_interno->dependencia_destino = $request->dependencia_destino;
+        $movimiento_interno->cargo_destino = $request->cargo_destino;
+        $movimiento_interno->save();
+        
+        $movimiento = Movimiento::where('id','=',$request->movimiento_id)->first();
+
+        $movimiento->motivos()->attach($request->motivo_id);
+
+        return ['mensaje' => 'Movimiento Interno Registrado Satisfactoriamente'];
     }
 
     /**
@@ -37,7 +54,7 @@ class TipoMovimientoController extends Controller
      */
     public function show($id)
     {
-       
+        //
     }
 
     /**
@@ -61,13 +78,5 @@ class TipoMovimientoController extends Controller
     public function destroy($id)
     {
         //
-    }
-    
-    public function lista() {
-        return TipoMovimiento::select('id','descripcion')->get();
-    }
-
-    public function mostrar(Request $request){
-        return TipoMovimiento::where('id','=',$request->idtipomov)->select('id','descripcion')->first();
     }
 }

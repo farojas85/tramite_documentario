@@ -88,3 +88,14 @@
         </section>
     </div>
 </template>
+
+<script>
+    export default {
+        methods:{
+
+            obtenerUsuario() {
+                axios.get()
+            }
+        }
+    }
+</script>

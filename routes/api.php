@@ -31,6 +31,9 @@ Route::apiResources(['persona' => 'API\PersonaController']);
 Route::apiResources(['solicitante' => 'API\SolicitanteController']);
 Route::apiResources(['expediente' => 'API\ExpedienteController']);
 Route::apiResources(['motivo' => 'API\MotivoController']);
+Route::apiResources(['tipo_movimiento' => 'API\TipoMovimientoController']);
+Route::apiResources(['movimiento' => 'API\MovimientoController']);
+Route::apiResources(['movimiento_interno' => 'API\MovimientoInternoContoller']);
 
 //Route::apiResources(['requisitoprocedimiento','API\RequisitoProcedimientoController']);
 
@@ -42,7 +45,7 @@ Route::get('cargocalificadolist','API\CargoCalificadoController@lista')->name('c
 Route::get('rolesearch/{busqueda}','API\UserController@search')->name('role.search');
 Route::get('perfil','API\UserController@perfil');
 Route::get('rolebyUser','API\RoleController@rolebyuser');
-Route::get('dataPersonalUser','API\UserControler@datosPersonales');
+Route::get('dataPersonalUser','API\UserController@datosPersonales');
 Route::get('documentoIdentidadList','API\DocumentoIdentidadController@lista');
 Route::get('procedimientoLista','API\ProcedimientoController@lista')->name('procedimiento.lista');
 Route::get('tipoDocumentoLista','API\TipoDocumentoController@lista')->name('tipodocumento.lista');
@@ -56,6 +59,7 @@ Route::get('dependenciaListaMov','API\DependenciaController@listaMovimiento')->n
 Route::get('dependeciaid','API\DependenciaController@depedencias')->name('dependeciaid.dependencias');
 Route::get('cargoid','API\CargoController@cargos')->name('cargo.cargos');
 Route::get('motivoLista','API\MotivoController@lista')->name('motivo.lista');
+Route::get('tipomovMostrar','API\TipoMovimientoController@mostrar')->name('tipo_movimiento.mostrar');
 
 Route::post('ubigeoProcesar','API\UbigeoController@procesar')->name('ubigeo.procesar');
 Route::post('guardarProcRequi','API\ProcedimientoController@store_procedimiento_requisito');

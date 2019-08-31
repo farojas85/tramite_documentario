@@ -17,7 +17,7 @@ class ExpedienteController extends Controller
 {
     public function index()
     {
-        return Expediente::with('documento')->latest()->paginate(5);
+        return Expediente::with('documento')->with('movimientos')->latest()->paginate(5);
     }
 
     public function store(Request $request)
@@ -113,7 +113,7 @@ class ExpedienteController extends Controller
 
     public function show($id)
     {
-        //
+        return Expediente::with('documento')->with('movimientos')->where('id','=',$id)->first();
     }
 
     public function update(Request $request, $id)
