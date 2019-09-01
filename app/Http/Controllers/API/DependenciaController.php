@@ -77,6 +77,6 @@ class DependenciaController extends Controller
     }
     public function depedencias(Request $request) {
         return Dependencia::Where('unidad_organica_id','=',$request->id)
-                            ->whereNotIn('id',[30])->select('id','nombre')->get();
+                    ->select('id','nombre')->get();
     }
 }

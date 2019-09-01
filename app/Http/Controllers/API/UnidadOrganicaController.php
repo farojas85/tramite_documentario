@@ -100,6 +100,6 @@ class UnidadOrganicaController extends Controller
     }
     
     public function listaMovimiento() {
-        return UnidadOrganica::where('id','<>',8)->select('id','nombre','siglas')->get();
+        return UnidadOrganica::select('id','nombre','siglas')->get();
     }
 }

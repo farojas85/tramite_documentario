@@ -21,7 +21,7 @@
         <router-view></router-view>
         <vue-progress-bar></vue-progress-bar>
       @else
-        @if($expedientes!= null)
+        @if($expedientes!== null)
         <div class="card card-default color-palette-box">
           <div class="card-header">
               <h3 class="card-title">
@@ -91,153 +91,157 @@
     @include('layouts.partials.footer')
     @include('layouts.partials.rightbar')
     <div class="modal fade" id="modal-expedientes">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="modal-expedientes-title">Mostrar Movimientos Expediente</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="modal-expedientes-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Movimiento</h3>
-                    </div>
-                    <div class="card-body">
-                      @forelse ($expedientes['movimientos'] as $mov)
-                        <div class="form-group row">
-                            <label for="movimiento_tipo" class="col-form-label col-md-3">Tipo:</label>
-                            <div class="col-md-9">
-                                <input type="text" id="movimiento_tipo" class="form-control"
-                                  value="{{ $mov->tipo_movimiento }}" readonly >
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="unidad_desc" class="col-form-label col-md-3">Unidad:</label>
-                            <div class="col-md-9">
-                                <textarea name="unidad_desc" id="unidad_desc" rows="2" 
-                                    class="form-control" readonly >{{ $mov->unidad_origen }}</textarea>
-                                  
-                            </div>
-
-                        </div>
-                        <div class="form-group row">
-                            <label for="dependencia_desc" class="col-form-label col-md-3">Dependencia:</label>
-                            <div class="col-md-9">
-                                <textarea name="dependencia_desc" id="dependencia_desc" rows="2" 
-                                    class="form-control"  readonly >{{ $mov->dependencia_origen }}</textarea>
-                                  
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-form-label col-md-3">Estado:</label>
-                            <div class="col-md-9">
-                            @switch($mov->estado_actual)
-                              @case('Pendiente')
-                              <span class="badge bg-danger">{{ $mov->estado_actual }}</span>                                
-                                  @break
-                                @case('Derivado')
-                              <span class="badge bg-warning">{{ $mov->estado_actual }}</span> 
-                                  @break
-                                @case('Proceso')
-                              <span class="badge bg-primary">{{ $mov->estado_actual }}</span> 
-                                    @break
-                                @case('Terminado')
-                              <span class="badge bg-success">{{ $mov->estado_actual }}</span> 
-                                    @break   
-                                @case('Archivado')
-                              <span class="badge bg-info">{{ $mov->estado_actual }}</span> 
-                                    @break     
-                            @endswitch
-                                  
-                            </div>
-                        </div>
-                      @empty
-                          
-                      @endforelse
-                    </div>
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="modal-expedientes-title">Mostrar Movimientos Expediente</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body" id="modal-expedientes-body">
+        @if($expedientes != null)
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card card-primary">
+                  <div class="card-header">
+                      <h3 class="card-title">Movimiento</h3>
                   </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="card card-success">
-                    <div class="card-header">
-                        <h3 class="card-title">Motivos Movimiento</h3>
-                    </div>
-                    <div class="card-body">
+                  <div class="card-body">
+                
+                    @forelse ($expedientes['movimientos'] as $mov)
                       <div class="form-group row">
-                          <div class="table-responsive">
-                              <table class="table table-sm table-bordered">
-                                  <thead class="thead-dark">
-                                      <th class="text-center text-white">Id</th>
-                                      <th class="text-center text-white">Motivos</th>
-                                  </thead>
-                                  <tbody>
-                                    @forelse ($expedientes['motivos'] as $mot)
-                                      <tr>
-                                        <td>{{ $mot->motivo_id }}</td>
-                                        <td>{{ $mot->motivo }}</td>
-                                      </tr>
-                                    @empty
-                                        
-                                    @endforelse
-                                  </tbody>
-                              </table>
+                          <label for="movimiento_tipo" class="col-form-label col-md-3">Tipo:</label>
+                          <div class="col-md-9">
+                              <input type="text" id="movimiento_tipo" class="form-control"
+                                value="{{ $mov->tipo_movimiento }}" readonly >
                           </div>
                       </div>
+                      <div class="form-group row">
+                          <label for="unidad_desc" class="col-form-label col-md-3">Unidad:</label>
+                          <div class="col-md-9">
+                              <textarea name="unidad_desc" id="unidad_desc" rows="2" 
+                                  class="form-control" readonly >{{ $mov->unidad_origen }}</textarea>
+                                
+                          </div>
+
+                      </div>
+                      <div class="form-group row">
+                          <label for="dependencia_desc" class="col-form-label col-md-3">Dependencia:</label>
+                          <div class="col-md-9">
+                              <textarea name="dependencia_desc" id="dependencia_desc" rows="2" 
+                                  class="form-control"  readonly >{{ $mov->dependencia_origen }}</textarea>
+                                
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label class="col-form-label col-md-3">Estado:</label>
+                          <div class="col-md-9">
+                          @switch($mov->estado_actual)
+                            @case('Pendiente')
+                            <span class="badge bg-danger">{{ $mov->estado_actual }}</span>                                
+                                @break
+                              @case('Derivado')
+                            <span class="badge bg-warning">{{ $mov->estado_actual }}</span> 
+                                @break
+                              @case('Proceso')
+                            <span class="badge bg-primary">{{ $mov->estado_actual }}</span> 
+                                  @break
+                              @case('Terminado')
+                            <span class="badge bg-success">{{ $mov->estado_actual }}</span> 
+                                  @break   
+                              @case('Archivado')
+                            <span class="badge bg-info">{{ $mov->estado_actual }}</span> 
+                                  @break     
+                          @endswitch
+                                
+                          </div>
+                      </div>
+                    @empty
+                        
+                    @endforelse
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card card-success">
+                  <div class="card-header">
+                      <h3 class="card-title">Motivos Movimiento</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group row">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead class="thead-dark">
+                                    <th class="text-center text-white">Id</th>
+                                    <th class="text-center text-white">Motivos</th>
+                                </thead>
+                                <tbody>
+                                  @forelse ($expedientes['motivos'] as $mot)
+                                    <tr>
+                                      <td>{{ $mot->motivo_id }}</td>
+                                      <td>{{ $mot->motivo }}</td>
+                                    </tr>
+                                  @empty
+                                      
+                                  @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-12">
-                    <div class="card card-warning">
-                      <div class="card-header">
-                          <h3 class="card-title">Movimientos Internos</h3>
-                      </div>
-                      <div class="card-body">
-                        <div class="table-responsive">
-                          <table class="table table-sm table-bordered">
-                              <thead class="thead-dark">
-                                  <tr>
-                                      <th class="text-center text-white">Id</th>
-                                      <th class="text-center text-white">Unidad Destino</th>
-                                      <th class="text-center text-white">Dependendia Destino</th>
-                                      <th class="text-center text-white">Cargo Destino</th>
-                                      <th class="text-center text-white">Fecha Creada</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                @forelse ($expedientes['movimiento_internos'] as $mi)
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                  <div class="card card-warning">
+                    <div class="card-header">
+                        <h3 class="card-title">Movimientos Internos</h3>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-sm table-bordered">
+                            <thead class="thead-dark">
                                 <tr>
-                                  <td>{{ $mi->id }}</td>
-                                  <td>{{ $mi->unidad_destino }}</td>
-                                  <td>{{ $mi->dependencia_destino }}</td>
-                                  <td>{{ $mi->cargo_destino }}</td>
-                                  <td>{{ $mi->fecha_creada }}</td>
+                                    <th class="text-center text-white">Id</th>
+                                    <th class="text-center text-white">Unidad Destino</th>
+                                    <th class="text-center text-white">Dependendia Destino</th>
+                                    <th class="text-center text-white">Cargo Destino</th>
+                                    <th class="text-center text-white">Fecha Creada</th>
                                 </tr>
-                                @empty
-                                    
-                                @endforelse
-                              </tbody>
-                            </table>
-                        </div>
+                            </thead>
+                            <tbody>
+                              @forelse ($expedientes['movimiento_internos'] as $mi)
+                              <tr>
+                                <td>{{ $mi->id }}</td>
+                                <td>{{ $mi->unidad_destino }}</td>
+                                <td>{{ $mi->dependencia_destino }}</td>
+                                <td>{{ $mi->cargo_destino }}</td>
+                                <td>{{ $mi->fecha_creada }}</td>
+                              </tr>
+                              @empty
+                                  
+                              @endforelse
+                            </tbody>
+                          </table>
                       </div>
                     </div>
-                </div>
+                  </div>
               </div>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>                
-            </div>
+        @endif
+          </div>            
+          <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>                
+          </div>
         </div>
         <!-- /.modal-content -->
-        </div>
+      </div>
     <!-- /.modal-dialog -->
     </div>
   </div> 
+
   <script src="{{ mix('js/app.js') }}"></script>
 
   @yield('scripties')

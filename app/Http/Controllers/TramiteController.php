@@ -17,6 +17,7 @@ class TramiteController extends Controller
         $usuario = null;
         if(Auth::check()){
             $usuario = User::where('id','=',Auth::user()->id)->first();
+            
         }
         if(!Session::has('busqueda_expediente')){
             Session::put('busqueda_expediente',$request->busqueda_expediente);

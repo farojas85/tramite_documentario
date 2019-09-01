@@ -32,7 +32,7 @@
 
                                 <p class="text-muted text-center" v-text="role_descripcion">Software Engineer</p>
 
-                                <ul class="list-group list-group-unbordered mb-3">
+                                <!--<ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
                                     <b>Docs. Emitidos</b> <a class="float-right">1,322</a>
                                 </li>
@@ -44,7 +44,7 @@
                                 </li>
                                 </ul>
 
-                                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>-->
                             </div>
                         <!-- /.card-body -->
                         </div>

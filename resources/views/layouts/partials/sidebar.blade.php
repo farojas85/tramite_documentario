@@ -1,4 +1,11 @@
 <!-- Main Sidebar Container -->
+@if($usuario!=null)
+    @foreach ($usuario->roles as $role)
+    @php
+        $role_name = $role->nombre
+    @endphp
+    @endforeach
+@endif
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/home" class="brand-link">
@@ -54,6 +61,13 @@
                 @guest
 
                 @else
+                    <router-link to="/perfil" tag="li" class="nav-item">
+                        <a class="nav-link">
+                            <i class="fas fa-address-card nav-icon"></i>
+                            <p>Perfil</p>
+                        </a>
+                    </router-link>
+                    @if($role_name == 'admin')
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-users-cog text-red"></i>
@@ -69,12 +83,6 @@
                                     <p>Usuarios</p>
                                 </a>
                             </router-link>                    
-                            <router-link to="/perfil" tag="li" class="nav-item">
-                                <a class="nav-link">
-                                    <i class="fas fa-address-card nav-icon"></i>
-                                    <p>Perfil</p>
-                                </a>
-                            </router-link>
                             <router-link to="/desarrollador" tag="li" class="nav-item">
                                 <a class="nav-link" > 
                                     <i class="fas fa-laptop-code nav-icon"></i>
@@ -105,7 +113,8 @@
                                 </a>
                             </router-link>
                         </ul>
-                    </li>            
+                    </li>
+                    @endif      
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-copy text-teal"></i>

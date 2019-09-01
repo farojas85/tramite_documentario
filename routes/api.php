@@ -63,6 +63,7 @@ Route::get('tipomovMostrar','API\TipoMovimientoController@mostrar')->name('tipo_
 Route::get('movMotivos','API\MovimientoController@motivos')->name('movimiento.motivos');
 Route::get('movExpeditente','API\MovimientoController@by_expediente')->name('movimiento.by_expediente');
 Route::get('movmovInterno','API\MovimientoInternoContoller@by_movimiento_id')->name('movimiento_interno.by_movimiento_id');
+Route::get('mostraruser','API\UserController@mostrar')->name('user.mostrar');
 //
 Route::post('ubigeoProcesar','API\UbigeoController@procesar')->name('ubigeo.procesar');
 Route::post('guardarProcRequi','API\ProcedimientoController@store_procedimiento_requisito');
