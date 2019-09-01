@@ -6986,6 +6986,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     this.listarUnidadOrganicas();
@@ -7011,6 +7058,7 @@ __webpack_require__.r(__webpack_exports__);
       motivo_id_eliminar: 0,
       movInterno: new form({
         id: '',
+        expediente_id: '',
         movimiento_id: '',
         unidad_destino: '',
         dependencia_destino: '',
@@ -7019,6 +7067,7 @@ __webpack_require__.r(__webpack_exports__);
       }),
       mostrarMovimientos: {
         movimientos: {
+          id: '',
           estado_actual: '',
           unidad_origen: '',
           unidad_desc: '',
@@ -7027,6 +7076,8 @@ __webpack_require__.r(__webpack_exports__);
           tipo_movimiento_id: '',
           movimiento_tipo: ''
         },
+        motivos: {},
+        movimientoInternos: {},
         estado: ''
       }
     };
@@ -7149,12 +7200,23 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     movimiento_internos: function movimiento_internos(id) {
+      var _this9 = this;
+
       this.crudmode = 'create';
       this.limpiar();
+      axios.get('api/movExpeditente', {
+        params: {
+          id: id
+        }
+      }).then(function (_ref8) {
+        var data = _ref8.data;
+        _this9.movInterno.movimiento_id = data.id;
+        _this9.movInterno.expediente_id = data.expediente_id;
+      });
       $('#modal-movimiento-interno').modal('show');
     },
     movimientoSubmit: function movimientoSubmit() {
-      var _this9 = this;
+      var _this10 = this;
 
       this.$Progress.start();
       this.movInterno.post('api/movimiento_interno').then(function (response) {
@@ -7165,10 +7227,10 @@ __webpack_require__.r(__webpack_exports__);
             title: response.data.mensaje
           });
 
-          _this9.$Progress.finish();
+          _this10.$Progress.finish();
         }
       })["catch"](function (error) {
-        _this9.$Progress.fail();
+        _this10.$Progress.fail();
 
         if (error.response.status == 422) {
           console.clear();
@@ -7178,32 +7240,50 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     verMovimientos: function verMovimientos(id) {
-      var _this10 = this;
+      var _this11 = this;
 
       var idtipomov = '';
-      axios.get('api/expediente/' + id).then(function (_ref8) {
-        var data = _ref8.data;
-        _this10.mostrarMovimientos.estado = data.estado;
-        _this10.mostrarMovimientos.movimientos.tipo_movimiento_id = data.movimientos[0].tipo_movimiento_id;
-        _this10.mostrarMovimientos.movimientos.estado_actual = data.movimientos[0].estado_actual;
-        _this10.mostrarMovimientos.movimientos.unidad_origen = data.movimientos[0].unidad_origen;
-        _this10.mostrarMovimientos.movimientos.dependencia_origen = data.movimientos[0].dependencia_origen;
+      axios.get('api/expediente/' + id).then(function (_ref9) {
+        var data = _ref9.data;
+        _this11.mostrarMovimientos.estado = data.estado;
+        _this11.mostrarMovimientos.movimientos.tipo_movimiento_id = data.movimientos[0].tipo_movimiento_id;
+        _this11.mostrarMovimientos.movimientos.estado_actual = data.movimientos[0].estado_actual;
+        _this11.mostrarMovimientos.movimientos.unidad_origen = data.movimientos[0].unidad_origen;
+        _this11.mostrarMovimientos.movimientos.dependencia_origen = data.movimientos[0].dependencia_origen;
+        _this11.mostrarMovimientos.movimientos.id = data.movimientos[0].id;
         idtipomov = data.movimientos[0].tipo_movimiento_id;
         axios.get('api/tipomovMostrar', {
           params: {
             idtipomov: idtipomov
           }
-        }).then(function (_ref9) {
-          var data = _ref9.data;
-          _this10.mostrarMovimientos.movimientos.movimiento_tipo = data.descripcion;
-        });
-        axios.get('api/unidadorganica/' + _this10.mostrarMovimientos.movimientos.unidad_origen).then(function (_ref10) {
+        }).then(function (_ref10) {
           var data = _ref10.data;
-          _this10.mostrarMovimientos.movimientos.unidad_desc = data.nombre;
+          _this11.mostrarMovimientos.movimientos.movimiento_tipo = data.descripcion;
         });
-        axios.get('api/dependencia/' + _this10.mostrarMovimientos.movimientos.dependencia_origen).then(function (_ref11) {
+        axios.get('api/unidadorganica/' + _this11.mostrarMovimientos.movimientos.unidad_origen).then(function (_ref11) {
           var data = _ref11.data;
-          _this10.mostrarMovimientos.movimientos.dependencia_desc = data.nombre;
+          _this11.mostrarMovimientos.movimientos.unidad_desc = data.nombre;
+        });
+        axios.get('api/dependencia/' + _this11.mostrarMovimientos.movimientos.dependencia_origen).then(function (_ref12) {
+          var data = _ref12.data;
+          _this11.mostrarMovimientos.movimientos.dependencia_desc = data.nombre;
+        });
+        axios.get('api/movMotivos/', {
+          params: {
+            id: _this11.mostrarMovimientos.movimientos.id
+          }
+        }).then(function (_ref13) {
+          var data = _ref13.data;
+          _this11.mostrarMovimientos.motivos = data.motivos;
+        });
+        axios.get('api/movmovInterno', {
+          params: {
+            movimiento_id: _this11.mostrarMovimientos.movimientos.id
+          }
+        }).then(function (_ref14) {
+          var data = _ref14.data;
+          _this11.mostrarMovimientos.movimientoInternos = data;
+          console.log(data);
         });
       });
       $('#modal-movimiento').modal('show');
@@ -86724,35 +86804,114 @@ var render = function() {
                                   ]
                                 ),
                                 _vm._v(" "),
-                                _c("td", [
-                                  _c(
-                                    "button",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "show",
-                                          rawName: "v-show",
-                                          value: exp.estado == "Pendiente",
-                                          expression:
-                                            "exp.estado == 'Pendiente'"
-                                        }
-                                      ],
-                                      staticClass: "btn btn-warning btn-sm",
-                                      attrs: {
-                                        title: "Enviar Movimiento Interno"
-                                      },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.movimiento_internos(exp.id)
-                                        }
+                                _c(
+                                  "td",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "show",
+                                        rawName: "v-show",
+                                        value: exp.estado == "Derivado",
+                                        expression: "exp.estado == 'Derivado'"
                                       }
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "fas fa-paper-plane"
-                                      })
                                     ]
-                                  ),
+                                  },
+                                  [
+                                    _c(
+                                      "span",
+                                      { staticClass: "badge bg-warning" },
+                                      [_vm._v(_vm._s(exp.estado))]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "show",
+                                        rawName: "v-show",
+                                        value: exp.estado == "Proceso",
+                                        expression: "exp.estado == 'Proceso'"
+                                      }
+                                    ]
+                                  },
+                                  [
+                                    _c(
+                                      "span",
+                                      { staticClass: "badge bg-primary" },
+                                      [_vm._v(_vm._s(exp.estado))]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "show",
+                                        rawName: "v-show",
+                                        value: exp.estado == "Terminado",
+                                        expression: "exp.estado == 'Terminado'"
+                                      }
+                                    ]
+                                  },
+                                  [
+                                    _c(
+                                      "span",
+                                      { staticClass: "badge bg-success" },
+                                      [_vm._v(_vm._s(exp.estado))]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "show",
+                                        rawName: "v-show",
+                                        value: exp.estado == "Archivado",
+                                        expression: "exp.estado == 'Archivado'"
+                                      }
+                                    ]
+                                  },
+                                  [
+                                    _c(
+                                      "span",
+                                      { staticClass: "badge bg-info" },
+                                      [_vm._v(_vm._s(exp.estado))]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("td", [
+                                  exp.estado != "Terminado"
+                                    ? _c(
+                                        "button",
+                                        {
+                                          staticClass: "btn btn-warning btn-sm",
+                                          attrs: {
+                                            title: "Enviar Movimiento Interno"
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.movimiento_internos(
+                                                exp.id
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("i", {
+                                            staticClass: "fas fa-paper-plane"
+                                          })
+                                        ]
+                                      )
+                                    : _vm._e(),
                                   _vm._v(" "),
                                   _c(
                                     "button",
@@ -87255,7 +87414,7 @@ var render = function() {
                 },
                 [
                   _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-md-4" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
                       _c("div", { staticClass: "card card-primary" }, [
                         _vm._m(8),
                         _vm._v(" "),
@@ -87542,14 +87701,153 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _vm._m(9),
-                    _vm._v(" "),
-                    _vm._m(10)
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c("div", { staticClass: "card card-success" }, [
+                        _vm._m(9),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "form-group row" }, [
+                            _c("div", { staticClass: "table-responsive" }, [
+                              _c(
+                                "table",
+                                {
+                                  staticClass: "table table-sm table-bordered"
+                                },
+                                [
+                                  _vm._m(10),
+                                  _vm._v(" "),
+                                  _c(
+                                    "tbody",
+                                    [
+                                      _c(
+                                        "tr",
+                                        {
+                                          directives: [
+                                            {
+                                              name: "show",
+                                              rawName: "v-show",
+                                              value: !_vm.mostrarMovimientos
+                                                .motivos,
+                                              expression:
+                                                "!mostrarMovimientos.motivos"
+                                            }
+                                          ]
+                                        },
+                                        [
+                                          _c(
+                                            "td",
+                                            {
+                                              staticClass: "text-center",
+                                              attrs: { colspan: "2" }
+                                            },
+                                            [
+                                              _vm._v(
+                                                " -- Motivos No registrados--"
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm._l(
+                                        _vm.mostrarMovimientos.motivos,
+                                        function(mot) {
+                                          return _c(
+                                            "tr",
+                                            {
+                                              directives: [
+                                                {
+                                                  name: "show",
+                                                  rawName: "v-show",
+                                                  value:
+                                                    _vm.mostrarMovimientos
+                                                      .motivos,
+                                                  expression:
+                                                    "mostrarMovimientos.motivos"
+                                                }
+                                              ],
+                                              key: mot.id
+                                            },
+                                            [
+                                              _c("td", [
+                                                _vm._v(_vm._s(mot.id))
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("td", [
+                                                _vm._v(_vm._s(mot.motivo))
+                                              ])
+                                            ]
+                                          )
+                                        }
+                                      )
+                                    ],
+                                    2
+                                  )
+                                ]
+                              )
+                            ])
+                          ])
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c("div", { staticClass: "card card-warning" }, [
+                        _vm._m(11),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "table-responsive" }, [
+                            _c(
+                              "table",
+                              { staticClass: "table table-sm table-bordered" },
+                              [
+                                _vm._m(12),
+                                _vm._v(" "),
+                                _c(
+                                  "tbody",
+                                  _vm._l(
+                                    _vm.mostrarMovimientos.movimientoInternos,
+                                    function(mi) {
+                                      return _c("tr", { key: mi.id }, [
+                                        _c("td", [_vm._v(_vm._s(mi.id))]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _vm._v(_vm._s(mi.unidad_destino))
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _vm._v(_vm._s(mi.dependencia_destino))
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _vm._v(_vm._s(mi.cargo_destino))
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm._f("miFicha")(mi.created_at)
+                                            )
+                                          )
+                                        ])
+                                      ])
+                                    }
+                                  ),
+                                  0
+                                )
+                              ]
+                            )
+                          ])
+                        ])
+                      ])
+                    ])
                   ])
                 ]
               ),
               _vm._v(" "),
-              _vm._m(11)
+              _vm._m(13)
             ])
           ])
         ])
@@ -87728,38 +88026,50 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-4" }, [
-      _c("div", { staticClass: "card card-success" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("h3", { staticClass: "card-title" }, [
-            _vm._v("Motivos Movimientos")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _vm._v(
-            "\n                                        The body of the card\n                                    "
-          )
-        ])
-      ])
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Motivos Movimientos")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-4" }, [
-      _c("div", { staticClass: "card card-warning" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("h3", { staticClass: "card-title" }, [
-            _vm._v("Movimientos Internos")
-          ])
+    return _c("thead", { staticClass: "thead-dark" }, [
+      _c("th", { staticClass: "text-center text-white" }, [_vm._v("Id")]),
+      _vm._v(" "),
+      _c("th", { staticClass: "text-center text-white" }, [_vm._v("Motivos")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Movimientos Internos")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-dark" }, [
+      _c("tr", [
+        _c("th", { staticClass: "text-center text-white" }, [_vm._v("Id")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center text-white" }, [
+          _vm._v("Unidad Destino")
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _vm._v(
-            "\n                                        The body of the card\n                                    "
-          )
+        _c("th", { staticClass: "text-center text-white" }, [
+          _vm._v("Dependendia Destino")
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center text-white" }, [
+          _vm._v("Cargo Destino")
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-center text-white" }, [
+          _vm._v("Fecha Creada")
         ])
       ])
     ])

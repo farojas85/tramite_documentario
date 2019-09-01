@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Movimiento;
 use App\Motivo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class MovimientoController extends Controller
@@ -38,7 +39,7 @@ class MovimientoController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     public function update(Request $request, $id)
@@ -50,5 +51,16 @@ class MovimientoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function motivos(Request $request) 
+    {
+        return Movimiento::with('motivos')->where('id','=',$request->id)->first();
+    }
+
+    public function by_expediente(Request $request){
+        return Movimiento::where('expediente_id','=',$request->id)
+                            ->select('expediente_id','id')
+                            ->first();
     }
 }

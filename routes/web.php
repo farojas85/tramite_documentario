@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+//Route::get('buscarExpediente','TramiteController@get_session');
 //Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/{path}', 'TramiteController@index')->where('path', '.*');

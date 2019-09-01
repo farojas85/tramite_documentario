@@ -70,8 +70,20 @@
                                             <td v-show="exp.estado == 'Pendiente'">
                                                 <span class="badge bg-danger">{{ exp.estado }}</span>
                                             </td>
+                                            <td v-show="exp.estado == 'Derivado'">
+                                                <span class="badge bg-warning">{{ exp.estado }}</span>
+                                            </td>
+                                            <td v-show="exp.estado == 'Proceso'">
+                                                <span class="badge bg-primary">{{ exp.estado }}</span>
+                                            </td>
+                                            <td v-show="exp.estado == 'Terminado'">
+                                                <span class="badge bg-success">{{ exp.estado }}</span>
+                                            </td>
+                                            <td v-show="exp.estado == 'Archivado'">
+                                                <span class="badge bg-info">{{ exp.estado }}</span>
+                                            </td>
                                             <td>
-                                                <button v-show="exp.estado == 'Pendiente'"
+                                                <button v-if="exp.estado != 'Terminado' "
                                                     class="btn btn-warning btn-sm" @click="movimiento_internos(exp.id)"
                                                     title="Enviar Movimiento Interno">
                                                     <i class="fas fa-paper-plane"></i>
@@ -196,10 +208,10 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form>
+                    <form >
                         <div class="modal-body" id="modal-movimiento-body">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="card card-primary">
                                     <div class="card-header">
                                         <h3 class="card-title">Movimiento</h3>
@@ -255,30 +267,65 @@
                                     <!-- /.card-body -->
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="card card-success">
                                         <div class="card-header">
                                             <h3 class="card-title">Motivos Movimientos</h3>
-
-                                            <!-- /.card-tools -->
                                         </div>
-                                        <!-- /.card-header -->
                                         <div class="card-body">
-                                            The body of the card
+                                            <div class="form-group row">
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-bordered">
+                                                        <thead class="thead-dark">
+                                                            <th class="text-center text-white">Id</th>
+                                                            <th class="text-center text-white">Motivos</th>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr v-show="!mostrarMovimientos.motivos">
+                                                                <td class="text-center" colspan="2"> -- Motivos No registrados--</td>
+                                                            </tr>
+                                                            <tr v-show="mostrarMovimientos.motivos" v-for="mot in mostrarMovimientos.motivos" :key="mot.id">
+                                                                <td>{{ mot.id }}</td>
+                                                                <td>{{ mot.motivo }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <!-- /.card-body -->
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
                                     <div class="card card-warning">
                                         <div class="card-header">
                                             <h3 class="card-title">Movimientos Internos</h3>
                                         </div>
-                                        <!-- /.card-header -->
                                         <div class="card-body">
-                                            The body of the card
+                                           <div class="table-responsive">
+                                               <table class="table table-sm table-bordered">
+                                                   <thead class="thead-dark">
+                                                       <tr>
+                                                           <th class="text-center text-white">Id</th>
+                                                           <th class="text-center text-white">Unidad Destino</th>
+                                                           <th class="text-center text-white">Dependendia Destino</th>
+                                                           <th class="text-center text-white">Cargo Destino</th>
+                                                           <th class="text-center text-white">Fecha Creada</th>
+                                                       </tr>
+                                                   </thead>
+                                                   <tbody>
+                                                       <tr v-for="mi in mostrarMovimientos.movimientoInternos" :key="mi.id">
+                                                           <td>{{ mi.id }}</td>
+                                                           <td>{{ mi.unidad_destino }}</td>
+                                                           <td>{{ mi.dependencia_destino }}</td>
+                                                           <td>{{ mi.cargo_destino }}</td>
+                                                           <td>{{ mi.created_at | miFicha}}</td>
+                                                       </tr>
+                                                   </tbody>
+                                               </table>
+                                           </div>
                                         </div>
-                                        <!-- /.card-body -->
                                     </div>
                                 </div>
                             </div>
@@ -321,6 +368,7 @@
                 motivo_id_eliminar:0,
                 movInterno: new form({
                     id:'',
+                    expediente_id:'',
                     movimiento_id:'',
                     unidad_destino:'',
                     dependencia_destino:'',
@@ -329,6 +377,7 @@
                 }),
                 mostrarMovimientos:{
                     movimientos:{
+                        id:'',
                         estado_actual:'',
                         unidad_origen:'',
                         unidad_desc:'',
@@ -337,6 +386,8 @@
                         tipo_movimiento_id:'',
                         movimiento_tipo:''
                     },
+                    motivos:{},
+                    movimientoInternos:{},
                     estado:''
                 }
             }
@@ -432,6 +483,12 @@
             movimiento_internos(id){
                 this.crudmode='create'
                 this.limpiar()
+
+                axios.get('api/movExpeditente',{params:{ id:id}})
+                    .then(({ data }) => {
+                        this.movInterno.movimiento_id = data.id
+                        this.movInterno.expediente_id = data.expediente_id
+                    })
                 $('#modal-movimiento-interno').modal('show')
             },
             movimientoSubmit() {
@@ -461,6 +518,7 @@
                     this.mostrarMovimientos.movimientos.estado_actual = data.movimientos[0].estado_actual
                     this.mostrarMovimientos.movimientos.unidad_origen = data.movimientos[0].unidad_origen
                     this.mostrarMovimientos.movimientos.dependencia_origen = data.movimientos[0].dependencia_origen
+                    this.mostrarMovimientos.movimientos.id = data.movimientos[0].id
 
                     idtipomov = data.movimientos[0].tipo_movimiento_id
                     axios.get('api/tipomovMostrar', { params:{idtipomov :idtipomov}}).then(({ data}) => {
@@ -476,10 +534,18 @@
                     .then(({ data }) => {
                         this.mostrarMovimientos.movimientos.dependencia_desc = data.nombre
                     })
-                   
-                })
 
-               
+                    axios.get('api/movMotivos/',{ params: {id :this.mostrarMovimientos.movimientos.id }})
+                    .then(({ data }) => {
+                        this.mostrarMovimientos.motivos = data.motivos
+                    })
+                    axios.get('api/movmovInterno',{params:{ movimiento_id : this.mostrarMovimientos.movimientos.id}})
+                    .then(({ data })=> {
+                        this.mostrarMovimientos.movimientoInternos = data;
+                        console.log(data)
+                    })
+                   
+                })            
                
                 $('#modal-movimiento').modal('show')
             }

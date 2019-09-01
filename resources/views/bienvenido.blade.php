@@ -61,15 +61,17 @@
                                     <h1 class="mb-4 text-white">Sistema de Gestión de trámite Documentario</h1>
                                     <p class="text-white-50 home-desc mb-5 ">Municipalidad Provincial de Pachitea </p>
                                     <div class="subscribe">
-                                        <form>
+                                        <form action="/home">
                                             <div class="row">
                                                 <div class="col-md-8">
                                                     <div class="mb-2">
-                                                        <input type="text" class="form-control" placeholder="Ingrese Número Expediente">
+                                                        <input type="text"  id="buscar_expediente" name="buscar_expediente" class="form-control" 
+                                                            value="expediente"
+                                                         placeholder="Ingrese Número Expediente">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <button type="submit" class="btn btn-primary">Buscar</button>
+                                                    <button type="submit" class="btn btn-primary" id="btn-buscar-expediente">Buscar</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -80,19 +82,14 @@
                                 <div class="home-img position-relative">
                                     <img src="landing/images/pachiteamuni.png" alt="" class="home-first-img">
                                     <!--<img src="landing/images/home-img.png" alt="" class="home-second-img mx-auto d-block">
-                                    <img src="landing/images/home-img.png" alt="" class="home-third-img">
+                                    <img src="landing/images/home-img.png" alt="" class="home-third-img">-->
                                 </div>
                             </div>
-                        </div>
-                        <!-- end row -->
+                        </div>                        
                     </div>
-                    <!-- end container-fluid -->
                 </div>
             </div>
         </section>
-        <!-- home end -->
-
-        <!-- footer start -->
         <footer class="bg-dark footer">
             <div class="container-fluid">    
                 <div class="row">
@@ -128,6 +125,7 @@
         <script src="landing/js/bootstrap.bundle.min.js"></script>
         <script src="landing/js/jquery.easing.min.js"></script>
         <script src="landing/js/scrollspy.min.js"></script>
+        <script src="js/bienvenido.js"></script>
 
         <!-- custom js -->
         <script src="landing/js/app.js"></script>
