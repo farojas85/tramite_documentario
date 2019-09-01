@@ -41,9 +41,9 @@
                         
                     </ul>
                     @auth
-                        <a href="{{ url('/home') }}" class="btn btn-success">Inicio</a>
+                        <a href="{{ url('/home') }}" class="btn btn-secondary">Inicio</a>
                     @else
-                        <a href="{{ route('login') }}"  class="btn btn-danger">Iniciar Sesión</a>
+                        <a href="{{ route('login') }}"  class="btn btn-success">Iniciar Sesión</a>
                     @endauth
                 </div>
             </div>
@@ -59,19 +59,19 @@
                             <div class="col-lg-6">
                                 <div class="home-title mo-mb-20">
                                     <h1 class="mb-4 text-white">Sistema de Gestión de trámite Documentario</h1>
-                                    <p class="text-white-50 home-desc mb-5 ">Municipalidad Provincial de Pachitea </p>
+                                    <p class="text-white home-desc mb-5">Municipalidad Provincial de Pachitea </p>
                                     <div class="subscribe">
                                         <form action="/home">
                                             <div class="row">
                                                 <div class="col-md-8">
                                                     <div class="mb-2">
-                                                        <input type="text"  id="buscar_expediente" name="buscar_expediente" class="form-control" 
+                                                        <input type="text"   style="background-color:aliceblue;border:1px solid #000;color:#000" id="buscar_expediente" name="buscar_expediente" class="form-control" 
                                                             value="expediente"
                                                          placeholder="Ingrese Número Expediente">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <button type="submit" class="btn btn-primary" id="btn-buscar-expediente">Buscar</button>
+                                                    <button type="submit" class="btn btn-secondary" id="btn-buscar-expediente" >Buscar</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -81,8 +81,6 @@
                             <div class="col-xl-4 offset-xl-2 col-lg-5 offset-lg-1 col-md-7">
                                 <div class="home-img position-relative">
                                     <img src="landing/images/pachiteamuni.png" alt="" class="home-first-img">
-                                    <!--<img src="landing/images/home-img.png" alt="" class="home-second-img mx-auto d-block">
-                                    <img src="landing/images/home-img.png" alt="" class="home-third-img">-->
                                 </div>
                             </div>
                         </div>                        
@@ -95,7 +93,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="float-left pull-none">
-                            <p class="text-white-50">2019 © Trámite Documentario 
+                            <p class="text-white-50">2019 &copy;  Tr&aacute;mite Documentario 
                         </div>
                         <div class="float-right pull-none">
                             <ul class="list-inline social-links">
@@ -109,15 +107,10 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- end col -->
                 </div>
-                <!-- end row -->
             </div>
-            <!-- container-fluid -->
         </footer>
-        <!-- footer end -->
-        
-        <!-- Back to top -->    
+   
         <a href="#" class="back-to-top" id="back-to-top"> <i class="mdi mdi-chevron-up"> </i> </a>
 
         <!-- javascript -->
